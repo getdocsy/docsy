@@ -1,15 +1,13 @@
-#!/usr/bin/env node
 import dotenv from 'dotenv';
 dotenv.config();
 
-import { Command } from "commander";
+import { Command } from 'commander';
 import { suggestCmd } from './suggest';
-import packageJson from '../package.json';
+import { version } from '../package.json';
 
 const program = new Command();
-
 program
-  .version(`v${packageJson.version}`)
+  .version(`v${version}`)
   .description('Docsy CLI')
   .option('-n, --name <name>', 'specify a name')
   .addCommand(suggestCmd)

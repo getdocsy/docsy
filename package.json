@@ -7,26 +7,24 @@
     "docsy": "./dist/index.js"
   },
   "scripts": {
-    "preinstall": "npx only-allow pnpm",
-    "docsy": "npx tsc && node ./dist/index.js",
-    "dev": "npx tsc --watch",
-    "build": "npx tsc",
-    "prepare": "npm run build"
+    "docsy": "tsup src/index.ts && node ./dist/index.js",
+    "dev": "tsup --watch",
+    "build": "tsc --noEmit && tsup src/index.ts"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "commander": "^12.1.0",
     "dotenv": "^16.4.5",
     "ini": "^5.0.0",
     "lodash": "^4.17.21",
+    "ora": "^8.1.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/ini": "^4.1.1",
     "@types/lodash": "^4.17.12",
     "@types/node": "^20.0.0",
+    "tsup": "^8.3.5",
     "typescript": "^5.0.0"
-  }
+  },
+  "type": "module"
 }
