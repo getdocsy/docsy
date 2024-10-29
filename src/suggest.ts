@@ -1,6 +1,7 @@
 import { Command } from "commander";
-import { getSettings } from "./settings";
 import Ora from 'ora';
+import { getSettings } from "./settings";
+import { getConfig } from "./config";
 
 const program = new Command();
 
@@ -9,6 +10,7 @@ export const suggestCmd = program.command('suggest')
   .action(async () => {
     const spinner = Ora();
     const settings = getSettings();
+    const config = getConfig();
     const url = `${settings.auth.apiUrl}/engine/suggestion`;
     const data = { context: [ { github_repository_name: 'felixzieger/docsy', pull_request_number: 1 } ] };
 
