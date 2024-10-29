@@ -15,6 +15,14 @@ export class GitRepo {
     this.repoPath = path.resolve(repoPath);
     this.fullName = this.getOriginFullName();
   }
+  /**
+   * Gets the SHA of the current HEAD
+   * @returns The SHA of HEAD
+   */
+  getHeadSha(): string {
+    const command = `git -C "${this.repoPath}" rev-parse HEAD`;
+    return execSync(command, { encoding: 'utf-8' }).trim();
+  }
 
   /**
    * Gets commits that the current branch is ahead of the default branch
