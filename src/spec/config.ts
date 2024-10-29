@@ -60,14 +60,26 @@ export const configV0Definition = createConfigDefinition({
 export const configV1Definition = extendConfigDefinition(configV0Definition, {
   createSchema: (baseSchema) => baseSchema.extend({
     defaultBranch: Z.string(),
+    target: Z.object({
+      type: Z.string(),
+      full_name: Z.string()
+    })
   }),
   createDefaultValue: () => ({
     version: 1,
     defaultBranch: 'main',
+    target: {
+      type: 'github',
+      full_name: ''
+    }
   }),
   createUpgrader: () => ({
-    version: 1, 
-    defaultBranch: 'main',
+    version: 1,
+    defaultBranch: 'main', 
+    target: {
+      type: 'github',
+      full_name: ''
+    }
   }),
 });
 
