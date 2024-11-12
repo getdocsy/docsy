@@ -1,1 +1,1 @@
-from . import analyze_views
+from . import analysis_view
