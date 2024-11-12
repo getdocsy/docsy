@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "docsy"
+version = "0.1.0"
+description = "Docsy suggests changes to your user documentation."
+authors = ["Felix Zieger <67903933+felixzieger@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^5.1.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
