@@ -1,3 +1,5 @@
+set dotenv-load
+
 # Default recipe to display all available commands
 default:
     @just --list

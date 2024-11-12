@@ -30,3 +30,6 @@ coverage.xml
 
 # Django
 db.sqlite3
+
+*.env
+*.env.*
