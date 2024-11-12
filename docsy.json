@@ -1,8 +1,0 @@
-{
-  "version": 1,
-  "defaultBranch": "main",
-  "target": {
-    "type": "github",
-    "full_name": "felixzieger/docsy-docs"
-  }
-}
