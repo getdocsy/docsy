@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Analyze GitHub Repository</h2>
+
+    {% if error %}
+    <div class="alert alert-danger" role="alert">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    {% if result %}
+    <div class="alert alert-success" role="alert">
+        <pre>{{ result }}</pre>
+    </div>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="github_full_name">GitHub Repository (format: owner/repo)</label>
+            <input type="text" class="form-control" id="github_full_name" name="github_full_name"
+                placeholder="e.g., octocat/Hello-World" required>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Analyze Repository</button>
+    </form>
+</div>
+{% endblock %}
