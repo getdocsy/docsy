@@ -10,6 +10,9 @@ from app.services import (
 )
 from pydantic import BaseModel
 
+from app.services import repo_map_service
+from app.services.repo_map_service import RepoMap, get_relative_file_path_to_headings
+
 
 def get_latest_analysis_by_github_full_name(
     *, sanitized_github_full_name: str
@@ -29,22 +32,25 @@ def analyze_remote_repo(*, sanitized_github_full_name: str) -> dict:
 
 
 def analyze_repo(*, repo: Repo) -> dict:
-    analysis_status = Analysis.STATUS_PENDING
-    analysis = Analysis(repo=repo, status=analysis_status)
-    analysis.save()
     with local_repo_service.temp_clone_repo(repo=repo) as local_repo_path:
+        repo_map = repo_map_service.create_repo_map(
+            repo=repo, local_repo_path=local_repo_path
+        )
 
         analysis_result = {}
         analysis_result["structure"] = analyze_structure(
-            local_repo_path=local_repo_path
+            local_repo_path=local_repo_path, repo_map=repo_map
         )
-        analysis_result["content"] = analyze_content(local_repo_path=local_repo_path)
-        analysis_result["style"] = analyze_style(local_repo_path=local_repo_path)
+        analysis_result["content"] = analyze_content(
+            local_repo_path=local_repo_path, repo_map=repo_map
+        )
+        analysis_result["style"] = analyze_style(
+            local_repo_path=local_repo_path, repo_map=repo_map
+        )
 
         analysis = Analysis(
             repo=repo,
             result=analysis_result,
-            status=Analysis.STATUS_COMPLETE,
         )
         analysis.save()
 
@@ -61,11 +67,9 @@ class StructureAnalysis(BaseModel):
     files: list[FileClassification]
 
 
-def analyze_structure(*, local_repo_path: str) -> dict:
-    relative_file_path_to_headings = (
-        local_repo_service.get_relative_markdown_file_path_to_headings(
-            local_repo_path=local_repo_path
-        )
+def analyze_structure(*, local_repo_path: str, repo_map: RepoMap) -> dict:
+    relative_file_path_to_headings = get_relative_file_path_to_headings(
+        repo_map=repo_map
     )
 
     # classify each page based on divio documentation system with confidence score
@@ -100,12 +104,9 @@ class ContentAnalysis(BaseModel):
     getting_started: str
     important_concepts: str
 
-
-def analyze_content(*, local_repo_path: str) -> dict:
-    relative_file_path_to_headings = (
-        local_repo_service.get_relative_markdown_file_path_to_headings(
-            local_repo_path=local_repo_path
-        )
+def analyze_content(*, local_repo_path: str, repo_map: RepoMap) -> dict:
+    relative_file_path_to_headings = get_relative_file_path_to_headings(
+        repo_map=repo_map
     )
 
     analyze_content_prompt = """
@@ -133,18 +134,15 @@ def analyze_content(*, local_repo_path: str) -> dict:
     )
     return analysis_result.model_dump()
 
-
 class StyleAnalysis(BaseModel):
     has_conventions_file: bool
     language_consistency: str
     typos: str
 
 
-def analyze_style(*, local_repo_path: str) -> dict:
-    relative_file_path_to_headings = (
-        local_repo_service.get_relative_markdown_file_path_to_headings(
-            local_repo_path=local_repo_path
-        )
+def analyze_style(*, local_repo_path: str, repo_map: RepoMap) -> dict:
+    relative_file_path_to_headings = get_relative_file_path_to_headings(
+        repo_map=repo_map
     )
 
     analyze_style_prompt = """

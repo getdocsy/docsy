@@ -110,37 +110,3 @@ class AnalysisResultView(View):
             },
         )
 
-
-class AnalysisStatusView(View):
-    def get(self, request):
-        unsafe_owner = request.GET.get("owner")
-        unsafe_name = request.GET.get("name")
-
-        if not unsafe_owner or not unsafe_name:
-            return JsonResponse(
-                {"error": "Missing repository owner or name"}, status=400
-            )
-
-        sanitized_owner = sanitization_utils.strip_xss(unsafe_owner)
-        sanitized_name = sanitization_utils.strip_xss(unsafe_name)
-
-        sanitized_github_full_name = f"{sanitized_owner}/{sanitized_name}"
-        analysis = analysis_service.get_latest_analysis_by_github_full_name(
-            sanitized_github_full_name=sanitized_github_full_name
-        )
-
-        print(f"analysis status for {sanitized_github_full_name} requested")
-
-        if not analysis:
-            return JsonResponse({"error": "Analysis not found"}, status=404)
-
-        return JsonResponse(
-            {
-                "status": analysis.status,
-                "error": (
-                    analysis.error_message
-                    if hasattr(analysis, "error_message")
-                    else None
-                ),
-            }
-        )
