@@ -148,9 +148,6 @@
             </div>
             {% endif %}
             <ul class="list-group list-group-flush mb-4">
-                <li class="list-group-item">
-                    <strong>Has Conventions File:</strong> {{ result.style.has_conventions_file|yesno:"Yes,No" }}
-                </li>
             </ul>
 
             <!-- Updated detailed file analysis section -->
@@ -226,6 +223,10 @@ document.addEventListener('DOMContentLoaded', function() {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
+                title: {
+                    display: true,
+                    text: 'Documentation Type Distribution'
+                },
                 legend: {
                     position: 'right',
                 },
