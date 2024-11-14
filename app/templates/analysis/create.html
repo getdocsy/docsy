@@ -1,29 +1,39 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container mt-5">
-    <h2>Analyze GitHub Repository</h2>
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h2 class="text-center mb-4">Analyze GitHub Repository</h2>
 
-    {% if error %}
-    <div class="alert alert-danger" role="alert">
-        {{ error }}
-    </div>
-    {% endif %}
+                    {% if error %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </div>
+                    {% endif %}
 
-    {% if result %}
-    <div class="alert alert-success" role="alert">
-        <pre>{{ result }}</pre>
-    </div>
-    {% endif %}
+                    {% if result %}
+                    <div class="alert alert-success" role="alert">
+                        <pre class="mb-0">{{ result }}</pre>
+                    </div>
+                    {% endif %}
 
-    <form method="POST">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="github_full_name">GitHub Repository (format: owner/repo)</label>
-            <input type="text" class="form-control" id="github_full_name" name="github_full_name"
-                placeholder="e.g., octocat/Hello-World" required>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="form-group mb-3">
+                            <label for="github_full_name" class="form-label">GitHub Repository (format: owner/repo)</label>
+                            <input type="text" class="form-control" id="github_full_name" name="github_full_name"
+                                placeholder="e.g., octocat/Hello-World" required>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Analyze Repository</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-        <button type="submit" class="btn btn-primary mt-3">Analyze Repository</button>
-    </form>
+    </div>
 </div>
 {% endblock %}

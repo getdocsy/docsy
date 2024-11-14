@@ -11,6 +11,16 @@ from app.services import (
 from pydantic import BaseModel
 
 
+def get_latest_analysis_by_github_full_name(
+    *, sanitized_github_full_name: str
+) -> Analysis:
+    return (
+        Analysis.objects.filter(repo__nfkc_github_full_name=sanitized_github_full_name)
+        .order_by("-created_at")
+        .first()
+    )
+
+
 def analyze_remote_repo(*, sanitized_github_full_name: str) -> dict:
     repo = remote_repo_service.get_repo_by_github_full_name(
         sanitized_github_full_name=sanitized_github_full_name
@@ -19,6 +29,9 @@ def analyze_remote_repo(*, sanitized_github_full_name: str) -> dict:
 
 
 def analyze_repo(*, repo: Repo) -> dict:
+    analysis_status = Analysis.STATUS_PENDING
+    analysis = Analysis(repo=repo, status=analysis_status)
+    analysis.save()
     with local_repo_service.temp_clone_repo(repo=repo) as local_repo_path:
 
         analysis_result = {}
@@ -28,7 +41,11 @@ def analyze_repo(*, repo: Repo) -> dict:
         analysis_result["content"] = analyze_content(local_repo_path=local_repo_path)
         analysis_result["style"] = analyze_style(local_repo_path=local_repo_path)
 
-        analysis = Analysis(repo=repo, analysis_result=analysis_result)
+        analysis = Analysis(
+            repo=repo,
+            result=analysis_result,
+            status=Analysis.STATUS_COMPLETE,
+        )
         analysis.save()
 
         return analysis_result
@@ -154,4 +171,3 @@ def analyze_style(*, local_repo_path: str) -> dict:
         message_list=message_list, model=StyleAnalysis
     )
     return analysis_result.model_dump()
-

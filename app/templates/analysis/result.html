@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Analysis Result</h2>
+    
+    <!-- Structure Section -->
+    <div class="card mb-3">
+        <div class="card-header">
+            <h4>Structure</h4>
+        </div>
+        <div class="card-body">
+            <p class="text-muted mb-3">People working with software need different kinds of documentation at different times. Good structure makes it easier for users to find the right documentation for them.
+                See <a href="https://docs.divio.com/documentation-system/introduction/">Divio's documentation system</a> for more information on the classification used in this analysis.
+            </p>
+            {% if result.structure %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>File Path</th>
+                            <th>Classification</th>
+                            <th>Confidence Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for file in result.structure.files %}
+                        <tr>
+                            <td>{{ file.path }}</td>
+                            <td>{{ file.classification }}</td>
+                            <td>{{ file.confidence_score }}%</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No structure analysis available.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Content Section -->
+    <div class="card mb-3">
+        <div class="card-header">
+            <h4>Content</h4>
+        </div>
+        <div class="card-body">
+            <p class="text-muted mb-3">This section provides an overview of your project's documentation and content organization.</p>
+            {% if result.content %}
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <strong>Problem:</strong> {{ result.content.problem }}
+                </li>
+                <li class="list-group-item">
+                    <strong>Getting Started:</strong> {{ result.content.getting_started }}
+                </li>
+                <li class="list-group-item">
+                    <strong>Important Concepts:</strong> {{ result.content.important_concepts }}
+                </li>
+            </ul>
+            {% else %}
+            <p>No content analysis available.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Style Section -->
+    <div class="card mb-3">
+        <div class="card-header">
+            <h4>Style</h4>
+        </div>
+        <div class="card-body">
+            <p class="text-muted mb-3">This section evaluates your project's coding style and consistency standards.</p>
+            {% if result.style %}
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <strong>Has Conventions File:</strong> {{ result.style.has_conventions_file|yesno:"Yes,No" }}
+                </li>
+                <li class="list-group-item">
+                    <strong>Language Consistency:</strong> {{ result.style.language_consistency }}
+                </li>
+                <li class="list-group-item">
+                    <strong>Typos:</strong> {{ result.style.typos }}
+                </li>
+            </ul>
+            {% else %}
+            <p>No style analysis available.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
