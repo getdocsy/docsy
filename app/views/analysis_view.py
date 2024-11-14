@@ -99,7 +99,16 @@ class AnalysisResultView(View):
         if not analysis:
             return HttpResponse("Analysis not found", status=404)
 
-        return render(request, self.template_name, {"result": analysis.result})
+        return render(
+            request,
+            self.template_name,
+            {
+                "result": analysis.result,
+                "repo_owner": owner,
+                "repo_name": name,
+                "created_at": analysis.created_at,
+            },
+        )
 
 
 class AnalysisStatusView(View):

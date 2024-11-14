@@ -2,38 +2,41 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h2>Analysis Result</h2>
-    
+    <h2>Analysis Result for <a href="https://github.com/{{ repo_owner }}/{{ repo_name }}">{{ repo_owner }}/{{ repo_name }}</a></h2>
+    <p class="text-muted mb-3">The analysis was run on {{ created_at }}.</p>
+
     <!-- Structure Section -->
     <div class="card mb-3">
         <div class="card-header">
             <h4>Structure</h4>
         </div>
         <div class="card-body">
-            <p class="text-muted mb-3">People working with software need different kinds of documentation at different times. Good structure makes it easier for users to find the right documentation for them.
-                See <a href="https://docs.divio.com/documentation-system/introduction/">Divio's documentation system</a> for more information on the classification used in this analysis.
+            <p class="text-muted mb-3">People working with software need different kinds of documentation at different
+                times. Good structure makes it easier for users to find the right documentation for them.
+                See <a href="https://docs.divio.com/documentation-system/introduction/">Divio's documentation system</a>
+                for more information on the classification used in this analysis.
             </p>
             {% if result.structure %}
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>File Path</th>
-                            <th>Classification</th>
-                            <th>Confidence Score</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for file in result.structure.files %}
-                        <tr>
-                            <td>{{ file.path }}</td>
-                            <td>{{ file.classification }}</td>
-                            <td>{{ file.confidence_score }}%</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>File Path</th>
+                        <th>Classification</th>
+                        <th>Confidence Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for file in result.structure.files %}
+                    <tr>
+                        <td>{{ file.path }}</td>
+                        <td>{{ file.classification }}</td>
+                        <td>{{ file.confidence_score }}%</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
             {% else %}
-                <p>No structure analysis available.</p>
+            <p>No structure analysis available.</p>
             {% endif %}
         </div>
     </div>
@@ -44,7 +47,8 @@
             <h4>Content</h4>
         </div>
         <div class="card-body">
-            <p class="text-muted mb-3">This section provides an overview of your project's documentation and content organization.</p>
+            <p class="text-muted mb-3">This section provides an overview of your project's documentation and content
+                organization.</p>
             {% if result.content %}
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">
