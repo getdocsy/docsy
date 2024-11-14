@@ -8,33 +8,65 @@
     <!-- Structure Section -->
     <div class="card mb-3">
         <div class="card-header">
-            <h4>Structure</h4>
+            <div class="d-flex justify-content-between align-items-center">
+                <h4>Structure</h4>
+                {% if result.structure and result.structure.score %}
+                <span
+                    class="badge {% if result.structure.score > 85 %}bg-success{% elif result.structure.score > 65 %}bg-warning{% else %}bg-danger{% endif %} fs-5">
+                    {{ result.structure.score }}%
+                </span>
+                {% endif %}
+            </div>
         </div>
         <div class="card-body">
-            <p class="text-muted mb-3"><b>Why it's important:</b> People working with software need different kinds of documentation at different
+            <p class="text-muted mb-3"><b>Why it's important:</b> People working with software need different kinds of
+                documentation at different
                 times. Good structure makes it easier for users to find the right documentation for them.
                 See <a href="https://docs.divio.com/documentation-system/introduction/">Divio's documentation system</a>
                 for more information on the classification used in this analysis.
             </p>
             {% if result.structure %}
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>File Path</th>
-                        <th>Classification</th>
-                        <th>Confidence Score</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for file in result.structure.files %}
-                    <tr>
-                        <td>{{ file.path }}</td>
-                        <td>{{ file.classification }}</td>
-                        <td>{{ file.confidence_score }}%</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            
+            <!-- Add the canvas for the chart -->
+            <canvas id="structureChart" class="mb-3" style="max-height: 200px;"></canvas>
+            
+            {% if result.structure.what_is_good %}
+            <div class="alert alert-success">
+                <h5>What's Good</h5>
+                <p>{{ result.structure.what_is_good }}</p>
+            </div>
+            {% endif %}
+            {% if result.structure.what_is_bad %}
+            <div class="alert alert-danger">
+                <h5>What's Bad</h5>
+                <p>{{ result.structure.what_is_bad }}</p>
+            </div>
+            {% endif %}
+            
+            <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#structureTable" aria-expanded="false" aria-controls="structureTable">
+                Show File Classifications
+            </button>
+            
+            <div class="collapse" id="structureTable">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>File Path</th>
+                            <th>Classification</th>
+                            <th>Confidence Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for file in result.structure.files %}
+                        <tr>
+                            <td>{{ file.path }}</td>
+                            <td>{{ file.classification }}</td>
+                            <td>{{ file.confidence_score }}%</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
             {% else %}
             <p>No structure analysis available.</p>
             {% endif %}
@@ -44,12 +76,32 @@
     <!-- Content Section -->
     <div class="card mb-3">
         <div class="card-header">
-            <h4>Content</h4>
+            <div class="d-flex justify-content-between align-items-center">
+                <h4>Content</h4>
+                {% if result.content and result.content.score %}
+                <span
+                    class="badge {% if result.content.score > 85 %}bg-success{% elif result.content.score > 65 %}bg-warning{% else %}bg-danger{% endif %} fs-5">
+                    {{ result.content.score }}%
+                </span>
+                {% endif %}
+            </div>
         </div>
         <div class="card-body">
             <p class="text-muted mb-3">This section provides an overview of your project's documentation and content
                 organization.</p>
             {% if result.content %}
+            {% if result.content.what_is_good %}
+            <div class="alert alert-success">
+                <h5>What's Good</h5>
+                <p>{{ result.content.what_is_good }}</p>
+            </div>
+            {% endif %}
+            {% if result.content.what_is_bad %}
+            <div class="alert alert-danger">
+                <h5>What's Bad</h5>
+                <p>{{ result.content.what_is_bad }}</p>
+            </div>
+            {% endif %}
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">
                     <strong>Problem:</strong> {{ result.content.problem }}
@@ -70,26 +122,129 @@
     <!-- Style Section -->
     <div class="card mb-3">
         <div class="card-header">
-            <h4>Style</h4>
+            <div class="d-flex justify-content-between align-items-center">
+                <h4>Style</h4>
+                {% if result.style and result.style.score %}
+                <span
+                    class="badge {% if result.style.score > 85 %}bg-success{% elif result.style.score > 65 %}bg-warning{% else %}bg-danger{% endif %} fs-5">
+                    {{ result.style.score }}%
+                </span>
+                {% endif %}
+            </div>
         </div>
         <div class="card-body">
             <p class="text-muted mb-3">This section evaluates your project's coding style and consistency standards.</p>
             {% if result.style %}
-            <ul class="list-group list-group-flush">
+            {% if result.style.what_is_good %}
+            <div class="alert alert-success">
+                <h5>What's Good</h5>
+                <p>{{ result.style.what_is_good }}</p>
+            </div>
+            {% endif %}
+            {% if result.style.what_is_bad %}
+            <div class="alert alert-danger">
+                <h5>What's Bad</h5>
+                <p>{{ result.style.what_is_bad }}</p>
+            </div>
+            {% endif %}
+            <ul class="list-group list-group-flush mb-4">
                 <li class="list-group-item">
                     <strong>Has Conventions File:</strong> {{ result.style.has_conventions_file|yesno:"Yes,No" }}
                 </li>
-                <li class="list-group-item">
-                    <strong>Language Consistency:</strong> {{ result.style.language_consistency }}
-                </li>
-                <li class="list-group-item">
-                    <strong>Typos:</strong> {{ result.style.typos }}
-                </li>
             </ul>
+
+            <!-- Updated detailed file analysis section -->
+            {% if result.style.files %}
+            <h5>Detailed Style Analysis</h5>
+            <p class="text-muted mb-3">
+                The style evaluation in the free version of the analysis is limited to up to three files.
+            </p>
+            {% for file in result.style.files %}
+            <div class="card mb-3">
+                <div class="card-header">
+                    <code>{{ file.path }}</code>
+                </div>
+                <div class="card-body">
+                    {% if file.style_issues %}
+                    <ul class="list-unstyled mb-0">
+                        {% for issue in file.style_issues %}
+                        <li class="mb-3">
+                            <div class="text-danger">• Line {{ issue.line_number }}: {{ issue.quote }}</div>
+                            <div class="text-muted">{{ issue.explanation }}</div>
+                            <div class="text-muted"><em>Suggestion: {{ issue.suggested_fix }}</em></div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p class="text-success mb-0">No style issues found.</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
             {% else %}
             <p>No style analysis available.</p>
             {% endif %}
         </div>
     </div>
 </div>
+
+<!-- Add this before the endblock -->
+{% if result.structure %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const files = JSON.parse(document.getElementById('structure-files').textContent);
+    const classifications = {};
+    
+    files.forEach(file => {
+        classifications[file.classification] = (classifications[file.classification] || 0) + 1;
+    });
+
+    const ctx = document.getElementById('structureChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: Object.keys(classifications),
+            datasets: [{
+                data: Object.values(classifications),
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(255, 206, 86, 0.6)'
+                ],
+                borderColor: [
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(255, 206, 86, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'right',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const total = Object.values(classifications).reduce((a, b) => a + b, 0);
+                            const percentage = ((context.raw / total) * 100).toFixed(1);
+                            return `${context.label}: ${percentage}%`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+});
+</script>
+
+<!-- Add this to provide the data -->
+{{ result.structure.files|json_script:"structure-files" }}
+{% endif %}
 {% endblock %}

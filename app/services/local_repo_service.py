@@ -66,3 +66,8 @@ def get_file_content(*, local_repo_path: str, relative_file_path: str) -> str:
     absolute_file_path = os.path.join(local_repo_path, relative_file_path)
     with open(absolute_file_path, "r", encoding="utf-8") as file:
         return file.read()
+
+def get_file_content_with_line_numbers(*, local_repo_path: str, relative_file_path: str) -> str:
+    absolute_file_path = os.path.join(local_repo_path, relative_file_path)
+    with open(absolute_file_path, "r", encoding="utf-8") as file:
+        return "\n".join([f"{i}| {line}" for i, line in enumerate(file, start=1)])

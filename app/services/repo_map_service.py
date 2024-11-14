@@ -29,7 +29,8 @@ def get_title(*, frontmatter_dict: dict, headings: list[str]) -> str:
     if "title" in frontmatter_dict:
         return frontmatter_dict["title"]
     if headings:
-        return headings[0]
+        # we assume the first heading is the title
+        return headings[0].lstrip("#").strip()
     return None
 
 
@@ -40,10 +41,19 @@ def get_description(*, frontmatter_dict: dict) -> str | None:
 
 
 def get_line_number_of_file_in_sidebar(
-    *, absolute_sidebars_file_path: str, relative_file_path: str, frontmatter_dict: dict
+    *,
+    local_repo_path: str,
+    relative_sidebars_file_path: str,
+    relative_file_path: str,
+    frontmatter_dict: dict
 ) -> int | None:
-    if not absolute_sidebars_file_path:
+
+    if not relative_sidebars_file_path:
         return None
+
+    absolute_sidebars_file_path = os.path.join(
+        local_repo_path, relative_sidebars_file_path
+    )
 
     with open(absolute_sidebars_file_path, "r") as file:
         for line_number, line in enumerate(file, start=1):
@@ -92,9 +102,8 @@ def create_repo_map(*, repo: Repo, local_repo_path: str) -> RepoMap:
                 description=get_description(frontmatter_dict=frontmatter_dict),
                 headings=headings,
                 line_number_in_sidebar=get_line_number_of_file_in_sidebar(
-                    absolute_sidebars_file_path=os.path.join(
-                        local_repo_path, sidebars_file_path
-                    ),
+                    local_repo_path=local_repo_path,
+                    relative_sidebars_file_path=sidebars_file_path,
                     relative_file_path=relative_file_path,
                     frontmatter_dict=frontmatter_dict,
                 ),
