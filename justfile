@@ -1,4 +1,5 @@
 set dotenv-load
+set working-directory := 'backend'
 
 # Default recipe to display all available commands
 default:
@@ -6,9 +7,9 @@ default:
 
 # Run Django development server
 serve *args:
-    poetry run python manage.py runserver {{args}}
+    poetry run python src/manage.py runserver {{args}}
 
 # Make and run migrations
 migrate:
-    poetry run python manage.py makemigrations
-    poetry run python manage.py migrate
+    poetry run python src/manage.py makemigrations
+    poetry run python src/manage.py migrate
