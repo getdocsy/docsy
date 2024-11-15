@@ -3,51 +3,45 @@
 {% block content %}
 <div class="container mt-4">
     <h2>Analysis Result for <a href="https://github.com/{{ repo_owner }}/{{ repo_name }}">{{ repo_owner }}/{{ repo_name }}</a></h2>
-    <p class="text-muted mb-3">The analysis was run on {{ created_at }}.</p>
+    <p class="text-muted">
+        <small>Created on {{ created_at }}</small>
+    </p>
+    <p class="text-muted mb-3">If you are offering a technical product, the products documentation plays an important part in the buying decisions of your customers. Up to 90% of B2B customers reference documentation before purchasing. 
+    This analysis focuses on the experience of a visitor, that hasn't used your product yet.</p>
 
-    <!-- Structure Section -->
+    <!-- Coherent Sitemap Section -->
     <div class="card mb-3">
         <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
-                <h4>Structure</h4>
-                {% if result.structure and result.structure.score %}
+                <h4>Coherent Sitemap</h4>
+                {% if result.coherent_sitemap and result.coherent_sitemap.total_score %}
                 <span
-                    class="badge {% if result.structure.score > 85 %}bg-success{% elif result.structure.score > 65 %}bg-warning{% else %}bg-danger{% endif %} fs-5">
-                    {{ result.structure.score }}%
+                    class="badge {% if result.coherent_sitemap.total_score > 85 %}bg-success{% elif result.coherent_sitemap.total_score > 65 %}bg-warning{% else %}bg-danger{% endif %} fs-5">
+                    {{ result.coherent_sitemap.total_score }}%
                 </span>
                 {% endif %}
             </div>
         </div>
         <div class="card-body">
-            <p class="text-muted mb-3"><b>Why it's important:</b> People working with software need different kinds of
-                documentation at different
-                times. Good structure makes it easier for users to find the right documentation for them.
+            <p class="text-muted mb-3"><b>Why it's important:</b> 
+                Besides the content of the page a user is on right now, the sitemap is the next most important item for figuring out if anything else might be of relevance to them. The titles should make it easy what type of content is behind a page.
                 See <a href="https://docs.divio.com/documentation-system/introduction/">Divio's documentation system</a>
                 for more information on the classification used in this analysis.
             </p>
-            {% if result.structure %}
-            
+            {% if result.coherent_sitemap %}
             <!-- Add the canvas for the chart -->
             <canvas id="structureChart" class="mb-3" style="max-height: 200px;"></canvas>
             
-            {% if result.structure.what_is_good %}
-            <div class="alert alert-success">
-                <h5>What's Good</h5>
-                <p>{{ result.structure.what_is_good }}</p>
-            </div>
-            {% endif %}
-            {% if result.structure.what_is_bad %}
-            <div class="alert alert-danger">
-                <h5>What's Bad</h5>
-                <p>{{ result.structure.what_is_bad }}</p>
-            </div>
-            {% endif %}
-            
             <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#structureTable" aria-expanded="false" aria-controls="structureTable">
-                Show File Classifications
+                Show Score Components
             </button>
             
             <div class="collapse" id="structureTable">
+                <p class="text-muted mb-3">
+                    Besides the content of the page a user is on right now, the sitemap is the next most important item for figuring out if anything else might be of relevance to them. The titles should make it easy what type of content is behind a page.
+                    <br>
+                    - Average confidence score when estimating pages to functions based on their title  
+                </p>
                 <table class="table">
                     <thead>
                         <tr>
@@ -57,7 +51,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for file in result.structure.files %}
+                        {% for file in result.coherent_sitemap.analysis.files %}
                         <tr>
                             <td>{{ file.path }}</td>
                             <td>{{ file.classification }}</td>
@@ -67,127 +61,14 @@
                     </tbody>
                 </table>
             </div>
-            {% else %}
-            <p>No structure analysis available.</p>
             {% endif %}
         </div>
     </div>
 
-    <!-- Content Section -->
-    <div class="card mb-3">
-        <div class="card-header">
-            <div class="d-flex justify-content-between align-items-center">
-                <h4>Content</h4>
-                {% if result.content and result.content.score %}
-                <span
-                    class="badge {% if result.content.score > 85 %}bg-success{% elif result.content.score > 65 %}bg-warning{% else %}bg-danger{% endif %} fs-5">
-                    {{ result.content.score }}%
-                </span>
-                {% endif %}
-            </div>
-        </div>
-        <div class="card-body">
-            <p class="text-muted mb-3">This section provides an overview of your project's documentation and content
-                organization.</p>
-            {% if result.content %}
-            {% if result.content.what_is_good %}
-            <div class="alert alert-success">
-                <h5>What's Good</h5>
-                <p>{{ result.content.what_is_good }}</p>
-            </div>
-            {% endif %}
-            {% if result.content.what_is_bad %}
-            <div class="alert alert-danger">
-                <h5>What's Bad</h5>
-                <p>{{ result.content.what_is_bad }}</p>
-            </div>
-            {% endif %}
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">
-                    <strong>Problem:</strong> {{ result.content.problem }}
-                </li>
-                <li class="list-group-item">
-                    <strong>Getting Started:</strong> {{ result.content.getting_started }}
-                </li>
-                <li class="list-group-item">
-                    <strong>Important Concepts:</strong> {{ result.content.important_concepts }}
-                </li>
-            </ul>
-            {% else %}
-            <p>No content analysis available.</p>
-            {% endif %}
-        </div>
-    </div>
-
-    <!-- Style Section -->
-    <div class="card mb-3">
-        <div class="card-header">
-            <div class="d-flex justify-content-between align-items-center">
-                <h4>Style</h4>
-                {% if result.style and result.style.score %}
-                <span
-                    class="badge {% if result.style.score > 85 %}bg-success{% elif result.style.score > 65 %}bg-warning{% else %}bg-danger{% endif %} fs-5">
-                    {{ result.style.score }}%
-                </span>
-                {% endif %}
-            </div>
-        </div>
-        <div class="card-body">
-            <p class="text-muted mb-3">This section evaluates your project's coding style and consistency standards.</p>
-            {% if result.style %}
-            {% if result.style.what_is_good %}
-            <div class="alert alert-success">
-                <h5>What's Good</h5>
-                <p>{{ result.style.what_is_good }}</p>
-            </div>
-            {% endif %}
-            {% if result.style.what_is_bad %}
-            <div class="alert alert-danger">
-                <h5>What's Bad</h5>
-                <p>{{ result.style.what_is_bad }}</p>
-            </div>
-            {% endif %}
-            <ul class="list-group list-group-flush mb-4">
-            </ul>
-
-            <!-- Updated detailed file analysis section -->
-            {% if result.style.files %}
-            <h5>Detailed Style Analysis</h5>
-            <p class="text-muted mb-3">
-                The style evaluation in the free version of the analysis is limited to up to three files.
-            </p>
-            {% for file in result.style.files %}
-            <div class="card mb-3">
-                <div class="card-header">
-                    <code>{{ file.path }}</code>
-                </div>
-                <div class="card-body">
-                    {% if file.style_issues %}
-                    <ul class="list-unstyled mb-0">
-                        {% for issue in file.style_issues %}
-                        <li class="mb-3">
-                            <div class="text-danger">• Line {{ issue.line_number }}: {{ issue.quote }}</div>
-                            <div class="text-muted">{{ issue.explanation }}</div>
-                            <div class="text-muted"><em>Suggestion: {{ issue.suggested_fix }}</em></div>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                    {% else %}
-                    <p class="text-success mb-0">No style issues found.</p>
-                    {% endif %}
-                </div>
-            </div>
-            {% endfor %}
-            {% endif %}
-            {% else %}
-            <p>No style analysis available.</p>
-            {% endif %}
-        </div>
-    </div>
-</div>
+ 
 
 <!-- Add this before the endblock -->
-{% if result.structure %}
+{% if result.coherent_sitemap %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const files = JSON.parse(document.getElementById('structure-files').textContent);
@@ -246,6 +127,6 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <!-- Add this to provide the data -->
-{{ result.structure.files|json_script:"structure-files" }}
+{{ result.coherent_sitemap.analysis.files|json_script:"structure-files" }}
 {% endif %}
 {% endblock %}
