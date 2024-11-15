@@ -51,10 +51,18 @@ def get_sidebar_file_path(*, local_repo_path: str) -> str | None:
 
 def get_markdown_file_headings(*, absolute_file_path: str) -> list[str]:
     headings = []
+    in_code_block = False
     with open(absolute_file_path, "r", encoding="utf-8") as file:
         for line in file:
             line = line.strip()
-            if line.startswith("#"):
+            
+            # Check for code block delimiters
+            if line.startswith("```"):
+                in_code_block = not in_code_block
+                continue
+                
+            # Only collect headings when not in a code block
+            if not in_code_block and line.startswith("#"):
                 headings.append(line)
     return headings
 
