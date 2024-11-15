@@ -1,5 +1,5 @@
 set dotenv-load
-set working-directory := 'backend'
+# set working-directory := 'backend'
 
 # Default recipe to display all available commands
 default:
