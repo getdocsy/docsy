@@ -66,6 +66,20 @@ def score_components_coherent_sitemap(*, analysis: CoherentSitemapAnalysis) -> d
     # average the confidence scores of the classifications
     confidence_scores = [file.confidence_score for file in analysis.files]
     average_confidence_score = round(sum(confidence_scores) / len(confidence_scores))
+
+    # types of documentation
+    types_of_documentation = set([file.classification for file in analysis.files])
+    types_of_documentation_missing = 4 - len(types_of_documentation)
+    if types_of_documentation_missing == 0:
+        types_of_documentation_score = 100
+    elif types_of_documentation_missing == 1:
+        types_of_documentation_score = 80
+    elif types_of_documentation_missing == 2:
+        types_of_documentation_score = 30
+    else:
+        types_of_documentation_score = 0
+
     return {
-        "coherent_sitemap": int(average_confidence_score),
+        "Average of confidence scores when classifying pages to types of documentation": int(average_confidence_score),
+        f"Types of documentation missing: {types_of_documentation_missing}": types_of_documentation_score,
     }

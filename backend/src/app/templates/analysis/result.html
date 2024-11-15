@@ -9,6 +9,79 @@
     <p class="text-muted mb-3">If you are offering a technical product, the products documentation plays an important part in the buying decisions of your customers. Up to 90% of B2B customers reference documentation before purchasing. 
     This analysis focuses on the experience of a visitor, that hasn't used your product yet.</p>
 
+    <!-- Single Function Analysis Section -->
+    <div class="card mb-3">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4>Single Function</h4>
+                {% if result.single_function and result.single_function.total_score %}
+                <span
+                    class="badge {% if result.single_function.total_score > 85 %}bg-success{% elif result.single_function.total_score > 65 %}bg-warning{% else %}bg-danger{% endif %} fs-5">
+                    {{ result.single_function.total_score }}%
+                </span>
+                {% endif %}
+            </div>
+        </div>
+        <div class="card-body">
+            <p class="text-muted mb-3"><b>Why it's important:</b> 
+                Each documentation page should focus on a single function or concept. This makes it easier for users to find
+                exactly what they're looking for and ensures the content stays focused and relevant.
+            </p>
+            {% if result.single_function %}
+            <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#functionTable" aria-expanded="false" aria-controls="functionTable">
+                Show Score Components
+            </button>
+            
+            <div class="collapse" id="functionTable">
+                <table class="table mb-3">
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for component, score in result.single_function.score_components.items %}
+                        <tr>
+                            <td>{{ component }}</td>
+                            <td>{{ score }}%</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <h5>File Analysis</h5>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>File Path</th>
+                            <th>Explanation Subheadings</th>
+                            <th>Tutorial Subheadings</th>
+                            <th>Reference Subheadings</th>
+                            <th>How-to Subheadings</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for file in result.single_function.analysis.files %}
+                        <tr>
+                            <td>{{ file.file_path }}</td>
+                            <td>{{ file.explanation_subheadings|join:", " }}</td>
+                            <td>{{ file.tutorial_subheadings|join:", " }}</td>
+                            <td>{{ file.reference_subheadings|join:", " }}</td>
+                            <td>{{ file.howto_subheadings|join:", " }}</td>
+                            <td>{{ file.score }}%</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+ 
     <!-- Coherent Sitemap Section -->
     <div class="card mb-3">
         <div class="card-header">
@@ -37,6 +110,24 @@
             </button>
             
             <div class="collapse" id="structureTable">
+                <table class="table mb-3">
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for component, score in result.coherent_sitemap.score_components.items %}
+                        <tr>
+                            <td>{{ component }}</td>
+                            <td>{{ score }}%</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <h5>File Analysis</h5>
                 <p class="text-muted mb-3">
                     Besides the content of the page a user is on right now, the sitemap is the next most important item for figuring out if anything else might be of relevance to them. The titles should make it easy what type of content is behind a page.
                     <br>
@@ -65,7 +156,7 @@
         </div>
     </div>
 
- 
+
 
 <!-- Add this before the endblock -->
 {% if result.coherent_sitemap %}

@@ -81,6 +81,6 @@ def score_components_single_function(
             file_score = 30
         elif types_of_subheadings == 4:
             file_score = 10
-        score_components[file.file_path] = file_score
+        score_components[f"{file.file_path} has {types_of_subheadings} {'type' if types_of_subheadings == 1 else 'types'} of subheadings"] = file_score
 
     return score_components
