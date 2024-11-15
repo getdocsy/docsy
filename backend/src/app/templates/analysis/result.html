@@ -24,15 +24,17 @@
         </div>
         <div class="card-body">
             <p class="text-muted mb-3"><b>Why it's important:</b> 
-                Each documentation page should focus on a single function or concept. This makes it easier for users to find
-                exactly what they're looking for and ensures the content stays focused and relevant.
+                Since users might land on any page, for example via a search engine, every page can be page one. We thus check if each site has a structure and style that matches it’s function. This includes making use of subheadings and sticking to one type of content (tutorial, how-to, reference, explanation) per page.
             </p>
             {% if result.single_function %}
             <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#functionTable" aria-expanded="false" aria-controls="functionTable">
                 Show Score Components
             </button>
-            
             <div class="collapse" id="functionTable">
+                <h5>Score Components</h5>
+                <p class="text-muted mb-3">
+                    The score for this section is the average of the scores for each file.
+                </p>
                 <table class="table mb-3">
                     <thead>
                         <tr>
@@ -50,7 +52,10 @@
                     </tbody>
                 </table>
 
-                <h5>File Analysis</h5>
+                <h5>File Details</h5>
+                <p class="text-muted mb-3">
+                    Details for each file.
+                </p>
                 <table class="table">
                     <thead>
                         <tr>
@@ -71,7 +76,6 @@
                             <td>{{ file.tutorial_subheadings|join:", " }}</td>
                             <td>{{ file.reference_subheadings|join:", " }}</td>
                             <td>{{ file.howto_subheadings|join:", " }}</td>
-                            <td>{{ file.score }}%</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -108,8 +112,12 @@
             <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#structureTable" aria-expanded="false" aria-controls="structureTable">
                 Show Score Components
             </button>
-            
+
             <div class="collapse" id="structureTable">
+                <h5>Score Components</h5>
+                <p class="text-muted mb-3">
+                    The score for this section is the average of the score components.
+                </p>
                 <table class="table mb-3">
                     <thead>
                         <tr>
@@ -127,11 +135,9 @@
                     </tbody>
                 </table>
 
-                <h5>File Analysis</h5>
+                <h5>File Details</h5>
                 <p class="text-muted mb-3">
-                    Besides the content of the page a user is on right now, the sitemap is the next most important item for figuring out if anything else might be of relevance to them. The titles should make it easy what type of content is behind a page.
-                    <br>
-                    - Average confidence score when estimating pages to functions based on their title  
+                    Details for each file.
                 </p>
                 <table class="table">
                     <thead>
