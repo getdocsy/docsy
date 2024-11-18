@@ -36,7 +36,7 @@
             <canvas id="functionTypesChart" class="mb-3" style="max-height: 200px;"></canvas>
 
             <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#functionTable" aria-expanded="false" aria-controls="functionTable">
-                Show Score Components
+                <span class="button-text">Show Score Components</span>
             </button>
 
             <div class="collapse" id="functionTable">
@@ -119,7 +119,7 @@
             <canvas id="structureChart" class="mb-3" style="max-height: 200px;"></canvas>
             
             <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#structureTable" aria-expanded="false" aria-controls="structureTable">
-                Show Score Components
+                <span class="button-text">Show Score Components</span>
             </button>
 
             <div class="collapse" id="structureTable">
@@ -356,6 +356,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         return 0;
     }
+
+    // Add this at the beginning of your existing DOMContentLoaded handler
+    document.querySelectorAll('[data-bs-toggle="collapse"]').forEach(button => {
+        button.addEventListener('click', function() {
+            const buttonText = this.querySelector('.button-text');
+            const isCollapsed = this.getAttribute('aria-expanded') === 'false';
+            buttonText.textContent = isCollapsed ? 'Show Score Components' : 'Hide Score Components';
+        });
+    });
 });
 </script>
 
