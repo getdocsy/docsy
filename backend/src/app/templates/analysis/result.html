@@ -115,13 +115,22 @@
         <div class="card-body">
             <p class="text-muted mb-3"><b>What we check:</b> 
                 We check if each page has a title that allows the user to predict what type of content is on the page.
+                We also check if we are missing any type of content.
             </p>
             <p class="text-muted mb-3"><b>Why it's important:</b> 
-                Together with the content of the page a user is on, the sitemap is the most important item for understanding what your product is about.
+                Together with the content of the page a user is on, the sitemap is the most important item for understanding what your product is about. 
+                If your documentation is missing a type of content, users might not find what they are looking for.
             </p>
             {% if result.coherent_sitemap %}
             <!-- Add the canvas for the chart -->
-            <canvas id="structureChart" class="mb-3" style="max-height: 200px;"></canvas>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <canvas id="structureChart" style="max-height: 200px;"></canvas>
+                </div>
+                <div class="col-md-6">
+                    <canvas id="confidenceChart" style="max-height: 200px;"></canvas>
+                </div>
+            </div>
             
             <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#structureTable" aria-expanded="false" aria-controls="structureTable">
                 <span class="button-text">Show Score Components</span>
@@ -272,6 +281,58 @@ document.addEventListener('DOMContentLoaded', function() {
                             const percentage = ((context.raw / total) * 100).toFixed(1);
                             return `${context.label}: ${percentage}%`;
                         }
+                    }
+                }
+            }
+        }
+    });
+
+    // Add new confidence distribution chart
+    const confidenceScores = files.map(file => file.confidence_score);
+    const confidenceBins = {
+        '0-70': 0,
+        '71-80': 0,
+        '81-90': 0,
+        '91-100': 0
+    };
+
+    confidenceScores.forEach(score => {
+        if (score <= 70) confidenceBins['0-70']++;
+        else if (score <= 80) confidenceBins['71-80']++;
+        else if (score <= 90) confidenceBins['81-90']++;
+        else confidenceBins['91-100']++;
+    });
+
+    const confidenceCtx = document.getElementById('confidenceChart').getContext('2d');
+    new Chart(confidenceCtx, {
+        type: 'bar',
+        data: {
+            labels: Object.keys(confidenceBins),
+            datasets: [{
+                label: 'Number of Pages',
+                data: Object.values(confidenceBins),
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Confidence Score Distribution'
+                },
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
                     }
                 }
             }
