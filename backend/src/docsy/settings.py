@@ -25,6 +25,9 @@ ALLOWED_HOSTS = [".localhost", "127.0.0.1", "[::1]", "app.getdocsy.com"]
 
 CSRF_TRUSTED_ORIGINS = ["https://app.getdocsy.com"]
 
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
 # Application definition
 
 INSTALLED_APPS = [
