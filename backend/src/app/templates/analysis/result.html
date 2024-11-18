@@ -1,14 +1,14 @@
 {% extends "base.html" %}
-
+{% block title %}Docsy - Analysis result for {{ repo_owner }}/{{ repo_name }}{% endblock %}
 {% block content %}
 <div class="container mt-4">
-    <h2>Analysis Result for <a href="https://github.com/{{ repo_owner }}/{{ repo_name }}">{{ repo_owner }}/{{ repo_name }}</a></h2>
+    <h1>Analysis result for <a href="https://github.com/{{ repo_owner }}/{{ repo_name }}">{{ repo_owner }}/{{ repo_name }}</a></h1>
     <p class="text-muted">
         <small>Created on {{ created_at }}</small>
     </p>
-    <p class="text-muted mb-3">If you are offering a technical product, the products documentation plays an important part in the buying decisions of your customers. The State of Self-Service Content Experiences<sup><a href="#fn1" id="ref1">1</a></sup> found that 99% of users (n=186) said technical content is a primary or secondary
+    <p>If you are offering a technical product, the products documentation plays an important part in the buying decisions of your customers. The State of Self-Service Content Experiences<sup><a href="#fn1" id="ref1">1</a></sup> found that 99% of users (n=186) said technical content is a primary or secondary
         criteria in the decision to purchase.</p>
-    <p class="text-muted mb-3">This analysis focuses on the experience of a visitor, that hasn't used your product yet.</p>
+    <p >This analysis focuses on the experience of a visitor, that hasn't used your product yet.</p>
 
 
 
