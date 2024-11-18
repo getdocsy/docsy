@@ -6,7 +6,8 @@
     <p class="text-muted">
         <small>Created on {{ created_at }}</small>
     </p>
-    <p class="text-muted mb-3">If you are offering a technical product, the products documentation plays an important part in the buying decisions of your customers. Up to 90% of B2B customers reference documentation before purchasing<sup><a href="#fn1" id="ref1">1</a></sup>.</p>
+    <p class="text-muted mb-3">If you are offering a technical product, the products documentation plays an important part in the buying decisions of your customers. The State of Self-Service Content Experiences<sup><a href="#fn1" id="ref1">1</a></sup> found that 99% of users (n=186) said technical content is a primary or secondary
+        criteria in the decision to purchase.</p>
     <p class="text-muted mb-3">This analysis focuses on the experience of a visitor, that hasn't used your product yet.</p>
 
 
@@ -26,7 +27,7 @@
         </div>
         <div class="card-body">
             <p class="text-muted mb-3"><b>What we check:</b> 
-                We check if each page has a structure and style that matches it’s function by checking the subheadings and the type of content on each page.
+                We check if each page has a structure and style that matches it's function by checking the subheadings and the type of content on each page.
             </p>
             <p class="text-muted mb-3"><b>Why it's important:</b> 
                 Since users might land on any page, for example via a search engine, every page needs to be easy to understand. If a single page serves multiple functions, like a how-to guide that also contains reference information, it's confusing for the user.
@@ -42,7 +43,7 @@
             <div class="collapse" id="functionTable">
                 <h5>Score Components</h5>
                 <p class="text-muted mb-3">
-                    The score for this section is the average of the scores for each file.
+                    The score of {{ result.single_function.total_score }}% for this section is the average of these score components.
                 </p>
                 <table class="table sortable-table" id="functionScoreTable">
                     <thead>
@@ -61,15 +62,15 @@
                     </tbody>
                 </table>
 
-                <h5>File Details</h5>
+                <h5>Score Components Details</h5>
                 <p class="text-muted mb-3">
-                    Details for each file.
+                    The score components are based on the following information.
                 </p>
-                <input type="text" id="singleFunctionSearch" class="form-control mb-3" placeholder="Search files...">
+                <input type="text" id="singleFunctionSearch" class="form-control mb-3" placeholder="Search pages...">
                 <table class="table sortable-table" id="singleFunctionTable">
                     <thead>
                         <tr>
-                            <th class="sortable" data-sort="file">File Path ↕</th>
+                            <th class="sortable" data-sort="file">Page Path ↕</th>
                             <th class="sortable" data-sort="explanation">Explanation Subheadings ↕</th>
                             <th class="sortable" data-sort="tutorial">Tutorial Subheadings ↕</th>
                             <th class="sortable" data-sort="reference">Reference Subheadings ↕</th>
@@ -109,10 +110,11 @@
             </div>
         </div>
         <div class="card-body">
+            <p class="text-muted mb-3"><b>What we check:</b> 
+                We check if each page has a title that allows the user to predict what type of content is on the page.
+            </p>
             <p class="text-muted mb-3"><b>Why it's important:</b> 
-                Besides the content of the page a user is on right now, the sitemap is the next most important item for figuring out if anything else might be of relevance to them. The titles should make it easy what type of content is behind a page.
-                See <a href="https://docs.divio.com/documentation-system/introduction/">Divio's documentation system</a>
-                for more information on the classification used in this analysis.
+                Together with the content of the page a user is on, the sitemap is the most important item for understanding what your product is about.
             </p>
             {% if result.coherent_sitemap %}
             <!-- Add the canvas for the chart -->
@@ -125,7 +127,7 @@
             <div class="collapse" id="structureTable">
                 <h5>Score Components</h5>
                 <p class="text-muted mb-3">
-                    The score for this section is the average of the score components.
+                    The score of {{ result.coherent_sitemap.total_score }}% for this section is the average of these score components.
                 </p>
                 <table class="table mb-3">
                     <thead>
@@ -144,15 +146,15 @@
                     </tbody>
                 </table>
 
-                <h5>File Details</h5>
+                <h5>Score Components Details</h5>
                 <p class="text-muted mb-3">
-                    The score components are based on these files.
+                    The score components are based on the following information.
                 </p>
-                <input type="text" id="coherentSitemapSearch" class="form-control mb-3" placeholder="Search files...">
+                <input type="text" id="coherentSitemapSearch" class="form-control mb-3" placeholder="Search pages...">
                 <table class="table sortable-table" id="coherentSitemapTable">
                     <thead>
                         <tr>
-                            <th class="sortable" data-sort="file">File Path ↕</th>
+                            <th class="sortable" data-sort="file">Page Path ↕</th>
                             <th class="sortable" data-sort="classification">Classification ↕</th>
                             <th class="sortable" data-sort="confidence">Confidence Score ↕</th>
                         </tr>
@@ -174,7 +176,7 @@
 
 <h2> Methodology</h2>
 
-    <p>We make the following assumptions backed by the data of the 2024 Technical Content Benchmark Report by Zoomin (which is based on nearly 100 million sessions accross 136 countries)<sup><a href="#fn1" id="ref1">1</a></sup>,</p>
+    <p>We make the following assumptions backed by the data of a 2024 Technical Content Report<sup><a href="#fn2" id="ref2">2</a></sup>, based on nearly 100 million sessions:</p>
 
     <ul>
         <li>The average visitor spends 5 minutes on the documentation.</li>
@@ -184,7 +186,8 @@
     </ul>
 
 
-    <p>We are using the Divio Documentation System to classify pages by their four our functions: tutorials, how-to guides, technical reference and explanation. Each of those functions requires a different structure and style to be effective.<sup><a href="#fn2" id="ref2">2</a></sup>.</p>
+    <p>We are using the terminology of the Divio Documentation System<sup><a href="#fn3" id="ref3">3</a></sup> to classify pages by their functions: tutorials, how-to guides, technical reference and explanation. 
+        Each of those functions requires a different structure and style to be effective.</p>
 
 <!-- Add Footnotes Section -->
 <div class="container mt-4 mb-5">
@@ -192,15 +195,15 @@
     <div class="footnotes">
         <h5>Footnotes</h5>
         <ol class="small text-muted">
-            <li id="fn1"><a href="https://www.zoominsoftware.com/zoomin-benchmark-report-2024">Zoomin Technical Content Benchmark Report 2024</a>
-                <a href="#ref1" class="footnote-backref">↩</a>
-            </li>
-            <li id="fn2"><a href="https://docs.divio.com/documentation-system/">Divio's documentation system</a>
-                <a href="#ref2" class="footnote-backref">↩</a>
-            </li>
-            <li id="fn3"><a href="https://go.zoominsoftware.com/l/1018802/2023-03-30/31mm/1018802/1680165089dCzvU0DA/The_state_of_self_service_content_experiences___Research_Brief.pdf">Frost & Sullivan, "The state of
+            <li id="fn1"><a href="https://go.zoominsoftware.com/l/1018802/2023-03-30/31mm/1018802/1680165089dCzvU0DA/The_state_of_self_service_content_experiences___Research_Brief.pdf">Frost & Sullivan, "The state of
                 self-service content
                 experiences", 2021</a>
+                <a href="#ref1" class="footnote-backref">↩</a>
+            </li>
+            <li id="fn2"><a href="https://www.zoominsoftware.com/zoomin-benchmark-report-2024">Zoomin, Technical Content Benchmark Report 2024</a>
+                <a href="#ref2" class="footnote-backref">↩</a>
+            </li>
+            <li id="fn3"><a href="https://docs.divio.com/documentation-system/">Divio, Documentation System</a>
                 <a href="#ref3" class="footnote-backref">↩</a>
             </li>
         </ol>
