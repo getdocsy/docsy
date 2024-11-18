@@ -10,4 +10,4 @@ services:
     env_file:
       - .env
     volumes:
-      - ./backend:/app
+      - ./backend/src/db.sqlite3:/app/src/db.sqlite3
