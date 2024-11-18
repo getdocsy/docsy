@@ -24,12 +24,12 @@
                         If you are offering a technical product, the products documentation plays an important part in the buying decisions of your customers. 
                     </p>
                     <p class="text-muted mb-3">
-                        Analyze your documentation for free (no sign up required) and see how well it allows first time users to find what they need.
+                        Analyze your documentation for free - no sign up required - and see how well it allows first time users to find what they need.
                     </p>
                     <form method="POST" id="analysisForm">
                         {% csrf_token %}
                         <div class="form-group mb-3">
-                            <label for="github_full_name" class="form-label text-muted">This analysis is availabe for documentations hosted on GitHub. Please enter the full name of the repository.</label>
+                            <label for="github_full_name" class="form-label">Please enter the full name of your documentation's GitHub repository.</label>
                             <input type="text" class="form-control" id="github_full_name" name="github_full_name"
                                 placeholder="e.g., octocat/Hello-World" required>
                         </div>
@@ -62,6 +62,12 @@
 document.getElementById('analysisForm').addEventListener('submit', function() {
     var modal = new bootstrap.Modal(document.getElementById('loadingModal'));
     modal.show();
+});
+
+// Initialize all tooltips
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl)
 });
 </script>
 
