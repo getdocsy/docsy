@@ -12,7 +12,7 @@ from contextlib import contextmanager
 def temp_clone_repo(*, repo: Repo):
     temp_local_repo_path = tempfile.mkdtemp()
     try:
-        git.Repo.clone_from(repo.nfkc_clone_url, temp_local_repo_path)
+        git.Repo.clone_from(repo.nfkc_clone_url, temp_local_repo_path, depth=1)
         yield temp_local_repo_path
     finally:
         shutil.rmtree(temp_local_repo_path, ignore_errors=True)
