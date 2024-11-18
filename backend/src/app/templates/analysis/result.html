@@ -27,10 +27,13 @@
         </div>
         <div class="card-body">
             <p class="text-muted mb-3"><b>What we check:</b> 
-                We check if each page has a structure and style that matches it's function by checking the subheadings and the type of content on each page.
+                We check if each page has a structure that matches it's function by checking the subheadings on each page. 
+                We classify subheadings into tutorial, how-to guide, reference and explanation and count the number of subheadings in each category.
             </p>
             <p class="text-muted mb-3"><b>Why it's important:</b> 
-                Since users might land on any page, for example via a search engine, every page needs to be easy to understand. If a single page serves multiple functions, like a how-to guide that also contains reference information, it's confusing for the user.
+                Since users might land on any page, for example via a search engine, every page needs to be easy to understand. 
+                If a single page serves multiple functions, like a how-to guide that also contains reference information, it's confusing for the user.
+                We chose to check the subheadings because they allow a user to quickly understand what a page is about.
             </p>
             {% if result.single_function %}
 

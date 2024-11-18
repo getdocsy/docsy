@@ -6,7 +6,7 @@
         <div class="col-md-8 col-lg-6">
             <div class="card shadow">
                 <div class="card-body">
-                    <h2 class="text-center mb-4">Analyze GitHub Repository</h2>
+                    <h2 class="text-center mb-4">Analyze your Documentation</h2>
 
                     {% if error %}
                     <div class="alert alert-danger" role="alert">
@@ -20,10 +20,16 @@
                     </div>
                     {% endif %}
 
-                    <form method="POST">
+                    <p class="text-muted mb-3">
+                        If you are offering a technical product, the products documentation plays an important part in the buying decisions of your customers. 
+                    </p>
+                    <p class="text-muted mb-3">
+                        Analyze your documentation for free (no sign up required) and see how well it allows first time users to find what they need.
+                    </p>
+                    <form method="POST" id="analysisForm">
                         {% csrf_token %}
                         <div class="form-group mb-3">
-                            <label for="github_full_name" class="form-label">GitHub Repository (format: owner/repo)</label>
+                            <label for="github_full_name" class="form-label text-muted">This analysis is availabe for documentations hosted on GitHub. Please enter the full name of the repository.</label>
                             <input type="text" class="form-control" id="github_full_name" name="github_full_name"
                                 placeholder="e.g., octocat/Hello-World" required>
                         </div>
@@ -36,4 +42,27 @@
         </div>
     </div>
 </div>
+
+<!-- Loading Modal -->
+<div class="modal fade" id="loadingModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center p-4">
+                <div class="spinner-border text-primary mb-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <h5>Analyzing Repository...</h5>
+                <p class="mb-0">Please wait while we process your request. You will be redirected automatically.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('analysisForm').addEventListener('submit', function() {
+    var modal = new bootstrap.Modal(document.getElementById('loadingModal'));
+    modal.show();
+});
+</script>
+
 {% endblock %}
