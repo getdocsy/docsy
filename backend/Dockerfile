@@ -17,6 +17,6 @@ RUN pip install poetry && \
     poetry config virtualenvs.create false && \
     poetry install --no-root
 
-COPY src/ ./src
+COPY src/ /app/src
 
 EXPOSE 8000
