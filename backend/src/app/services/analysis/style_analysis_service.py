@@ -1,4 +1,5 @@
 from textwrap import dedent
+import asyncio
 
 from pydantic import BaseModel
 
@@ -29,17 +30,20 @@ class StyleAnalysisResult(BaseModel):
     total_score: int
 
 
-def analyze_style(*, local_repo_path: str, repo_map: RepoMap) -> StyleAnalysisResult:
+async def analyze_style(*, local_repo_path: str, repo_map: RepoMap) -> StyleAnalysisResult:
     first_three_relative_file_path_list = list(
         get_relative_file_path_to_headings(repo_map=repo_map).keys()
     )[:3]
 
-    detailed_style_analysis_list = []
-    for relative_file_path in first_three_relative_file_path_list:
-        detailed_style_analysis = analyze_file_style(
-            local_repo_path=local_repo_path, relative_file_path=relative_file_path
+    detailed_style_analysis_list = await asyncio.gather(
+        *(
+            analyze_file_style(
+                local_repo_path=local_repo_path,
+                relative_file_path=relative_file_path,
+            )
+            for relative_file_path in first_three_relative_file_path_list
         )
-        detailed_style_analysis_list.append(detailed_style_analysis)
+    )
 
     analyze_style_prompt = """
         You will be provided with detailed style analysis of files of a software product documentation.
@@ -60,7 +64,7 @@ def analyze_style(*, local_repo_path: str, repo_map: RepoMap) -> StyleAnalysisRe
             }
         )
 
-    analysis = ai_service.get_suggestion_json(
+    analysis = await ai_service.get_suggestion_json(
         message_list=message_list, model=StyleAnalysis
     )
     score_components = score_components_style(analysis=analysis)
@@ -71,7 +75,7 @@ def analyze_style(*, local_repo_path: str, repo_map: RepoMap) -> StyleAnalysisRe
     )
 
 
-def analyze_file_style(
+async def analyze_file_style(
     *, local_repo_path: str, relative_file_path: str
 ) -> DetailedStyleAnalysis:
     analyze_file_style_prompt = """
@@ -101,7 +105,7 @@ def analyze_file_style(
         {"role": "user", "content": f"file_path: {relative_file_path}"},
         {"role": "user", "content": file_content_with_line_numbers},
     ]
-    return ai_service.get_suggestion_json(
+    return await ai_service.get_suggestion_json(
         message_list=message_list, model=DetailedStyleAnalysis
     )
 

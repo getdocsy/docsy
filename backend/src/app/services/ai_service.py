@@ -1,7 +1,7 @@
 import json
 import logging
 import textwrap
-from openai import OpenAI
+from openai import AsyncOpenAI
 from typing import Type, TypeVar
 from pydantic import BaseModel
 
@@ -40,13 +40,13 @@ def _log_response(response: str):
     logger.debug(textwrap.shorten(response, width=100, placeholder="..."))
 
 
-def get_suggestion_str(message_list: list[dict]) -> str:
-    client = OpenAI()
+async def get_suggestion_str(message_list: list[dict]) -> str:
+    client = AsyncOpenAI()
 
     complete_message_list = base_messages + message_list
     _log_messages(complete_message_list)
 
-    completion = client.chat.completions.create(
+    completion = await client.chat.completions.create(
         model=AI_MODEL, messages=complete_message_list
     )
     suggestion = completion.choices[0].message.content
@@ -56,8 +56,8 @@ def get_suggestion_str(message_list: list[dict]) -> str:
     return suggestion
 
 
-def get_suggestion_json(*, message_list: list, model: Type[T]) -> T:
-    client = OpenAI()
+async def get_suggestion_json(*, message_list: list, model: Type[T]) -> T:
+    client = AsyncOpenAI()
 
     complete_message_list = base_messages + message_list + [
         {
@@ -71,7 +71,7 @@ def get_suggestion_json(*, message_list: list, model: Type[T]) -> T:
     ]
     _log_messages(complete_message_list)
 
-    completion = client.beta.chat.completions.parse(
+    completion = await client.beta.chat.completions.parse(
         model=AI_MODEL, messages=complete_message_list, response_format=model
     )
     suggestion = completion.choices[0].message.parsed
@@ -80,8 +80,8 @@ def get_suggestion_json(*, message_list: list, model: Type[T]) -> T:
     return suggestion
 
 
-def get_suggestion_json_with_tools(*, message_list: list, model: Type[T]) -> T:
-    client = OpenAI()
+async def get_suggestion_json_with_tools(*, message_list: list, model: Type[T]) -> T:
+    client = AsyncOpenAI()
 
     complete_message_list = base_messages + message_list + [
         {
@@ -115,7 +115,7 @@ def get_suggestion_json_with_tools(*, message_list: list, model: Type[T]) -> T:
             },
         }
     ]
-    response = client.chat.completions.create(
+    response = await client.chat.completions.create(
         model=AI_MODEL,
         messages=complete_message_list,
         tools=tools,

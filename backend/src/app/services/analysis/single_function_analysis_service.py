@@ -24,7 +24,7 @@ class SingleFunctionAnalysisResult(BaseModel):
     total_score: int
 
 
-def analyze_single_function(*, repo_map: RepoMap) -> SingleFunctionAnalysisResult:
+async def analyze_single_function(*, repo_map: RepoMap) -> SingleFunctionAnalysisResult:
     relative_file_path_to_headings = get_relative_file_path_to_headings(
         repo_map=repo_map
     )
@@ -46,7 +46,7 @@ def analyze_single_function(*, repo_map: RepoMap) -> SingleFunctionAnalysisResul
             }
         )
 
-    analysis = ai_service.get_suggestion_json(
+    analysis = await ai_service.get_suggestion_json(
         message_list=message_list, model=SingleFunctionAnalysis
     )
     score_components = score_components_single_function(analysis=analysis)

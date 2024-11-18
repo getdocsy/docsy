@@ -22,7 +22,9 @@ class CoherentSitemapAnalysisResult(BaseModel):
     total_score: int
 
 
-def analyze_coherent_sitemap(*, repo_map: RepoMap) -> CoherentSitemapAnalysisResult:
+async def analyze_coherent_sitemap(
+    *, repo_map: RepoMap
+) -> CoherentSitemapAnalysisResult:
     relative_file_path_to_headings = get_relative_file_path_to_headings(
         repo_map=repo_map
     )
@@ -49,7 +51,7 @@ def analyze_coherent_sitemap(*, repo_map: RepoMap) -> CoherentSitemapAnalysisRes
             }
         )
 
-    analysis = ai_service.get_suggestion_json(
+    analysis = await ai_service.get_suggestion_json(
         message_list=message_list, model=CoherentSitemapAnalysis
     )
     score_components = score_components_coherent_sitemap(analysis=analysis)
@@ -62,7 +64,9 @@ def analyze_coherent_sitemap(*, repo_map: RepoMap) -> CoherentSitemapAnalysisRes
     )
 
 
-def score_components_coherent_sitemap(*, analysis: CoherentSitemapAnalysis) -> dict[str, int]:
+def score_components_coherent_sitemap(
+    *, analysis: CoherentSitemapAnalysis
+) -> dict[str, int]:
     # average the confidence scores of the classifications
     confidence_scores = [file.confidence_score for file in analysis.files]
     average_confidence_score = round(sum(confidence_scores) / len(confidence_scores))
@@ -80,6 +84,8 @@ def score_components_coherent_sitemap(*, analysis: CoherentSitemapAnalysis) -> d
         types_of_documentation_score = 0
 
     return {
-        "Average of confidence scores when classifying pages to types of documentation": int(average_confidence_score),
+        "Average of confidence scores when classifying pages to types of documentation": int(
+            average_confidence_score
+        ),
         f"Types of documentation missing: {types_of_documentation_missing}": types_of_documentation_score,
     }

@@ -55,10 +55,10 @@ class AnalysisViewSet(viewsets.ModelViewSet):
 class AnalysisFormView(View):
     template_name = "analysis/create.html"
 
-    def get(self, request):
+    async def get(self, request):
         return render(request, self.template_name)
 
-    def post(self, request):
+    async def post(self, request):
         github_full_name = request.POST.get("github_full_name")
         if not github_full_name:
             return render(
@@ -72,7 +72,7 @@ class AnalysisFormView(View):
         )
 
         try:
-            analysis_service.analyze_remote_repo(
+            await analysis_service.analyze_remote_repo(
                 sanitized_github_full_name=sanitized_github_full_name
             )
             owner, name = sanitized_github_full_name.split("/")

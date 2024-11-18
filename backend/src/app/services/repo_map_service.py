@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 from pydantic import BaseModel
-
+import asyncio
 from app.models import Repo, RepoMap
 from app.services import local_repo_service
 
@@ -71,7 +71,7 @@ def get_line_number_of_file_in_sidebar(
     return None
 
 
-def create_repo_map(*, repo: Repo, local_repo_path: str) -> RepoMap:
+async def create_repo_map(*, repo: Repo, local_repo_path: str) -> RepoMap:
     sidebars_file_path = local_repo_service.get_sidebar_file_path(
         local_repo_path=local_repo_path
     )
@@ -115,7 +115,7 @@ def create_repo_map(*, repo: Repo, local_repo_path: str) -> RepoMap:
         sidebars_file_path=sidebars_file_path,
     )
 
-    RepoMap.objects.create(
+    await RepoMap.objects.acreate(
         repo=repo,
         result=repo_map_result.model_dump(),
         created_for_commit_sha=local_repo_service.get_commit_sha(
