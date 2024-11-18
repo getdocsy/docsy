@@ -10,31 +10,23 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
+SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-@g*tt@rrsq@rr&+@c#sz4ce@h=6%3%*u-0khgzppi7jol%66et"
+DEBUG = os.environ.get("DJANGO_DEBUG", False)
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1",
-    "app.getdocsy.com"
-]
-
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "app.getdocsy.com"]
 
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
     "app.apps.AppConfig",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -73,8 +65,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "docsy.wsgi.application"
-
+ASGI_APPLICATION = "docsy.asgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -127,8 +118,6 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-import os
 
 LOGGING = {
     "version": 1,
