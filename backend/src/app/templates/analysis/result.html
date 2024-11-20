@@ -13,8 +13,23 @@
     <p >This analysis focuses on the experience of a visitor, that hasn't used your product yet.</p>
 
 
+<h2> Methodology</h2>
+
+    <p>We make the following assumptions backed by the data of a 2024 Technical Content Report<sup><a href="#fn2" id="ref2">2</a></sup>, based on nearly 100 million sessions:</p>
+
+    <ul>
+        <li>The average visitor spends 5 minutes on the documentation.</li>
+        <li>The average visitor opens 5 pages during their visit.</li>
+        <li>On average, 15% of sessions include in-site-search.</li>
+        <li>Up to 60% of traffic for public documentation comes from external searches.</li>
+    </ul>
+
+    <p>We are using the terminology of the Divio Documentation System<sup><a href="#fn3" id="ref3">3</a></sup> to classify pages by their functions: tutorials, how-to guides, technical reference and explanation. 
+        Each of those functions requires a different structure and style to be effective.</p>
+
+
     <h2>Results</h2>
-    <p>The following sections show the results of our analysis.</p>
+    <p>The analysis is split into sections that are shown below.</p>
     <!-- Single Function Analysis Section -->
     <div class="card mb-3">
         <div class="card-header">
@@ -106,7 +121,7 @@
     <div class="card mb-3">
         <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
-                <h4>Sitemap </h4>
+                <h4>Sitemap</h4>
                 {% if result.coherent_sitemap and result.coherent_sitemap.total_score %}
                 <span
                     class="badge {% if result.coherent_sitemap.total_score > 85 %}bg-success{% elif result.coherent_sitemap.total_score > 65 %}bg-warning{% else %}bg-danger{% endif %} fs-5">
@@ -188,21 +203,6 @@
             {% endif %}
         </div>
     </div>
-
-<h2> Methodology</h2>
-
-    <p>We make the following assumptions backed by the data of a 2024 Technical Content Report<sup><a href="#fn2" id="ref2">2</a></sup>, based on nearly 100 million sessions:</p>
-
-    <ul>
-        <li>The average visitor spends 5 minutes on the documentation.</li>
-        <li>The average visitor opens 5 pages during their visit.</li>
-        <li>On average, 15% of sessions include in-site-search.</li>
-        <li>Up to 60% of traffic for public documentation comes from external searches.</li>
-    </ul>
-
-    <p>We are using the terminology of the Divio Documentation System<sup><a href="#fn3" id="ref3">3</a></sup> to classify pages by their functions: tutorials, how-to guides, technical reference and explanation. 
-        Each of those functions requires a different structure and style to be effective.</p>
-
     
 
 <!-- Add Footnotes Section -->
@@ -211,9 +211,7 @@
     <div class="footnotes">
         <h5>Footnotes</h5>
         <ol class="small text-muted">
-            <li id="fn1"><a href="https://go.zoominsoftware.com/l/1018802/2023-03-30/31mm/1018802/1680165089dCzvU0DA/The_state_of_self_service_content_experiences___Research_Brief.pdf">Frost & Sullivan, "The state of
-                self-service content
-                experiences", 2021</a>
+            <li id="fn1"><a href="https://go.zoominsoftware.com/l/1018802/2023-03-30/31mm/1018802/1680165089dCzvU0DA/The_state_of_self_service_content_experiences___Research_Brief.pdf">Frost & Sullivan, The State of Self-Service Content Experiences</a>
                 <a href="#ref1" class="footnote-backref">↩</a>
             </li>
             <li id="fn2"><a href="https://www.zoominsoftware.com/zoomin-benchmark-report-2024">Zoomin, Technical Content Benchmark Report 2024</a>
