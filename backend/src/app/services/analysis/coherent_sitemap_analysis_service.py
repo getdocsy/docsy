@@ -1,4 +1,5 @@
 from textwrap import dedent
+from typing import Literal
 from pydantic import BaseModel
 import time
 import logging
@@ -10,7 +11,7 @@ from app.services.repo_map_service import get_relative_file_path_to_headings
 
 class FileClassification(BaseModel):
     path: str
-    classification: str
+    classification: Literal["Tutorial", "How-to guide", "Reference", "Explanation"]
     confidence_score: int
 
 
