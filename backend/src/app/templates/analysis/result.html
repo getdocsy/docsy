@@ -228,7 +228,11 @@
             </p>
             {% if result.vale%}
             
-            <canvas id="valeChart" class="mb-3" style="max-height: 200px;"></canvas>
+            <div class="row mb-3">
+                <div class="col">
+                    <canvas id="valeIssuesChart" style="max-height: 200px;"></canvas>
+                </div>
+            </div>
 
             <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#valeTable" aria-expanded="false" aria-controls="valeTable">
                 <span class="button-text">Show Score Components</span>
@@ -577,4 +581,92 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- Add this to provide the data -->
 {{ result.single_function.score_components|json_script:"single-function-data" }}
 {% endif %}
+
+{% if result.vale %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const valeDataElement = document.getElementById('vale-data');
+    if (!valeDataElement) {
+        console.warn('Vale data element not found');
+        return;
+    }
+
+    try {
+        const valeFiles = JSON.parse(valeDataElement.textContent);
+        if (!Array.isArray(valeFiles)) {
+            console.warn('Vale data is not in expected format');
+            return;
+        }
+
+        // Count occurrences of each issue type
+        const issueCount = {};
+        valeFiles.forEach(file => {
+            if (file.issues) {
+                file.issues.forEach(issue => {
+                    const check = issue.Check || 'Unknown';
+                    issueCount[check] = (issueCount[check] || 0) + 1;
+                });
+            }
+        });
+
+        const valeIssuesCtx = document.getElementById('valeIssuesChart');
+        if (!valeIssuesCtx) {
+            console.warn('Vale issues chart canvas not found');
+            return;
+        }
+
+        const valeData = {
+            labels: Object.keys(issueCount),
+            datasets: [{
+                label: 'Number of Occurrences',
+                data: Object.values(issueCount),
+                backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        new Chart(valeIssuesCtx.getContext('2d'), {
+            type: 'bar',
+            data: valeData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Writing Issues by Type'
+                    },
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            maxRotation: 45,
+                            minRotation: 45
+                        }
+                    }
+                }
+            }
+        });
+    } catch (error) {
+        console.error('Error initializing Vale chart:', error);
+    }
+});
+</script>
+
+<!-- Make sure the data is properly serialized -->
+{% if result.vale.analysis %}
+    {{ result.vale.analysis|json_script:"vale-data" }}
+{% endif %}
+{% endif %}
+
 {% endblock %}
