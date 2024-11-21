@@ -1,8 +1,10 @@
 import asyncio
 import json
+import logging
 import os
 import tempfile
 from textwrap import dedent
+import time
 
 from pydantic import BaseModel
 
@@ -73,6 +75,7 @@ BasedOnStyles = write-good
 async def analyze_vale(
     *, local_repo_path: str, repo_map: RepoMap
 ) -> ValeAnalysisResult:
+    start_time = time.time()
     vale_ini_file_path = await setup_vale_ini_file()
 
     absolute_file_path_list = get_absolute_file_path_list(
@@ -94,6 +97,9 @@ async def analyze_vale(
 
     score_components = score_components_vale(analysis=analysis)
     total_score = round(sum(score_components.values()) / len(score_components))
+
+    elapsed_time = time.time() - start_time
+    logging.info(f"Vale analysis completed in {elapsed_time:.2f} seconds")
 
     return ValeAnalysisResult(
         analysis=analysis, score_components=score_components, total_score=total_score

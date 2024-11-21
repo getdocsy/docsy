@@ -1,5 +1,7 @@
 from textwrap import dedent
 from pydantic import BaseModel
+import time
+import logging
 
 from app.models import RepoMap
 from app.services import ai_service
@@ -25,6 +27,8 @@ class CoherentSitemapAnalysisResult(BaseModel):
 async def analyze_coherent_sitemap(
     *, repo_map: RepoMap
 ) -> CoherentSitemapAnalysisResult:
+    start_time = time.time()
+    
     relative_file_path_to_headings = get_relative_file_path_to_headings(
         repo_map=repo_map
     )
@@ -57,11 +61,16 @@ async def analyze_coherent_sitemap(
     score_components = score_components_coherent_sitemap(analysis=analysis)
     total_score = round(sum(score_components.values()) / len(score_components))
 
-    return CoherentSitemapAnalysisResult(
+    result = CoherentSitemapAnalysisResult(
         analysis=analysis,
         score_components=score_components,
         total_score=total_score,
     )
+    
+    execution_time = time.time() - start_time
+    logging.info(f"Coherent sitemap analysis completed in {execution_time:.2f} seconds")
+    
+    return result
 
 
 def score_components_coherent_sitemap(

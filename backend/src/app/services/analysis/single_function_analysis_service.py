@@ -1,5 +1,7 @@
 from textwrap import dedent
 from pydantic import BaseModel
+import time
+import logging
 
 from app.models import RepoMap
 from app.services import ai_service
@@ -25,6 +27,8 @@ class SingleFunctionAnalysisResult(BaseModel):
 
 
 async def analyze_single_function(*, repo_map: RepoMap) -> SingleFunctionAnalysisResult:
+    start_time = time.time()
+    
     relative_file_path_to_headings = get_relative_file_path_to_headings(
         repo_map=repo_map
     )
@@ -52,6 +56,9 @@ async def analyze_single_function(*, repo_map: RepoMap) -> SingleFunctionAnalysi
     score_components = score_components_single_function(analysis=analysis)
     total_score = round(sum(score_components.values()) / len(score_components))
 
+    elapsed_time = time.time() - start_time
+    logging.info(f"Single function analysis completed in {elapsed_time:.2f} seconds")
+    
     return SingleFunctionAnalysisResult(
         analysis=analysis, score_components=score_components, total_score=total_score
     )
