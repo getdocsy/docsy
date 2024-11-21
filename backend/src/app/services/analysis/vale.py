@@ -1,4 +1,5 @@
 import asyncio
+import json
 import os
 import tempfile
 from textwrap import dedent
@@ -7,13 +8,30 @@ from pydantic import BaseModel
 
 from app.models import RepoMap
 from app.services.local_repo_service import (
-    get_relative_markdown_file_path_list,
+    get_absolute_markdown_file_path_list,
 )
+
+
+class ValeAction(BaseModel):
+    Name: str
+    Params: None | dict
+
+
+class ValeIssue(BaseModel):
+    Action: ValeAction
+    Span: list[int]
+    Check: str
+    Description: str
+    Link: str
+    Message: str
+    Severity: str
+    Match: str
+    Line: int
 
 
 class ValeFileAnalysis(BaseModel):
     path: str
-    issues: list[str]
+    issues: list[ValeIssue]
 
 
 class ValeAnalysisResult(BaseModel):
@@ -28,14 +46,14 @@ def setup_vale_ini_file() -> str:
         with open(vale_ini_file_path, "w") as f:
             f.write(
                 dedent(
-                    '''
+                    """
 Packages = write-good
 
 [*.md]
 BasedOnStyles = write-good
-                    '''
-                    )
+                    """
                 )
+            )
 
     return vale_ini_file_path
 
@@ -55,6 +73,7 @@ async def analyze_vale(
             analyze_file_vale(
                 absolute_file_path=absolute_file_path,
                 vale_ini_file_path=vale_ini_file_path,
+                local_repo_path=local_repo_path,
             )
             for absolute_file_path in absolute_file_path_list
         )
@@ -69,7 +88,7 @@ async def analyze_vale(
 
 
 async def analyze_file_vale(
-    *, absolute_file_path: str, vale_ini_file_path: str
+    *, absolute_file_path: str, vale_ini_file_path: str, local_repo_path: str
 ) -> ValeFileAnalysis:
     process = await asyncio.create_subprocess_exec(
         "vale",
@@ -81,25 +100,32 @@ async def analyze_file_vale(
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE,
     )
-    
+
     stdout, stderr = await process.communicate()
-    
+
     if process.returncode != 0:
         # Vale returns non-zero when it finds issues, which is expected
         # Only raise if we got no output
         if not stdout:
             raise RuntimeError(f"Vale failed: {stderr.decode()}")
+
+    # Vale outputs formatted JSON, so we need to parse it
+    output_dict = json.loads(stdout.decode())
     
-    # Vale outputs one issue per line in JSON format
-    issues = [
-        line.strip() for line in stdout.decode().splitlines() 
-        if line.strip()  # Filter out empty lines
-    ]
-    
+    # The output is a dict where the key is the file path and value is list of issues
+    file_path = list(output_dict.keys())[0]  # Get the first (and only) key
+    issues = output_dict[file_path]  # Get the issues for that file
+
     return ValeFileAnalysis(
-        path=absolute_file_path,
+        path=os.path.relpath(file_path, local_repo_path),
         issues=issues
     )
 
+
 def score_components_vale(*, analysis: list[ValeFileAnalysis]) -> dict[str, int]:
-    pass
+    score_components = {}
+    for file in analysis:
+        score = max(100 - len(file.issues) * 2, 0)
+        score_components[f"{file.path} has {len(file.issues)} issues"] = score
+
+    return score_components
