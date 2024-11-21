@@ -5,7 +5,7 @@ from textwrap import dedent
 import django
 from django.conf import settings
 
-from .vale import ValeFileAnalysis, analyze_file_vale, setup_vale_ini_file
+from .vale_analysis_service import ValeFileAnalysis, analyze_file_vale, setup_vale_ini_file
 
 
 def pytest_configure():
@@ -48,6 +48,29 @@ def test_markdown_file():
     os.unlink(temp_path)
 
 
+@pytest.fixture
+def clean_markdown_file():
+    # Create a temporary markdown file with content that should pass Vale checks
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".md", delete=False) as f:
+        f.write(
+            dedent(
+                """
+            # Clear Documentation
+
+            This document uses clear, active voice.
+            
+            We explain the concepts directly and concisely.
+        """
+            )
+        )
+        temp_path = f.name
+
+    yield temp_path
+
+    # Cleanup after test
+    os.unlink(temp_path)
+
+
 @pytest.mark.asyncio
 async def test_analyze_file_vale(vale_ini_path, test_markdown_file):
     # Run the analysis
@@ -57,7 +80,23 @@ async def test_analyze_file_vale(vale_ini_path, test_markdown_file):
         local_repo_path=os.path.dirname(test_markdown_file),
     )
 
-    print(result)
+    print(result.path)
+    print(result.issues)
 
     # Verify the result structure
     assert isinstance(result, ValeFileAnalysis)
+
+
+@pytest.mark.asyncio
+async def test_analyze_clean_file_vale(vale_ini_path, clean_markdown_file):
+    # Run the analysis
+    result = await analyze_file_vale(
+        absolute_file_path=clean_markdown_file,
+        vale_ini_file_path=vale_ini_path,
+        local_repo_path=os.path.dirname(clean_markdown_file),
+    )
+
+    # Verify the result structure
+    assert isinstance(result, ValeFileAnalysis)
+    # Verify there are no issues
+    assert len(result.issues) == 0

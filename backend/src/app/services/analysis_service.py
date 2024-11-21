@@ -8,7 +8,7 @@ from app.services import (
 from app.services.analysis import (
     analyze_coherent_sitemap,
     analyze_single_function,
-    analyze_style,
+    analyze_vale,
 )
 from app.services import repo_map_service
 
@@ -36,24 +36,21 @@ async def analyze_repo(*, repo: Repo) -> dict:
             repo=repo, local_repo_path=local_repo_path
         )
 
-        coherent_sitemap_task = asyncio.create_task(
-            analyze_coherent_sitemap(repo_map=repo_map)
-        )
-        single_function_task = asyncio.create_task(
-            analyze_single_function(repo_map=repo_map)
-        )
-        # style_task = asyncio.create_task(
-        #     analyze_style(local_repo_path=local_repo_path, repo_map=repo_map)
-        # )
+        tasks = [
+            analyze_coherent_sitemap(repo_map=repo_map),
+            analyze_single_function(repo_map=repo_map),
+            analyze_vale(local_repo_path=local_repo_path, repo_map=repo_map),
+        ]
+        
+        results = await asyncio.gather(*tasks)
+        
+        coherent_sitemap_result, single_function_result, vale_result = results
 
-        single_function_result = await single_function_task
-        coherent_sitemap_result = await coherent_sitemap_task
-        # style_result = await style_task
-
-        analysis_result_dict = {}
-        analysis_result_dict["single_function"] = single_function_result.model_dump()
-        analysis_result_dict["coherent_sitemap"] = coherent_sitemap_result.model_dump()
-        # analysis_result_dict["style"] = style_result.model_dump()
+        analysis_result_dict = {
+            "single_function": single_function_result.model_dump(),
+            "coherent_sitemap": coherent_sitemap_result.model_dump(),
+            "vale": vale_result.model_dump(),
+        }
 
         analysis = Analysis(
             repo=repo,

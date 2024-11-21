@@ -112,6 +112,13 @@ async def analyze_file_vale(
     # Vale outputs formatted JSON, so we need to parse it
     output_dict = json.loads(stdout.decode())
     
+    # When there are no issues, Vale returns an empty dict
+    if not output_dict:
+        return ValeFileAnalysis(
+            path=os.path.relpath(absolute_file_path, local_repo_path),
+            issues=[]
+        )
+
     # The output is a dict where the key is the file path and value is list of issues
     file_path = list(output_dict.keys())[0]  # Get the first (and only) key
     issues = output_dict[file_path]  # Get the issues for that file
@@ -126,6 +133,6 @@ def score_components_vale(*, analysis: list[ValeFileAnalysis]) -> dict[str, int]
     score_components = {}
     for file in analysis:
         score = max(100 - len(file.issues) * 2, 0)
-        score_components[f"{file.path} has {len(file.issues)} issues"] = score
+        score_components[f"{file.path} has {file.issues} issues"] = score
 
     return score_components
