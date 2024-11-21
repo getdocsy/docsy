@@ -574,7 +574,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Initialize pagination
         function updatePagination() {
-            const total = filteredRows.length;
+            // Only count main rows (exclude collapse rows) for pagination
+            const total = filteredRows.filter(row => !row.classList.contains('collapse')).length;
             
             // If there are no items, show 0 to 0 of 0
             if (total === 0) {
@@ -596,12 +597,25 @@ document.addEventListener('DOMContentLoaded', function() {
             prevButton.disabled = currentPage === 1;
             nextButton.disabled = end >= total;
 
-            // Show only current page rows
+            // Show only current page rows and their associated detail rows
             const tbody = table.querySelector('tbody');
             const allRows = Array.from(tbody.children);
+            
+            // Hide all rows first
             allRows.forEach(row => row.style.display = 'none');
             
-            filteredRows.slice(start - 1, end).forEach(row => row.style.display = '');
+            // Show the current page's main rows and their detail rows
+            filteredRows.slice(start - 1, end).forEach(mainRow => {
+                mainRow.style.display = '';
+                // Find and show the associated detail row
+                const detailId = mainRow.querySelector('[data-bs-target]')?.getAttribute('data-bs-target');
+                if (detailId) {
+                    const detailRow = tbody.querySelector(detailId);
+                    if (detailRow) {
+                        detailRow.style.display = '';
+                    }
+                }
+            });
         }
 
         // Filtering function
@@ -646,7 +660,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Sorting function (updated to work with pagination)
+        // Sorting function (updated to handle detail rows)
         table.querySelectorAll('.sortable').forEach(header => {
             header.addEventListener('click', function() {
                 const column = this.dataset.sort;
@@ -658,11 +672,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 lastSortedColumn = column;
 
-                filteredRows.sort((a, b) => {
-                    let aValue = a.children[getColumnIndex(table, column)].textContent;
-                    let bValue = b.children[getColumnIndex(table, column)].textContent;
+                const tbody = table.querySelector('tbody');
+                const rowGroups = [];
+                let currentGroup = [];
+
+                Array.from(tbody.children).forEach(row => {
+                    if (!row.classList.contains('collapse')) {
+                        if (currentGroup.length > 0) {
+                            rowGroups.push(currentGroup);
+                        }
+                        currentGroup = [row];
+                    } else {
+                        currentGroup.push(row);
+                    }
+                });
+                if (currentGroup.length > 0) {
+                    rowGroups.push(currentGroup);
+                }
+
+                rowGroups.sort((a, b) => {
+                    let aValue = a[0].children[getColumnIndex(table, column)].textContent;
+                    let bValue = b[0].children[getColumnIndex(table, column)].textContent;
                     
-                    // Handle numeric values
                     if (column === 'confidence' || column === 'score') {
                         aValue = parseFloat(aValue);
                         bValue = parseFloat(bValue);
@@ -671,6 +702,31 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (aValue < bValue) return -1 * sortDirection;
                     if (aValue > bValue) return 1 * sortDirection;
                     return 0;
+                });
+
+                // Update filteredRows with all rows in their new order
+                filteredRows = rowGroups.flatMap(group => group);
+
+                // Reinsert all rows in sorted order
+                tbody.innerHTML = '';
+                rowGroups.forEach(group => {
+                    group.forEach(row => {
+                        tbody.appendChild(row);
+                        // Ensure collapse functionality is preserved
+                        if (!row.classList.contains('collapse')) {
+                            const button = row.querySelector('[data-bs-toggle="collapse"]');
+                            const targetId = button?.getAttribute('data-bs-target');
+                            if (button && targetId) {
+                                button.addEventListener('click', (e) => {
+                                    e.preventDefault();
+                                    const target = document.querySelector(targetId);
+                                    if (target) {
+                                        target.classList.toggle('show');
+                                    }
+                                });
+                            }
+                        }
+                    });
                 });
 
                 currentPage = 1;
