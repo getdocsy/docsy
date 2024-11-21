@@ -133,6 +133,6 @@ def score_components_vale(*, analysis: list[ValeFileAnalysis]) -> dict[str, int]
     score_components = {}
     for file in analysis:
         score = max(100 - len(file.issues) * 2, 0)
-        score_components[f"{file.path} has {file.issues} issues"] = score
+        score_components[f"{file.path} has {len(file.issues)} issues"] = score
 
     return score_components
