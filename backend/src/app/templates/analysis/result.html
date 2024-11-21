@@ -45,12 +45,11 @@
         </div>
         <div class="card-body">
             <p class="text-muted mb-3"><b>What we check:</b> 
-                We check if each page has a structure that matches it's function by checking the subheadings on each page. 
-                We classify subheadings into tutorial, how-to guide, reference and explanation and count the number of subheadings in each category.
+                We check if each page has a structure that matches its function. We do this by couting the number of subheadings in each category: tutorial, how-to guide, reference and explanation.
             </p>
             <p class="text-muted mb-3"><b>Why it's important:</b> 
                 Because users can land on any page, every page needs to be easy to understand. 
-                If a single page serves multiple functions, like a how-to guide that also contains reference information and a long design explanation, it's confusing for the user.
+                If a single page serves multiple functions, like a how-to guide that also contains reference information and a long design explanation, it is confusing for the user.
                 We chose to check the subheadings because they allow a user to quickly understand what a page is about.
             </p>
             {% if result.single_function %}
@@ -203,7 +202,9 @@
             {% endif %}
         </div>
     </div>
-    
+ 
+    <h2>Get in touch</h2>
+    <p>If you have any questions or feedback about this analysis, please don't hesitate to <a href="mailto:hello@docsy.ai">get in touch</a>.</p>
 
 <!-- Add Footnotes Section -->
 <div class="container mt-4 mb-5">
