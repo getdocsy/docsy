@@ -7,9 +7,7 @@ from textwrap import dedent
 from pydantic import BaseModel
 
 from app.models import RepoMap
-from app.services.local_repo_service import (
-    get_absolute_markdown_file_path_list,
-)
+from app.services.repo_map_service import get_absolute_file_path_list
 
 
 class ValeAction(BaseModel):
@@ -77,7 +75,8 @@ async def analyze_vale(
 ) -> ValeAnalysisResult:
     vale_ini_file_path = await setup_vale_ini_file()
 
-    absolute_file_path_list = get_absolute_markdown_file_path_list(
+    absolute_file_path_list = get_absolute_file_path_list(
+        repo_map=repo_map,
         local_repo_path=local_repo_path
     )
 

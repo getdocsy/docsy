@@ -24,6 +24,9 @@ class RepoMapResult(BaseModel):
 def get_relative_file_path_to_headings(*, repo_map: RepoMap) -> dict:
     return {file.relative_path: file.headings for file in repo_map.documentation_files}
 
+def get_absolute_file_path_list(*, repo_map: RepoMap, local_repo_path: str) -> list[str]:
+    return [os.path.join(local_repo_path, file.relative_path) for file in repo_map.documentation_files]
+
 
 def get_title(*, frontmatter_dict: dict, headings: list[str]) -> str:
     if "title" in frontmatter_dict:
