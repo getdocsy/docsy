@@ -5,10 +5,11 @@ RUN apk fix && \
     apk --no-cache --update add git
 
 # Install Vale separately
-RUN wget https://github.com/errata-ai/vale/releases/download/v3.9.1/vale_3.9.1_Linux_64-bit.tar.gz && \
-    tar -xvzf vale_3.9.1_Linux_64-bit.tar.gz && \
+# TODO: remove hardcoded version and CPU architecture
+RUN wget https://github.com/errata-ai/vale/releases/download/v3.9.1/vale_3.9.1_Linux_arm64.tar.gz && \
+    tar -xvzf vale_3.9.1_Linux_arm64.tar.gz && \
     mv vale /usr/local/bin && \
-    rm vale_3.9.1_Linux_64-bit.tar.gz
+    rm vale_3.9.1_Linux_arm64.tar.gz
 
 RUN git config --global user.name "getdocsy[Bot]" # TODO remove hardcoded bot name and make it depend on environment
 RUN git config --global user.email "171265091+getdocsy[bot]@users.noreply.github.com"
