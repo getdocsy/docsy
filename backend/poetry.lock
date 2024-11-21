@@ -1376,6 +1376,17 @@ socks = ["pysocks (>=1.5.6,!=1.5.7,<2.0)"]
 zstd = ["zstandard (>=0.18.0)"]
 
 [[package]]
+name = "vale"
+version = "3.9.0.0"
+description = "Install and use Vale (grammar & style check tool) in python environments."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "vale-3.9.0.0-py3-none-any.whl", hash = "sha256:d6bceb2060e32f37b490218991e48a05ac5e5c891ee4d1f7b315461f09b45232"},
+    {file = "vale-3.9.0.0.tar.gz", hash = "sha256:0e9ca14bddcb44330571d9d7aae953043a66853d3904425cbfb41c4742c0a047"},
+]
+
+[[package]]
 name = "wrapt"
 version = "1.16.0"
 description = "Module for decorators, wrappers and monkey patching."
@@ -1511,4 +1522,4 @@ testing = ["coverage[toml]", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "17f1c84674d57777c568ef484c10c9e6a6eba7955782518585f18023581ad3c3"
+content-hash = "39afa3b409ede5538137fa3dcd4ad38fa50a5b729ba0b7a99c5684596aa1ef6d"
