@@ -231,7 +231,7 @@
                     <canvas id="valeIssuesChart" style="max-height: 200px;"></canvas>
                 </div>
                 <div class="col-md-6">
-                    <canvas id="valeErrorsPerFileChart" style="max-height: 200px;"></canvas>
+                    <canvas id="valeIssuesPerFileChart" style="max-height: 200px;"></canvas>
                 </div>
             </div>
 
@@ -244,11 +244,11 @@
                 <p class="text-muted mb-3">
                     The score of {{ result.vale.total_score }}% for this section is the average of these score components.
                 </p>
-                <table class="table mb-3">
+                <table class="table mb-3 sortable-table" id="valeScoreTable">
                     <thead>
                         <tr>
-                            <th>Component</th>
-                            <th>Score</th>
+                            <th class="sortable" data-sort="component">Component ↕</th>
+                            <th class="sortable" data-sort="score">Score ↕</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -649,7 +649,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Writing Issues by Type'
+                        text: 'Issues by Type'
                     },
                     legend: {
                         position: 'bottom',
@@ -668,28 +668,28 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Add new chart for errors per file distribution
+        // Add new chart for issues per file distribution
         try {
             const valeFiles = JSON.parse(valeDataElement.textContent);
             
-            // Count errors per file
-            const errorsPerFile = {};
+            // Count issues per file
+            const issuesPerFile = {};
             valeFiles.forEach(file => {
                 const issueCount = file.issues ? file.issues.length : 0;
-                errorsPerFile[issueCount] = (errorsPerFile[issueCount] || 0) + 1;
+                issuesPerFile[issueCount] = (issuesPerFile[issueCount] || 0) + 1;
             });
 
             // Create labels and data arrays
-            const labels = Object.keys(errorsPerFile).sort((a, b) => Number(a) - Number(b));
-            const data = labels.map(key => errorsPerFile[key]);
+            const labels = Object.keys(issuesPerFile).sort((a, b) => Number(a) - Number(b));
+            const data = labels.map(key => issuesPerFile[key]);
 
-            const errorsPerFileCtx = document.getElementById('valeErrorsPerFileChart');
-            new Chart(errorsPerFileCtx.getContext('2d'), {
+            const issuesPerFileCtx = document.getElementById('valeIssuesPerFileChart');
+            new Chart(issuesPerFileCtx.getContext('2d'), {
                 type: 'bar',
                 data: {
-                    labels: labels.map(l => `${l} errors`),
+                    labels: labels.map(l => `${l} issues`),
                     datasets: [{
-                        label: 'Number of Files',
+                        label: 'Number of Pages',
                         data: data,
                         backgroundColor: 'rgba(75, 192, 192, 0.6)',
                         borderColor: 'rgba(75, 192, 192, 1)',
@@ -702,7 +702,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     plugins: {
                         title: {
                             display: true,
-                            text: 'Distribution of Errors per File'
+                            text: 'Distribution of Issues per Page'
                         },
                         legend: {
                             display: false
@@ -719,7 +719,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         } catch (error) {
-            console.error('Error initializing Vale errors per file chart:', error);
+            console.error('Error initializing Vale issues per file chart:', error);
         }
     } catch (error) {
         console.error('Error initializing Vale chart:', error);
