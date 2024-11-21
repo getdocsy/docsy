@@ -1,8 +1,7 @@
-FROM python:3.13-alpine
+FROM python:3.13
 
 # gitpython requires git binary
-RUN apk fix && \
-    apk --no-cache --update add git
+RUN apt-get update && apt-get install -y git
 
 # Install Vale separately
 # TODO: remove hardcoded version and CPU architecture
