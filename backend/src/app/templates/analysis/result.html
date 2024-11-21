@@ -100,7 +100,7 @@
                     <tbody>
                         {% for file in result.single_function.analysis.files %}
                         <tr>
-                            <td><a href="https://github.com/{{ repo_owner }}/{{ repo_name }}/blob/main/{{ file.file_path }}">{{ file.file_path }}</a></td>
+                            <td><a href="https://github.com/{{ repo_owner }}/{{ repo_name }}/blob/HEAD/{{ file.file_path }}">{{ file.file_path }}</a></td>
                             <td>{{ file.explanation_subheadings|join:", " }}</td>
                             <td>{{ file.tutorial_subheadings|join:", " }}</td>
                             <td>{{ file.reference_subheadings|join:", " }}</td>
@@ -191,7 +191,7 @@
                     <tbody>
                         {% for file in result.coherent_sitemap.analysis.files %}
                         <tr>
-                            <td><a href="https://github.com/{{ repo_owner }}/{{ repo_name }}/blob/main/{{ file.path }}">{{ file.path }}</a></td>
+                            <td><a href="https://github.com/{{ repo_owner }}/{{ repo_name }}/blob/HEAD/{{ file.path }}">{{ file.path }}</a></td>
                             <td>{{ file.classification }}</td>
                             <td>{{ file.confidence_score }}%</td>
                         </tr>
@@ -278,7 +278,7 @@
                         {% if file.issues %}
                         {% for issue in file.issues %}
                         <tr>
-                            <td><a href="https://github.com/{{ repo_owner }}/{{ repo_name }}/blob/main/{{ file.path }}">{{ file.path }}</a></td>
+                            <td><a href="https://github.com/{{ repo_owner }}/{{ repo_name }}/blob/HEAD/{{ file.path }}">{{ file.path }}</a></td>
                             <td> {{ issue.Message }} (Line {{ issue.Line }})</td>
                         </tr>
                         {% endfor %}
