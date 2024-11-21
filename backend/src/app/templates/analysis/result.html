@@ -81,6 +81,15 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                <div class="pagination-container">
+                    <div class="pagination-info">
+                        Showing <span class="page-start">1</span> to <span class="page-end">10</span> of <span class="total-items">0</span> items
+                    </div>
+                    <div class="pagination-controls">
+                        <button class="btn btn-sm btn-outline-secondary prev-page" disabled>Previous</button>
+                        <button class="btn btn-sm btn-outline-secondary next-page">Next</button>
+                    </div>
+                </div>
 
                 <h5>Score Components Details</h5>
                 <p class="text-muted mb-3">
@@ -110,6 +119,15 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                <div class="pagination-container">
+                    <div class="pagination-info">
+                        Showing <span class="page-start">1</span> to <span class="page-end">10</span> of <span class="total-items">0</span> items
+                    </div>
+                    <div class="pagination-controls">
+                        <button class="btn btn-sm btn-outline-secondary prev-page" disabled>Previous</button>
+                        <button class="btn btn-sm btn-outline-secondary next-page">Next</button>
+                    </div>
+                </div>
             </div>
             {% endif %}
         </div>
@@ -158,11 +176,11 @@
                 <p class="text-muted mb-3">
                     The score of {{ result.coherent_sitemap.total_score }}% for this section is the average of these score components.
                 </p>
-                <table class="table mb-3">
+                <table class="table mb-3 sortable-table" id="sitemapScoreTable">
                     <thead>
                         <tr>
-                            <th>Component</th>
-                            <th>Score</th>
+                            <th class="sortable" data-sort="component">Component ↕</th>
+                            <th class="sortable" data-sort="score">Score ↕</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -174,6 +192,15 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                <div class="pagination-container">
+                    <div class="pagination-info">
+                        Showing <span class="page-start">1</span> to <span class="page-end">10</span> of <span class="total-items">0</span> items
+                    </div>
+                    <div class="pagination-controls">
+                        <button class="btn btn-sm btn-outline-secondary prev-page" disabled>Previous</button>
+                        <button class="btn btn-sm btn-outline-secondary next-page">Next</button>
+                    </div>
+                </div>
 
                 <h5>Score Components Details</h5>
                 <p class="text-muted mb-3">
@@ -198,6 +225,15 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                <div class="pagination-container">
+                    <div class="pagination-info">
+                        Showing <span class="page-start">1</span> to <span class="page-end">10</span> of <span class="total-items">0</span> items
+                    </div>
+                    <div class="pagination-controls">
+                        <button class="btn btn-sm btn-outline-secondary prev-page" disabled>Previous</button>
+                        <button class="btn btn-sm btn-outline-secondary next-page">Next</button>
+                    </div>
+                </div>
             </div>
             {% endif %}
         </div>
@@ -260,6 +296,15 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                <div class="pagination-container">
+                    <div class="pagination-info">
+                        Showing <span class="page-start">1</span> to <span class="page-end">10</span> of <span class="total-items">0</span> items
+                    </div>
+                    <div class="pagination-controls">
+                        <button class="btn btn-sm btn-outline-secondary prev-page" disabled>Previous</button>
+                        <button class="btn btn-sm btn-outline-secondary next-page">Next</button>
+                    </div>
+                </div>
 
                 <h5>Score Components Details</h5>
                 <p class="text-muted mb-3">
@@ -286,6 +331,15 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                <div class="pagination-container">
+                    <div class="pagination-info">
+                        Showing <span class="page-start">1</span> to <span class="page-end">10</span> of <span class="total-items">0</span> items
+                    </div>
+                    <div class="pagination-controls">
+                        <button class="btn btn-sm btn-outline-secondary prev-page" disabled>Previous</button>
+                        <button class="btn btn-sm btn-outline-secondary next-page">Next</button>
+                    </div>
+                </div>
             </div>
             {% endif %}
         </div>
@@ -444,6 +498,22 @@ document.addEventListener('DOMContentLoaded', function() {
     .sortable:hover {
         background-color: #f8f9fa;
     }
+    .pagination-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 1rem;
+        margin-bottom: 2rem;
+    }
+    .pagination-info {
+        color: #6c757d;
+    }
+    .pagination-controls button {
+        margin: 0 0.25rem;
+    }
+    h5 {
+        margin-top: 2rem;
+    }
 </style>
 
 <script>
@@ -455,27 +525,101 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function initializeTableFunctionality(table) {
         const tableId = table.id;
-        const searchInput = document.getElementById(tableId === 'singleFunctionTable' ? 'singleFunctionSearch' : 'coherentSitemapSearch');
+        const searchInput = document.getElementById(tableId === 'singleFunctionTable' ? 'singleFunctionSearch' : 
+            tableId === 'coherentSitemapTable' ? 'coherentSitemapSearch' : 'valeSearch');
+        
         let sortDirection = 1;
         let lastSortedColumn = null;
+        let currentPage = 1;
+        const rowsPerPage = 10;
+        let filteredRows = [];
+
+        // Get pagination elements
+        const paginationContainer = table.nextElementSibling;
+        const pageStart = paginationContainer.querySelector('.page-start');
+        const pageEnd = paginationContainer.querySelector('.page-end');
+        const totalItems = paginationContainer.querySelector('.total-items');
+        const prevButton = paginationContainer.querySelector('.prev-page');
+        const nextButton = paginationContainer.querySelector('.next-page');
+
+        // Initialize pagination
+        function updatePagination() {
+            const total = filteredRows.length;
+            
+            // If there are no items, show 0 to 0 of 0
+            if (total === 0) {
+                pageStart.textContent = '0';
+                pageEnd.textContent = '0';
+                totalItems.textContent = '0';
+                prevButton.disabled = true;
+                nextButton.disabled = true;
+                return;
+            }
+
+            const start = (currentPage - 1) * rowsPerPage + 1;
+            const end = Math.min(currentPage * rowsPerPage, total);
+
+            pageStart.textContent = start;
+            pageEnd.textContent = end;
+            totalItems.textContent = total;
+            
+            prevButton.disabled = currentPage === 1;
+            nextButton.disabled = end >= total;
+
+            // Show only current page rows
+            const tbody = table.querySelector('tbody');
+            const allRows = Array.from(tbody.children);
+            allRows.forEach(row => row.style.display = 'none');
+            
+            filteredRows.slice(start - 1, end).forEach(row => row.style.display = '');
+        }
 
         // Filtering function
         searchInput.addEventListener('input', function() {
             const searchTerm = this.value.toLowerCase();
-            const rows = table.getElementsByTagName('tr');
-
-            for (let i = 1; i < rows.length; i++) {
-                const row = rows[i];
+            const tbody = table.querySelector('tbody');
+            filteredRows = Array.from(tbody.children).filter(row => {
                 const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(searchTerm) ? '' : 'none';
+                return text.includes(searchTerm);
+            });
+            
+            currentPage = 1;
+            updatePagination();
+        });
+
+        // Initialize filtered rows - update this part
+        const tbody = table.querySelector('tbody');
+        filteredRows = Array.from(tbody.getElementsByTagName('tr'));
+        
+        // Special handling for empty tables
+        if (filteredRows.length === 0) {
+            pageStart.textContent = '0';
+            pageEnd.textContent = '0';
+            totalItems.textContent = '0';
+        } else {
+            updatePagination();
+        }
+
+        // Pagination event listeners
+        prevButton.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                updatePagination();
             }
         });
 
-        // Sorting function
+        nextButton.addEventListener('click', () => {
+            const maxPage = Math.ceil(filteredRows.length / rowsPerPage);
+            if (currentPage < maxPage) {
+                currentPage++;
+                updatePagination();
+            }
+        });
+
+        // Sorting function (updated to work with pagination)
         table.querySelectorAll('.sortable').forEach(header => {
             header.addEventListener('click', function() {
                 const column = this.dataset.sort;
-                const rows = Array.from(table.getElementsByTagName('tr')).slice(1);
                 
                 if (lastSortedColumn === column) {
                     sortDirection *= -1;
@@ -484,7 +628,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 lastSortedColumn = column;
 
-                rows.sort((a, b) => {
+                filteredRows.sort((a, b) => {
                     let aValue = a.children[getColumnIndex(table, column)].textContent;
                     let bValue = b.children[getColumnIndex(table, column)].textContent;
                     
@@ -499,8 +643,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     return 0;
                 });
 
-                const tbody = table.getElementsByTagName('tbody')[0];
-                rows.forEach(row => tbody.appendChild(row));
+                currentPage = 1;
+                updatePagination();
             });
         });
     }
