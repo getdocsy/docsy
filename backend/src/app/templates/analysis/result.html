@@ -100,21 +100,51 @@
                     <thead>
                         <tr>
                             <th class="sortable" data-sort="file">Page Path ↕</th>
-                            <th class="sortable" data-sort="explanation">Explanation Subheadings ↕</th>
-                            <th class="sortable" data-sort="tutorial">Tutorial Subheadings ↕</th>
-                            <th class="sortable" data-sort="reference">Reference Subheadings ↕</th>
-                            <th class="sortable" data-sort="howto">How-to Subheadings ↕</th>
+                            <th class="sortable" data-sort="types">Content Types ↕</th>
+                            <th>Details</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for file in result.single_function.analysis.files %}
                         <tr>
                             <td><a href="https://github.com/{{ repo_owner }}/{{ repo_name }}/blob/HEAD/{{ file.file_path }}">{{ file.file_path }}</a></td>
-                            <td>{{ file.explanation_subheadings|join:", " }}</td>
-                            <td>{{ file.tutorial_subheadings|join:", " }}</td>
-                            <td>{{ file.reference_subheadings|join:", " }}</td>
-                            <td>{{ file.howto_subheadings|join:", " }}</td>
-                            <td>{{ file.score }}</td>
+                            <td>
+                                {% with explanation=file.explanation_subheadings|default:""|length|yesno:"1,0"|add:0 %}
+                                {% with tutorial=file.tutorial_subheadings|default:""|length|yesno:"1,0"|add:0 %}
+                                {% with reference=file.reference_subheadings|default:""|length|yesno:"1,0"|add:0 %}
+                                {% with howto=file.howto_subheadings|default:""|length|yesno:"1,0"|add:0 %}
+                                {% with total=explanation|add:tutorial|add:reference|add:howto %}
+                                {{ total }} type{% if total != 1 %}s{% endif %}
+                                {% endwith %}
+                                {% endwith %}
+                                {% endwith %}
+                                {% endwith %}
+                                {% endwith %}
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#details-{{ forloop.counter }}" aria-expanded="false">
+                                    Show Details
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="collapse" id="details-{{ forloop.counter }}">
+                            <td colspan="4">
+                                <div class="ps-4">
+                                    {% if file.explanation_subheadings %}
+                                    <div><strong>Explanation:</strong> {{ file.explanation_subheadings|join:", " }}</div>
+                                    {% endif %}
+                                    {% if file.tutorial_subheadings %}
+                                    <div><strong>Tutorial:</strong> {{ file.tutorial_subheadings|join:", " }}</div>
+                                    {% endif %}
+                                    {% if file.reference_subheadings %}
+                                    <div><strong>Reference:</strong> {{ file.reference_subheadings|join:", " }}</div>
+                                    {% endif %}
+                                    {% if file.howto_subheadings %}
+                                    <div><strong>How-to:</strong> {{ file.howto_subheadings|join:", " }}</div>
+                                    {% endif %}
+                                </div>
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>
