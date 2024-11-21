@@ -21,8 +21,8 @@ def pytest_configure():
 
 
 @pytest.fixture
-def vale_ini_path():
-    return setup_vale_ini_file()
+async def vale_ini_path():
+    return await setup_vale_ini_file()
 
 
 @pytest.fixture
@@ -76,7 +76,7 @@ async def test_analyze_file_vale(vale_ini_path, test_markdown_file):
     # Run the analysis
     result = await analyze_file_vale(
         absolute_file_path=test_markdown_file,
-        vale_ini_file_path=vale_ini_path,
+        vale_ini_file_path=await vale_ini_path,
         local_repo_path=os.path.dirname(test_markdown_file),
     )
 
@@ -92,7 +92,7 @@ async def test_analyze_clean_file_vale(vale_ini_path, clean_markdown_file):
     # Run the analysis
     result = await analyze_file_vale(
         absolute_file_path=clean_markdown_file,
-        vale_ini_file_path=vale_ini_path,
+        vale_ini_file_path=await vale_ini_path,
         local_repo_path=os.path.dirname(clean_markdown_file),
     )
 

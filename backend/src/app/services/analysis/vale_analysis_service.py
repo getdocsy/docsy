@@ -40,7 +40,7 @@ class ValeAnalysisResult(BaseModel):
     total_score: int
 
 
-def setup_vale_ini_file() -> str:
+async def setup_vale_ini_file() -> str:
     vale_ini_file_path = os.path.join(tempfile.gettempdir(), "vale.ini")
     if not os.path.exists(vale_ini_file_path):
         with open(vale_ini_file_path, "w") as f:
@@ -54,6 +54,18 @@ BasedOnStyles = write-good
                     """
                 )
             )
+        
+        # Run vale sync to install required packages
+        process = await asyncio.create_subprocess_exec(
+            "vale",
+            "sync",
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+        )
+        
+        stdout, stderr = await process.communicate()
+        if process.returncode != 0:
+            raise RuntimeError(f"Vale sync failed: {stderr.decode()}")
 
     return vale_ini_file_path
 
@@ -61,7 +73,7 @@ BasedOnStyles = write-good
 async def analyze_vale(
     *, local_repo_path: str, repo_map: RepoMap
 ) -> ValeAnalysisResult:
-    vale_ini_file_path = setup_vale_ini_file()
+    vale_ini_file_path = await setup_vale_ini_file()
 
     absolute_file_path_list = get_absolute_markdown_file_path_list(
         local_repo_path=local_repo_path
