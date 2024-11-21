@@ -14,7 +14,7 @@ from app.services.local_repo_service import (
 
 class ValeAction(BaseModel):
     Name: str
-    Params: None | dict
+    Params: None | dict | list
 
 
 class ValeIssue(BaseModel):
