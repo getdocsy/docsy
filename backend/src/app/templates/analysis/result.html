@@ -229,8 +229,11 @@
             {% if result.vale%}
             
             <div class="row mb-3">
-                <div class="col">
+                <div class="col-md-6">
                     <canvas id="valeIssuesChart" style="max-height: 200px;"></canvas>
+                </div>
+                <div class="col-md-6">
+                    <canvas id="valeErrorsPerFileChart" style="max-height: 200px;"></canvas>
                 </div>
             </div>
 
@@ -618,16 +621,29 @@ document.addEventListener('DOMContentLoaded', function() {
         const valeData = {
             labels: Object.keys(issueCount),
             datasets: [{
-                label: 'Number of Occurrences',
                 data: Object.values(issueCount),
-                backgroundColor: 'rgba(255, 99, 132, 0.6)',
-                borderColor: 'rgba(255, 99, 132, 1)',
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(153, 102, 255, 0.6)',
+                    'rgba(255, 159, 64, 0.6)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
                 borderWidth: 1
             }]
         };
 
         new Chart(valeIssuesCtx.getContext('2d'), {
-            type: 'bar',
+            type: 'pie',
             data: valeData,
             options: {
                 responsive: true,
@@ -638,25 +654,75 @@ document.addEventListener('DOMContentLoaded', function() {
                         text: 'Writing Issues by Type'
                     },
                     legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            stepSize: 1
-                        }
+                        position: 'bottom',
+                        display: true
                     },
-                    x: {
-                        ticks: {
-                            maxRotation: 45,
-                            minRotation: 45
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const total = Object.values(issueCount).reduce((a, b) => a + b, 0);
+                                const percentage = ((context.raw / total) * 100).toFixed(1);
+                                return `${context.label}: ${context.raw} (${percentage}%)`;
+                            }
                         }
                     }
                 }
             }
         });
+
+        // Add new chart for errors per file distribution
+        try {
+            const valeFiles = JSON.parse(valeDataElement.textContent);
+            
+            // Count errors per file
+            const errorsPerFile = {};
+            valeFiles.forEach(file => {
+                const issueCount = file.issues ? file.issues.length : 0;
+                errorsPerFile[issueCount] = (errorsPerFile[issueCount] || 0) + 1;
+            });
+
+            // Create labels and data arrays
+            const labels = Object.keys(errorsPerFile).sort((a, b) => Number(a) - Number(b));
+            const data = labels.map(key => errorsPerFile[key]);
+
+            const errorsPerFileCtx = document.getElementById('valeErrorsPerFileChart');
+            new Chart(errorsPerFileCtx.getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: labels.map(l => `${l} errors`),
+                    datasets: [{
+                        label: 'Number of Files',
+                        data: data,
+                        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Distribution of Errors per File'
+                        },
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        } catch (error) {
+            console.error('Error initializing Vale errors per file chart:', error);
+        }
     } catch (error) {
         console.error('Error initializing Vale chart:', error);
     }
