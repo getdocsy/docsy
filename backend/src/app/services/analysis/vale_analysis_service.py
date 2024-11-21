@@ -59,6 +59,8 @@ BasedOnStyles = write-good
         process = await asyncio.create_subprocess_exec(
             "vale",
             "sync",
+            "--config",
+            vale_ini_file_path,
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
         )
