@@ -56,6 +56,16 @@ def get_relative_markdown_file_path_list(
     ]
 
 
+def get_absolute_markdown_file_path_list(*, local_repo_path: str) -> list[str]:
+    relative_file_path_list = get_relative_markdown_file_path_list(
+        local_repo_path=local_repo_path
+    )
+    return [
+        os.path.join(local_repo_path, relative_file_path)
+        for relative_file_path in relative_file_path_list
+    ]
+
+
 def get_sidebar_file_path(*, local_repo_path: str) -> str | None:
     for file_path in Path(local_repo_path).glob("*sidebars.*"):
         return os.path.relpath(file_path, local_repo_path)
