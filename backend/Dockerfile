@@ -6,8 +6,8 @@ RUN apk fix && \
 
 # Install Vale separately
 # TODO: remove hardcoded version and CPU architecture
-RUN wget https://github.com/errata-ai/vale/releases/download/v3.9.1/vale_3.9.1_Linux_arm64.tar.gz && \
-    tar -xvzf vale_3.9.1_Linux_arm64.tar.gz && \
+RUN wget -q https://github.com/errata-ai/vale/releases/download/v3.9.1/vale_3.9.1_Linux_arm64.tar.gz && \
+    tar -xzf vale_3.9.1_Linux_arm64.tar.gz && \
     mv vale /usr/local/bin && \
     rm vale_3.9.1_Linux_arm64.tar.gz
 
