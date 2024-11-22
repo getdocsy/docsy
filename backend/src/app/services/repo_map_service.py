@@ -24,8 +24,14 @@ class RepoMapResult(BaseModel):
 def get_relative_file_path_to_headings(*, repo_map: RepoMap) -> dict:
     return {file.relative_path: file.headings for file in repo_map.documentation_files}
 
-def get_absolute_file_path_list(*, repo_map: RepoMap, local_repo_path: str) -> list[str]:
-    return [os.path.join(local_repo_path, file.relative_path) for file in repo_map.documentation_files]
+
+def get_absolute_file_path_list(
+    *, repo_map: RepoMap, local_repo_path: str
+) -> list[str]:
+    return [
+        os.path.join(local_repo_path, file.relative_path)
+        for file in repo_map.documentation_files
+    ]
 
 
 def get_title(*, frontmatter_dict: dict, headings: list[str]) -> str:
@@ -79,7 +85,15 @@ async def create_repo_map(*, repo: Repo, local_repo_path: str) -> RepoMap:
         local_repo_path=local_repo_path
     )
 
-    if Path(local_repo_path).joinpath("docs").exists():
+    if (
+        Path(local_repo_path).joinpath("docs").exists()
+        and len(
+            local_repo_service.get_relative_markdown_file_path_list(
+                local_repo_path=local_repo_path, filter_on_subdir="docs"
+            )
+        )
+        > 3
+    ):
         filter_on_subdir = "docs"
     else:
         filter_on_subdir = None
