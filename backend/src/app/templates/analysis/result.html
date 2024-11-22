@@ -122,15 +122,7 @@
                                 {% endwith %}
                             </td>
                             <td>
-                                <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" 
-                                    data-bs-target="#details-{{ forloop.counter }}" aria-expanded="false">
-                                    Show Details
-                                </button>
-                            </td>
-                        </tr>
-                        <tr class="collapse" id="details-{{ forloop.counter }}">
-                            <td colspan="4">
-                                <div class="ps-4">
+                                <div class="ps-0">
                                     {% if file.explanation_subheadings %}
                                     <div><strong>Explanation:</strong> {{ file.explanation_subheadings|join:", " }}</div>
                                     {% endif %}
