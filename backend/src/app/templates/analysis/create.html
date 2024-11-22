@@ -33,8 +33,11 @@
                             <input type="text" class="form-control" id="github_full_name" name="github_full_name"
                                 placeholder="e.g., octocat/Hello-World" required>
                         </div>
-                        <div class="d-grid">
+                        <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary">Analyze Repository</button>
+                            <button type="button" class="btn btn-outline-secondary" data-tf-popup="l9TUBadH">
+                                Our documentation is not on a public GitHub repository
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -57,6 +60,9 @@
         </div>
     </div>
 </div>
+
+<!-- Add Typeform embed script before the closing body tag -->
+<script src="//embed.typeform.com/next/embed.js"></script>
 
 <script>
 document.getElementById('analysisForm').addEventListener('submit', function() {

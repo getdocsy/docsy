@@ -375,8 +375,13 @@
         </div>
     </div>
 
-    <h2>Questions?</h2>
-    <p>We hope you found this analysis helpful. If you have any questions or feedback about this analysis we would love to <a href="mailto:hello@docsy.ai">hear from you</a>.</p>
+    <h2>What's next?</h2>
+
+    <p>This analysis is only the first step in keeping documentation in sync with code. We are working on a tool that will automatically keep your documentation in sync with your code.</p>
+    <div class="d-flex gap-2">
+        <button class="btn btn-primary" data-tf-popup="RkSuFHZf" data-tf-opacity="80" data-tf-size="100" data-tf-iframe-props="title=Docsy Updates" data-tf-transitive-search-params data-tf-medium="snippet">📬 Subscribe to updates</button>
+        <button class="btn btn-secondary" onclick="window.location.href='mailto:hello@docsy.ai'">📧 Write to us</button>
+    </div>
 
 <!-- Add Footnotes Section -->
 <div class="container mt-4 mb-5">
@@ -962,5 +967,8 @@ document.addEventListener('DOMContentLoaded', function() {
     {{ result.vale.analysis|json_script:"vale-data" }}
 {% endif %}
 {% endif %}
+
+<!-- Add before the endblock -->
+<script src="//embed.typeform.com/next/embed.js"></script>
 
 {% endblock %}
