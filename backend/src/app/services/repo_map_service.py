@@ -85,6 +85,8 @@ async def create_repo_map(*, repo: Repo, local_repo_path: str) -> RepoMap:
         local_repo_path=local_repo_path
     )
 
+    # We try to find out where all relevant files are.
+    # Since I don't want to use AI in the repo map creation, we try to find out where the files are by checking if the docs folder exists and has more than 3 files.
     if (
         Path(local_repo_path).joinpath("docs").exists()
         and len(
@@ -95,6 +97,26 @@ async def create_repo_map(*, repo: Repo, local_repo_path: str) -> RepoMap:
         > 3
     ):
         filter_on_subdir = "docs"
+    elif (
+        Path(local_repo_path).joinpath("documentation/docs").exists()
+        and len(
+            local_repo_service.get_relative_markdown_file_path_list(
+                local_repo_path=local_repo_path, filter_on_subdir="documentation/docs"
+            )
+        )
+        > 3
+    ):
+        filter_on_subdir = "documentation/docs"
+    elif (
+        Path(local_repo_path).joinpath("documentation").exists()
+        and len(
+            local_repo_service.get_relative_markdown_file_path_list(
+                local_repo_path=local_repo_path, filter_on_subdir="documentation"
+            )
+        )
+        > 3
+    ):
+        filter_on_subdir = "documentation"
     else:
         filter_on_subdir = None
 
