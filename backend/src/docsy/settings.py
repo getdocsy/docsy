@@ -23,7 +23,13 @@ GITHUB_WEBHOOK_SECRET = os.environ["GITHUB_WEBHOOK_SECRET"]
 GITHUB_APP_ID = os.environ["GITHUB_APP_ID"]
 GITHUB_APP_PRIVATE_KEY = os.environ["GITHUB_APP_PRIVATE_KEY"]
 
-ALLOWED_HOSTS = [".localhost", "127.0.0.1", "[::1]", "app.getdocsy.com", "reasonably-firm-cricket.ngrok-free.app"]
+ALLOWED_HOSTS = [
+    ".localhost",
+    "127.0.0.1",
+    "[::1]",
+    "app.getdocsy.com",
+    "reasonably-firm-cricket.ngrok-free.app",
+]
 
 CSRF_TRUSTED_ORIGINS = ["https://app.getdocsy.com"]
 
@@ -137,5 +143,11 @@ LOGGING = {
         "handlers": ["console"],
         "level": "INFO",
     },
+    "loggers": {
+        "daphne.server": {
+            "handlers": ["console"],
+            "level": "WARNING",  # This will suppress INFO level messages from daphne.server
+            "propagate": False,
+        },
+    },
 }
-
