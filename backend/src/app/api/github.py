@@ -31,7 +31,7 @@ class PRPayload(Schema):
     installation: dict
 
 
-@github_api.post("/github/events", auth=GitHubWebhookAuth())
+@github_api.post("/events", auth=GitHubWebhookAuth())
 async def github_webhook(request, payload: PRPayload):
     # We only analyze repos that have enabled pull request analysis
     repo = await remote_repo_service.get_repo_by_github_full_name(
