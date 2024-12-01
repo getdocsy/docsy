@@ -44,7 +44,7 @@ async def github_webhook(request, payload: PRPayload):
     )
 
     # Post summary as PR comment
-    pull_request_service.comment_on_pull_request(
+    await pull_request_service.comment_on_pull_request(
         app_installation_id=payload.installation["id"],
         repo_name=payload.repository["full_name"],
         pull_request_number=payload.pull_request["number"],

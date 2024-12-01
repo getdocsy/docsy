@@ -16,12 +16,15 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+# Required environment variables
 SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
-DEBUG = os.environ.get("DJANGO_DEBUG", False)
 GITHUB_WEBHOOK_SECRET = os.environ["GITHUB_WEBHOOK_SECRET"]
 GITHUB_APP_ID = os.environ["GITHUB_APP_ID"]
 GITHUB_APP_PRIVATE_KEY = os.environ["GITHUB_APP_PRIVATE_KEY"]
+
+# Optional environment variables
+DEBUG = os.environ.get("DJANGO_DEBUG", False)
+BASE_URL = os.environ.get("BASE_URL", "https://app.getdocsy.com")
 
 ALLOWED_HOSTS = [
     ".localhost",
@@ -31,7 +34,7 @@ ALLOWED_HOSTS = [
     "reasonably-firm-cricket.ngrok-free.app",
 ]
 
-CSRF_TRUSTED_ORIGINS = ["https://app.getdocsy.com"]
+CSRF_TRUSTED_ORIGINS = ["https://app.getdocsy.com", "https://reasonably-firm-cricket.ngrok-free.app"]
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True

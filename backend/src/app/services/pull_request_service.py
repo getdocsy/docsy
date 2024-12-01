@@ -1,5 +1,6 @@
 from app.services.analysis_service import analyze_patch
 from app.services.github_auth_service import get_github_client
+from django.conf import settings
 
 
 async def comment_on_pull_request(
@@ -13,7 +14,7 @@ async def comment_on_pull_request(
 
 async def analyze_pull_request(
     *, app_installation_id: int, repo_name: str, pull_request_number: int
-) -> None:
+) -> str:
     github_client = get_github_client(app_installation_id=app_installation_id)
     repo = github_client.get_repo(repo_name)
     pr = repo.get_pull(pull_request_number)
@@ -39,4 +40,6 @@ async def analyze_pull_request(
                 comments=api_comments,
             )
 
-    return "Overall well done!"
+    # Extract owner and repo name from the full repo name (format: "owner/repo")
+    owner, name = repo_name.split("/")
+    return f"Overall well done! Check out [the full repo analysis]({settings.BASE_URL}/analysis/result/?owner={owner}&name={name}) for more information."
