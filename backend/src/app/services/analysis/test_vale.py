@@ -80,9 +80,6 @@ async def test_analyze_file_vale(vale_ini_path, test_markdown_file):
         local_repo_path=os.path.dirname(test_markdown_file),
     )
 
-    print(result.path)
-    print(result.issues)
-
     # Verify the result structure
     assert isinstance(result, ValeFileAnalysis)
 
