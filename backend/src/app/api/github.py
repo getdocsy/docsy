@@ -47,4 +47,4 @@ def github_webhook(request, payload: PRPayload):
     # pr_number = payload.pull_request["number"]
     # repo.get_issue(pr_number).create_comment(analysis_results)
 
-    return {"message": "Processed successfully"}
+    return {"message": "Processed successfully"} 
