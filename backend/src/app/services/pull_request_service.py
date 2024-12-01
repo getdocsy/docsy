@@ -2,7 +2,7 @@ from app.services.analysis_service import analyze_patch
 from app.services.github_auth_service import get_github_client
 
 
-def comment_on_pull_request(
+async def comment_on_pull_request(
     *, app_installation_id: int, repo_name: str, pull_request_number: int, comment: str
 ) -> None:
     github_client = get_github_client(app_installation_id=app_installation_id)
@@ -11,7 +11,7 @@ def comment_on_pull_request(
     pr.create_issue_comment(comment)
 
 
-def analyze_pull_request(
+async def analyze_pull_request(
     *, app_installation_id: int, repo_name: str, pull_request_number: int
 ) -> None:
     github_client = get_github_client(app_installation_id=app_installation_id)
@@ -19,15 +19,24 @@ def analyze_pull_request(
     pr = repo.get_pull(pull_request_number)
 
     files = pr.get_files()
-    analysis_result_dicts = {}
-    for file in files:
-        analysis_result_dict = analyze_patch(filename=file.filename, patch=file.patch)
-        analysis_result_dicts[file.filename] = analysis_result_dict
-        pr.create_comment(
-            body=f"## {file.filename}\n{analysis_result_dict}",
-            commit=pr.get_commits()[0],
-            path=file.filename,
-            position=file.patch.count("\n"),
-        )
 
-    return analysis_result_dicts
+    # We analyze patches for each file
+    for file in files:
+        comments = await analyze_patch(filename=file.filename, patch=file.patch)
+        if comments:
+            api_comments = [
+                {
+                    "path": comment.path,
+                    "body": comment.body,
+                    "line": comment.line,
+                    "side": "RIGHT",  # Required by GitHub API
+                }
+                for comment in comments
+            ]
+            pr.create_review(
+                commit=pr.get_commits().reversed[0],  # We only review the final result, not the intermediate commits
+                event="COMMENT",
+                comments=api_comments,
+            )
+
+    return "Overall well done!"
