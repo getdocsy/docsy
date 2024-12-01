@@ -13,7 +13,6 @@ from app.services.analysis import (
     analyze_vale,
 )
 from app.services import repo_map_service
-from app.services.analysis.vale_analysis_service import analyze_patch_vale
 from pydantic import BaseModel
 
 

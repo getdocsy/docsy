@@ -71,6 +71,34 @@ BasedOnStyles = write-good
 
     return vale_ini_file_path
 
+# Analyze a patch of a single file
+async def analyze_patch_vale(*, patch: str) -> str:
+    vale_ini_file_path = await setup_vale_ini_file()
+    vale_patch_file_path = os.path.join(tempfile.gettempdir(), "vale_patch.md")
+
+    # Write patch to file
+    with open(vale_patch_file_path, "w") as f:
+        f.write(patch)
+
+    # Run vale
+    process = await asyncio.create_subprocess_exec(
+        "vale",
+        "--output",
+        "JSON",
+        "--config",
+        vale_ini_file_path,
+        vale_patch_file_path,
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE,
+    )
+
+    stdout, stderr = await process.communicate()
+
+    if process.returncode != 0:
+        raise RuntimeError(f"Vale failed: {stderr.decode()}")
+
+    return stdout.decode()
+
 
 async def analyze_vale(
     *, local_repo_path: str, repo_map: RepoMap
