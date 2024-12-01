@@ -1,3 +1,4 @@
+from app.services import pull_request_service
 from ninja import NinjaAPI, Schema
 from django.conf import settings
 import hmac
@@ -32,19 +33,19 @@ class PRPayload(Schema):
 
 @github_api.post("/github/events", auth=GitHubWebhookAuth())
 def github_webhook(request, payload: PRPayload):
-    if payload.action not in ["opened", "synchronize"]:
-        return {"message": "Event ignored"}
+    # if payload.action not in ["opened", "synchronize"]:
+    #     return {"message": "Event ignored"}
 
-    # Initialize GitHub client
-    # gh_auth = GitHubAppAuth()
-    # gh_client = gh_auth.get_installation_client(payload.installation["id"])
+    # Read changes from PR
 
-    # Analyze PR changes
-    # analysis_results = analyze_pr_changes(gh_client, payload.pull_request)
+    # Analyze changes
 
     # Post results as PR comment
-    # repo = gh_client.get_repo(payload.repository["full_name"])
-    # pr_number = payload.pull_request["number"]
-    # repo.get_issue(pr_number).create_comment(analysis_results)
+    pull_request_service.comment_on_pull_request(
+        app_installation_id=payload.installation["id"],
+        repo_name=payload.repository["full_name"],
+        pull_request_number=payload.pull_request["number"],
+        comment="Hello",
+    )
 
-    return {"message": "Processed successfully"} 
+    return {"message": "Processed successfully"}
