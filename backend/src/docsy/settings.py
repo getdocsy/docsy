@@ -17,10 +17,10 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Required environment variables
-SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
-GITHUB_WEBHOOK_SECRET = os.environ["GITHUB_WEBHOOK_SECRET"]
-GITHUB_APP_ID = os.environ["GITHUB_APP_ID"]
-GITHUB_APP_PRIVATE_KEY = os.environ["GITHUB_APP_PRIVATE_KEY"]
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
+GITHUB_WEBHOOK_SECRET = os.environ.get("GITHUB_WEBHOOK_SECRET")
+GITHUB_APP_ID = os.environ.get("GITHUB_APP_ID")
+GITHUB_APP_PRIVATE_KEY = os.environ.get("GITHUB_APP_PRIVATE_KEY")
 
 # Optional environment variables
 DEBUG = os.environ.get("DJANGO_DEBUG", False)
@@ -34,7 +34,10 @@ ALLOWED_HOSTS = [
     "reasonably-firm-cricket.ngrok-free.app",
 ]
 
-CSRF_TRUSTED_ORIGINS = ["https://app.getdocsy.com", "https://reasonably-firm-cricket.ngrok-free.app"]
+CSRF_TRUSTED_ORIGINS = [
+    "https://app.getdocsy.com",
+    "https://reasonably-firm-cricket.ngrok-free.app",
+]
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
@@ -54,6 +57,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "servestatic.middleware.ServeStaticMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -128,6 +132,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / "static"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

@@ -25,4 +25,6 @@ RUN pip install poetry && \
 
 COPY src/ /app/src
 
+RUN poetry run python src/manage.py collectstatic
+
 EXPOSE 8000
