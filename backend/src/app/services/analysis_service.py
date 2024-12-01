@@ -59,3 +59,6 @@ async def analyze_repo(*, repo: Repo) -> dict:
         await analysis.asave()
 
         return analysis_result_dict
+
+def analyze_patch(*, filename: str, patch: str) -> dict:
+    return {}

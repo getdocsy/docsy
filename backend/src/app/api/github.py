@@ -36,9 +36,12 @@ def github_webhook(request, payload: PRPayload):
     # if payload.action not in ["opened", "synchronize"]:
     #     return {"message": "Event ignored"}
 
-    # Read changes from PR
-
     # Analyze changes
+    pull_request_service.analyze_pull_request(
+        app_installation_id=payload.installation["id"],
+        repo_name=payload.repository["full_name"],
+        pull_request_number=payload.pull_request["number"],
+    )
 
     # Post results as PR comment
     pull_request_service.comment_on_pull_request(
