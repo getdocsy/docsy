@@ -14,6 +14,8 @@ migrate:
     poetry run python src/manage.py makemigrations
     poetry run python src/manage.py migrate
 
+ngrok:
+    ngrok http --domain reasonably-firm-cricket.ngrok-free.app 8000
 
 # Bump version: increment minor version, create and push git tag
 bump_version:
