@@ -81,7 +81,7 @@ async def analyze_patch(*, filename: str, patch: str) -> List[ReviewComment]:
             message_list=[
                 {
                     "role": "system",
-                    "content": f"The following is a patch to markdown file {filename}. Please review the patch and provide a comment on the changes. The comments will be posted as a review on GitHub.",
+                    "content": f"The following is a patch to markdown file {filename}. You may suggest improvements to the markdown. The suggestions will be posted as a review comment on GitHub.",
                 },
                 {"role": "user", "content": patch},
             ],
