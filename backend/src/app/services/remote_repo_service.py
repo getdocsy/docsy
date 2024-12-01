@@ -5,7 +5,9 @@ from app.models import Repo
 from github import Github, GithubException
 
 
-async def get_repo_by_github_full_name(*, sanitized_github_full_name: str) -> Repo:
+async def get_public_repo_by_github_full_name(
+    *, sanitized_github_full_name: str
+) -> Repo:
     nfkc_github_full_name = unicodedata.normalize("NFKC", sanitized_github_full_name)
 
     g = Github()  # Uses unauthenticated API

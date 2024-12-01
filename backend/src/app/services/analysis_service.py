@@ -28,7 +28,7 @@ def get_latest_analysis_by_github_full_name(
 
 
 async def analyze_remote_repo(*, sanitized_github_full_name: str) -> dict:
-    repo = await remote_repo_service.get_repo_by_github_full_name(
+    repo = await remote_repo_service.get_public_repo_by_github_full_name(
         sanitized_github_full_name=sanitized_github_full_name
     )
     return await analyze_repo(repo=repo)
