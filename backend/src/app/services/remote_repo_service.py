@@ -27,3 +27,8 @@ async def get_public_repo_by_github_full_name(
                 f"Public GitHub repository not found: {nfkc_github_full_name}"
             )
         raise
+
+
+# TODO: Ensure repo exists
+async def get_repo_by_github_full_name(*, sanitized_github_full_name: str) -> Repo:
+    return await Repo.objects.aget(nfkc_github_full_name=sanitized_github_full_name)

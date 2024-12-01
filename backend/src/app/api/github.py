@@ -1,4 +1,4 @@
-from app.services import pull_request_service
+from app.services import pull_request_service, remote_repo_service
 from ninja import NinjaAPI, Schema
 from django.conf import settings
 import hmac
@@ -33,8 +33,16 @@ class PRPayload(Schema):
 
 @github_api.post("/github/events", auth=GitHubWebhookAuth())
 async def github_webhook(request, payload: PRPayload):
-    # if payload.action not in ["opened", "synchronize"]:
-    #     return {"message": "Event ignored"}
+    # We only analyze repos that have enabled pull request analysis
+    repo = await remote_repo_service.get_repo_by_github_full_name(
+        sanitized_github_full_name=payload.repository["full_name"]
+    )
+    if not repo.enable_pull_request_analysis:
+        return {"message": "Event ignored because pull request analysis is disabled"}
+
+    # We only analyze opened PRs
+    if payload.action not in ["opened"]:
+        return {"message": "Event ignored"}
 
     # Analyze changes
     summary = await pull_request_service.analyze_pull_request(

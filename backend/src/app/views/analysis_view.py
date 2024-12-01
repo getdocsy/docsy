@@ -1,11 +1,11 @@
-from django.http import Http404, HttpResponse, JsonResponse
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.generic import View
 
-from app import custom_errors, sanitization_utils
-from app.models import Analysis, Repo
+from app import custom_errors
 from app.services import analysis_service
+
 
 class AnalysisFormView(View):
     template_name = "analysis/create.html"
@@ -22,15 +22,11 @@ class AnalysisFormView(View):
                 {"error": "GitHub repository name is required"},
             )
 
-        sanitized_github_full_name = sanitization_utils.strip_xss(
-            unsafe_github_full_name=github_full_name
-        )
-
         try:
             await analysis_service.analyze_remote_repo(
-                sanitized_github_full_name=sanitized_github_full_name
+                sanitized_github_full_name=github_full_name
             )
-            owner, name = sanitized_github_full_name.split("/")
+            owner, name = github_full_name.split("/")
             return redirect(f"{reverse('analysis-result')}?owner={owner}&name={name}")
         except custom_errors.PublicGithubRepoNotFoundError as e:
             return render(request, self.template_name, {"error": str(e)})
@@ -64,4 +60,3 @@ class AnalysisResultView(View):
                 "created_at": analysis.created_at,
             },
         )
-

@@ -6,10 +6,12 @@ class PrettyJSONEncoder(json.JSONEncoder):
     def __init__(self, *args, indent, sort_keys, **kwargs):
         super().__init__(*args, indent=2, sort_keys=True, **kwargs)
 
+
 class Repo(models.Model):
     nfkc_github_full_name = models.CharField(max_length=255)
     nfkc_clone_url = models.CharField(max_length=255)
     is_public = models.BooleanField(default=True)
+    enable_pull_request_analysis = models.BooleanField(default=False)
 
     def __str__(self):
         return self.nfkc_github_full_name
