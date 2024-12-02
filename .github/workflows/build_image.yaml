@@ -39,8 +39,8 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Extract metadata (tags, labels) for Docker
-        id: meta
         uses: docker/metadata-action@v5
+        id: meta
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
@@ -49,6 +49,7 @@ jobs:
 
       - name: Set up uv cache
         uses: actions/cache@v4
+        id: cache
         with:
           path: uv-cache
           key: uv-cache-${{ hashFiles('**/uv.lock') }}
@@ -60,9 +61,9 @@ jobs:
             {
               "uv-cache": "/root/.cache/uv"
             }
+          skip-extraction: ${{ steps.cache.outputs.cache-hit }}
 
       - name: Build and push Docker image
-        id: push
         uses: docker/build-push-action@v6
         with:
           context: "{{defaultContext}}:backend"
