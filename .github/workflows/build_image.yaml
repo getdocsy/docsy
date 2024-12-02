@@ -32,7 +32,7 @@ jobs:
           install: true
 
       - name: Log in to the Container registry
-        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        uses: docker/login-action@3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
@@ -40,21 +40,21 @@ jobs:
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=semver,pattern={{version}}
             type=raw,value=latest
 
-      - name: uv cache
+      - name: Set up uv cache
         uses: actions/cache@v4
         with:
           path: uv-cache
-          key: ${{ runner.os }}-uv-cache-${{ hashFiles('**/uv.lock') }}
+          key: uv-cache-${{ hashFiles('uv.lock') }}
 
-      - name: inject uv-cache into docker
-        uses: reproducible-containers/buildkit-cache-dance@v3.1.0
+      - name: Inject uv cache into docker
+        uses: reproducible-containers/buildkit-cache-dance@v3
         with:
           cache-map: |
             {
