@@ -47,6 +47,21 @@ jobs:
             type=semver,pattern={{version}}
             type=raw,value=latest
 
+      - name: uv cache
+        uses: actions/cache@v4
+        with:
+          path: uv-cache
+          key: ${{ runner.os }}-uv-cache-${{ hashFiles('**/uv.lock') }}
+
+      - name: inject uv-cache into docker
+        uses: reproducible-containers/buildkit-cache-dance@v3.1.0
+        with:
+          cache-map: |
+            {
+              "uv-cache": "/root/.cache/uv",
+            }
+          cache-source: uv-cache
+
       - name: Build and push Docker image
         id: push
         uses: docker/build-push-action@v6
@@ -57,5 +72,5 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           platforms: linux/arm64
           cache-from: type=gha
-          cache-to: type=gha
+          cache-to: type=gha,mode=max
 
