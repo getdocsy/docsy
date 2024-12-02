@@ -58,7 +58,7 @@ jobs:
         with:
           cache-map: |
             {
-              "uv-cache": "/root/.cache/uv",
+              "uv-cache": "/root/.cache/uv"
             }
 
       - name: Build and push Docker image
