@@ -60,7 +60,6 @@ jobs:
             {
               "uv-cache": "/root/.cache/uv",
             }
-          cache-source: uv-cache
 
       - name: Build and push Docker image
         id: push
