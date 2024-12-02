@@ -1,4 +1,5 @@
 set dotenv-load
+set dotenv-required
 set working-directory := 'backend'
 
 # Default recipe to display all available commands
@@ -26,7 +27,7 @@ bump_version:
     PATCH=$(echo $CURRENT_TAG | cut -d. -f3)
     NEW_PATCH=$((PATCH + 1))
     NEW_TAG="${MAJOR}.${MINOR}.${NEW_PATCH}"
-    git push
+    git push --quiet
     git tag $NEW_TAG
     git push origin $NEW_TAG
     echo "Bumped version from $CURRENT_TAG to $NEW_TAG"
