@@ -17,11 +17,12 @@ ENV PYTHONUNBUFFERED=1
 
 # Silence warnings about hard links https://docs.astral.sh/uv/guides/integration/docker/#caching
 ENV UV_LINK_MODE=copy
+ENV UV_CACHE_DIR=/root/.cache/uv
 
 WORKDIR /app
 
 # Install dependencies
-RUN --mount=type=cache,target=/root/.cache/uv \
+RUN --mount=type=cache,target=$UV_CACHE_DIR \
     --mount=type=bind,source=uv.lock,target=uv.lock \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
     uv sync --frozen --no-install-project
@@ -31,7 +32,7 @@ COPY src/ /app/src
 COPY pyproject.toml uv.lock ./
 
 # Sync the project
-RUN --mount=type=cache,target=/root/.cache/uv \
+RUN --mount=type=cache,target=$UV_CACHE_DIR \
     uv sync --frozen
 
 RUN uv run python src/manage.py collectstatic --no-input
