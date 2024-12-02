@@ -21,12 +21,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
         with:
           platforms: linux/arm64
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
         with:
           driver: docker-container
           install: true
@@ -58,7 +58,7 @@ jobs:
         with:
           cache-map: |
             {
-              "uv-cache": "/root/.cache/uv"
+              "uv-cache": "/root/.cache/uv",
             }
 
       - name: Build and push Docker image
