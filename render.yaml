@@ -12,6 +12,8 @@ services:
     rootDir: backend
     buildCommand: "./build.sh"
     startCommand: "poetry run daphne -b 0.0.0.0 -p $PORT docsy.asgi:application"
+    # domains:
+    #   - app.getdocsy.com
     envVars:
       - key: DATABASE_URL
         fromDatabase:

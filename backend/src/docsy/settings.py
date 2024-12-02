@@ -32,11 +32,13 @@ ALLOWED_HOSTS = [
     "[::1]",
     "app.getdocsy.com",
     "reasonably-firm-cricket.ngrok-free.app",
+    "docsy-7ahc.onrender.com",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://app.getdocsy.com",
     "https://reasonably-firm-cricket.ngrok-free.app",
+    "https://docsy-7ahc.onrender.com",
 ]
 
 SESSION_COOKIE_SECURE = True
