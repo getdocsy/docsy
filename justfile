@@ -36,7 +36,7 @@ bump_version:
     sed -i "" "s/docsyWebVersion = \".*\"/docsyWebVersion = \"${NEW_TAG}\"/" "${NIXCONFIG_REPO_PATH}/services/app-getdocsy-com.nix"
     (cd "${NIXCONFIG_REPO_PATH}" && \
         git add services/app-getdocsy-com.nix && \
-        git commit -m "bump docsy version" && \
+        git commit -m "bump docsy version" --quiet && \
         git push --quiet)
     echo "Bumped version in Nix config repo to $NEW_TAG"
 
