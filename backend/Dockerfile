@@ -1,8 +1,9 @@
 FROM python:3.13
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-# gitpython requires git binary
-RUN apt-get update && apt-get install -y git
+# gitpython requires git binary; it's installed in the base image
+RUN git config --global user.name "getdocsy[Bot]" # TODO remove hardcoded bot name and make it depend on environment
+RUN git config --global user.email "171265091+getdocsy[bot]@users.noreply.github.com"
 
 # Install Vale separately
 # TODO: remove hardcoded version and CPU architecture
@@ -10,9 +11,6 @@ RUN wget -q https://github.com/errata-ai/vale/releases/download/v3.9.1/vale_3.9.
     tar -xzf vale_3.9.1_Linux_arm64.tar.gz && \
     mv vale /usr/local/bin && \
     rm vale_3.9.1_Linux_arm64.tar.gz
-
-RUN git config --global user.name "getdocsy[Bot]" # TODO remove hardcoded bot name and make it depend on environment
-RUN git config --global user.email "171265091+getdocsy[bot]@users.noreply.github.com"
 
 # Show Python output immediately https://docs.python.org/3/using/cmdline.html#envvar-PYTHONUNBUFFERED
 ENV PYTHONUNBUFFERED=1
