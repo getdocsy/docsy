@@ -51,7 +51,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: uv-cache
-          key: uv-cache-${{ hashFiles('uv.lock') }}
+          key: uv-cache-${{ hashFiles('**/uv.lock') }}
 
       - name: Inject uv cache into docker
         uses: reproducible-containers/buildkit-cache-dance@v3
