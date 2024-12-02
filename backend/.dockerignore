@@ -27,9 +27,12 @@ coverage.xml
 *.log
 .pytest_cache/
 .mypy_cache/
+.pdm-build/
 
 # Django
 db.sqlite3
 
 *.env
 *.env.*
+
+src/staticfiles/
