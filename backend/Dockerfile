@@ -14,7 +14,11 @@ RUN wget -q https://github.com/errata-ai/vale/releases/download/v3.9.1/vale_3.9.
 RUN git config --global user.name "getdocsy[Bot]" # TODO remove hardcoded bot name and make it depend on environment
 RUN git config --global user.email "171265091+getdocsy[bot]@users.noreply.github.com"
 
+# Show Python output immediately https://docs.python.org/3/using/cmdline.html#envvar-PYTHONUNBUFFERED
 ENV PYTHONUNBUFFERED=1
+
+# Silence warnings about hard links https://docs.astral.sh/uv/guides/integration/docker/#caching
+ENV UV_LINK_MODE=copy
 
 WORKDIR /app
 
