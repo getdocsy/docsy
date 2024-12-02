@@ -1,5 +1,5 @@
 set dotenv-load
-# set working-directory := 'backend'
+set working-directory := 'backend'
 
 # Default recipe to display all available commands
 default:
@@ -7,12 +7,12 @@ default:
 
 # Run Django development server
 serve *args:
-    poetry run python src/manage.py runserver {{args}}
+    uv run python src/manage.py runserver {{args}}
 
 # Make and run migrations
 migrate:
-    poetry run python src/manage.py makemigrations
-    poetry run python src/manage.py migrate
+    uv run python src/manage.py makemigrations
+    uv run python src/manage.py migrate
 
 ngrok:
     ngrok http --domain reasonably-firm-cricket.ngrok-free.app 8000

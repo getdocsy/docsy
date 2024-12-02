@@ -11,7 +11,7 @@ services:
     runtime: python
     rootDir: backend
     buildCommand: "./build.sh"
-    startCommand: "poetry run daphne -b 0.0.0.0 -p $PORT docsy.asgi:application"
+    startCommand: "uv run daphne -b 0.0.0.0 -p $PORT docsy.asgi:application"
     # domains:
     #   - app.getdocsy.com
     envVars:

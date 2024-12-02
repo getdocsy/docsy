@@ -3,6 +3,7 @@ dist/
 build/
 .env
 .docsy/
+backend/src/staticfiles/
 
 # Python
 __pycache__/

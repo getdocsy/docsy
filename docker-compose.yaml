@@ -1,8 +1,8 @@
 services:
   app:
-    command: sh -c "poetry install && poetry run python src/manage.py migrate && poetry run daphne -b 0.0.0.0 -p 8000 docsy.asgi:application"
+    command: sh -c "uv sync --frozen && uv run python src/manage.py migrate && uv run daphne -b 0.0.0.0 -p 8000 docsy.asgi:application"
     build:
-        context: backend
+      context: backend
     expose:
       - "8000"
     ports:

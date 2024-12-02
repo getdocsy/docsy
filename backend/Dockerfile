@@ -1,4 +1,5 @@
 FROM python:3.13
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 # gitpython requires git binary
 RUN apt-get update && apt-get install -y git
@@ -17,14 +18,20 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-COPY pyproject.toml poetry.lock ./
+# Install dependencies
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --frozen --no-install-project
 
-RUN pip install poetry && \
-    poetry config virtualenvs.create false && \
-    poetry install --no-root --without dev
-
+# Copy the project into the image
 COPY src/ /app/src
+COPY pyproject.toml uv.lock ./
 
-RUN poetry run python src/manage.py collectstatic --no-input
+# Sync the project
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen
+
+RUN uv run python src/manage.py collectstatic --no-input
 
 EXPOSE 8000
