@@ -21,13 +21,13 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 GITHUB_WEBHOOK_SECRET = os.environ.get("GITHUB_WEBHOOK_SECRET")
 GITHUB_APP_ID = os.environ.get("GITHUB_APP_ID")
 GITHUB_APP_PRIVATE_KEY = os.environ.get("GITHUB_APP_PRIVATE_KEY")
-GITHUB_INSTALLATION_ID_FOR_API_AUTH = int(
-    os.environ.get("GITHUB_INSTALLATION_ID_FOR_API_AUTH", 0)
-)
 
-# Optional environment variables
+# Optional environment variables; default values are for the production environment
 DEBUG = os.environ.get("DJANGO_DEBUG", False)
 BASE_URL = os.environ.get("BASE_URL", "https://app.getdocsy.com")
+GITHUB_INSTALLATION_ID_FOR_API_AUTH = int(
+    os.environ.get("GITHUB_INSTALLATION_ID_FOR_API_AUTH", 51663706)
+)
 
 ALLOWED_HOSTS = [
     ".localhost",
