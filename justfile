@@ -20,7 +20,6 @@ ngrok:
 
 # Bump version: increment minor version, create and push git tag
 bump_version:
-    #!/usr/bin/env sh
     CURRENT_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
     MAJOR=$(echo $CURRENT_TAG | cut -d. -f1)
     MINOR=$(echo $CURRENT_TAG | cut -d. -f2)
@@ -31,3 +30,11 @@ bump_version:
     git tag $NEW_TAG
     git push origin $NEW_TAG
     echo "Bumped version from $CURRENT_TAG to $NEW_TAG"
+
+    # Update the version in the Nix file
+    sed -i "" "s/docsyWebVersion = \".*\"/docsyWebVersion = \"${NEW_TAG}\"/" "${NIXCONFIG_REPO_PATH}/services/app-getdocsy-com.nix"
+    (cd "${NIXCONFIG_REPO_PATH}" && \
+        git add services/app-getdocsy-com.nix && \
+        git commit -m "bump docsy version" && \
+        git push)
+
