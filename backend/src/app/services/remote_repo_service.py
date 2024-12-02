@@ -2,6 +2,8 @@ import unicodedata
 
 from app import custom_errors
 from app.models import Repo
+from app.services import github_auth_service
+from django.conf import settings
 from github import Github, GithubException
 
 
@@ -10,7 +12,9 @@ async def get_public_repo_by_github_full_name(
 ) -> Repo:
     nfkc_github_full_name = unicodedata.normalize("NFKC", sanitized_github_full_name)
 
-    g = Github()  # Uses unauthenticated API
+    g = github_auth_service.get_github_client(
+        app_installation_id=settings.GITHUB_INSTALLATION_ID_FOR_API_AUTH
+    )
     try:
         github_repo = g.get_repo(full_name_or_id=nfkc_github_full_name)
         nfkc_clone_url = unicodedata.normalize("NFKC", github_repo.clone_url)

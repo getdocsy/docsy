@@ -21,6 +21,9 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 GITHUB_WEBHOOK_SECRET = os.environ.get("GITHUB_WEBHOOK_SECRET")
 GITHUB_APP_ID = os.environ.get("GITHUB_APP_ID")
 GITHUB_APP_PRIVATE_KEY = os.environ.get("GITHUB_APP_PRIVATE_KEY")
+GITHUB_INSTALLATION_ID_FOR_API_AUTH = os.environ.get(
+    "GITHUB_INSTALLATION_ID_FOR_API_AUTH"
+)
 
 # Optional environment variables
 DEBUG = os.environ.get("DJANGO_DEBUG", False)

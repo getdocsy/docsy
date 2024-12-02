@@ -33,5 +33,7 @@ services:
         sync: false
       - key: OPENAI_API_KEY
         sync: false
+      - key: GITHUB_INSTALLATION_ID_FOR_API_AUTH
+        value: 51286673
 
 
