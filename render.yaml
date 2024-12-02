@@ -21,3 +21,8 @@ services:
           property: connectionString
       - key: WEB_CONCURRENCY
         value: 4
+      - key: BASE_URL
+        value: https://docsy-7ahc.onrender.com
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+
