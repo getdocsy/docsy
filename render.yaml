@@ -25,15 +25,13 @@ services:
         value: https://docsy-7ahc.onrender.com
       - key: DJANGO_SECRET_KEY
         generateValue: true
-      - key: OPENAI_API_KEY
-        sync: false
       - key: GITHUB_WEBHOOK_SECRET
         sync: false
       - key: GITHUB_APP_ID
         sync: false
       - key: GITHUB_APP_PRIVATE_KEY
         sync: false
-      - key: GITHUB_REPO_LOOKUP_PAT
+      - key: OPENAI_API_KEY
         sync: false
 
 

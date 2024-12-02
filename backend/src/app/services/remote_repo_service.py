@@ -2,7 +2,6 @@ import unicodedata
 
 from app import custom_errors
 from app.models import Repo
-from app.services import github_auth_service
 from github import Github, GithubException
 
 
@@ -11,7 +10,7 @@ async def get_public_repo_by_github_full_name(
 ) -> Repo:
     nfkc_github_full_name = unicodedata.normalize("NFKC", sanitized_github_full_name)
 
-    g = github_auth_service.get_github_client_for_pat() # Authenticate to avoid rate limiting
+    g = Github()  # Uses unauthenticated API
     try:
         github_repo = g.get_repo(full_name_or_id=nfkc_github_full_name)
         nfkc_clone_url = unicodedata.normalize("NFKC", github_repo.clone_url)
