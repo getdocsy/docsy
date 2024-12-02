@@ -29,7 +29,7 @@ bump_version:
     NEW_TAG="${MAJOR}.${MINOR}.${NEW_PATCH}"
     git push --quiet
     git tag $NEW_TAG
-    git push origin $NEW_TAG
+    git push origin $NEW_TAG --quiet
     echo "Bumped version from $CURRENT_TAG to $NEW_TAG"
 
     # Update the version in the Nix file
