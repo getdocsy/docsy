@@ -1,5 +1,25 @@
 {% extends "base.html" %}
 {% block title %}Docsy - Analysis result for {{ repo_owner }}/{{ repo_name }}{% endblock %}
+
+{% block extra_head %}
+<!-- Plausible with url params -->
+<script defer data-domain="app.getdocsy.com" src="https://plausible.sonnenhof-zieger.de/js/script.manual.js"></script>
+<script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
+<script>
+  function prepareUrl(params) {
+    const url = new URL(location.href)
+    const queryParams = new URLSearchParams(location.search)
+    let customUrl = url.protocol + "//" + url.hostname + url.pathname.replace(/\/$/, '')
+    for (const paramName of params) {
+      const paramValue = queryParams.get(paramName)
+      if (paramValue) customUrl = customUrl + '/' + paramValue
+    }
+    return customUrl
+  }
+  plausible('pageview', { u: prepareUrl(["owner", "name"]) + window.location.search })
+</script>
+{% endblock %}
+
 {% block content %}
 <div class="container mt-4">
     <h1>Analysis result for <a href="https://github.com/{{ repo_owner }}/{{ repo_name }}">{{ repo_owner }}/{{ repo_name }}</a></h1>
