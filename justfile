@@ -41,5 +41,12 @@ bump_version:
     echo "Bumped version in Nix config repo to $NEW_TAG"
 
 deploy_on_blausieb:
+    #!/usr/bin/env sh
+
+    # Wait until the docker image is built
+    RUN_ID=$(gh run list --commit $(git rev-parse HEAD) --json databaseId | jq -r '.[0].databaseId')
+    gh run watch $RUN_ID
+
+    # Then deploy
     ssh blausieb "cd /etc/nixos && sudo -E git pull && just switch"
 
