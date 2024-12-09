@@ -44,6 +44,10 @@ async def github_webhook(request, payload: PRPayload):
     if payload.action not in ["opened"]:
         return {"message": "Event ignored"}
 
+    # Ignore PRs opened by the GitHub app itself
+    if payload.pull_request["user"]["type"] == "Bot":
+        return {"message": "Event ignored because it was opened by a bot"}
+
     # Analyze changes
     summary = await pull_request_service.analyze_pull_request(
         app_installation_id=payload.installation["id"],
