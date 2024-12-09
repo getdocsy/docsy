@@ -40,3 +40,6 @@ bump_version:
         git push --quiet)
     echo "Bumped version in Nix config repo to $NEW_TAG"
 
+deploy_on_blausieb:
+    ssh blausieb "cd /etc/nixos && sudo -E git pull && just switch"
+
