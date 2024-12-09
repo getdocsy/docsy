@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Docsy - Analysis result for {{ repo_owner }}/{{ repo_name }}{% endblock %}
 
-{% block extra_head %}
+{% block plausible_head_tag %}
 <!-- Plausible with url params -->
 <script defer data-domain="app.getdocsy.com" src="https://plausible.sonnenhof-zieger.de/js/script.manual.js"></script>
 <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
