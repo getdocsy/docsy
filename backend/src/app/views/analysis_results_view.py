@@ -8,7 +8,7 @@ from app.services import analysis_service
 
 
 class AnalysisResultView(View):
-    template_name = "analysis/result.html"
+    template_name = "analysis_result.html"
 
     def get(self, request):
         user = request.user

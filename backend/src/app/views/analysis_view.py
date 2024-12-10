@@ -8,7 +8,7 @@ from app.services import analysis_service
 
 
 class AnalysisView(View):
-    template_name = "analysis/create.html"
+    template_name = "analysis.html"
 
     async def get(self, request):
         user = await request.auser()
@@ -50,4 +50,3 @@ class AnalysisView(View):
                     "user": user,
                 },
             )
-
