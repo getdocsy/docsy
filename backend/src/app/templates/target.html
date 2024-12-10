@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Documentation Target Structure</h2>
+    
+    <form method="POST" action="{% url 'target' %}">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            {{ form.description }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Create Target</button>
+    </form>
+</div>
+
+<script>
+function addSection() {
+    const container = document.getElementById('sections-container');
+    const newSection = document.createElement('div');
+    newSection.className = 'section-entry mb-2';
+    newSection.innerHTML = `
+        <div class="d-flex">
+            <input type="text" name="sections[]" class="form-control" placeholder="Section name">
+            <button type="button" class="btn btn-danger ms-2" onclick="this.parentElement.parentElement.remove()">Remove</button>
+        </div>
+    `;
+    container.appendChild(newSection);
+}
+</script>
+{% endblock %}

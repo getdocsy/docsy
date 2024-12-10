@@ -1,5 +1,6 @@
 import json
 from django.db import models
+from django.contrib.auth import get_user_model
 
 
 class PrettyJSONEncoder(json.JSONEncoder):
@@ -33,3 +34,12 @@ class RepoMap(models.Model):
     result = models.JSONField(default=dict, encoder=PrettyJSONEncoder)
     created_at = models.DateTimeField(auto_now_add=True)
     created_for_commit_sha = models.CharField(max_length=255)
+
+
+class Target(models.Model):
+    description = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.description
