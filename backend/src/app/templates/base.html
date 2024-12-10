@@ -20,17 +20,22 @@
         <nav class="bg-dark text-white p-3" style="width: 200px; height: 100vh; position: fixed;">
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="/dashboard">
+                    <a class="nav-link text-white {% if request.path == '/dashboard/' %}active bg-primary{% endif %}" href="/dashboard/">
                         <i class="bi bi-speedometer2 me-2"></i>Dashboard
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="/target">
+                    <a class="nav-link text-white {% if request.path == '/analysis/' %}active bg-primary{% endif %}" href="/analysis">
+                        <i class="bi bi-search me-2"></i>Analyze
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white {% if request.path == '/target/' %}active bg-primary{% endif %}" href="/target">
                         <i class="bi bi-bullseye me-2"></i>Target
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="/fine-tuning">
+                    <a class="nav-link text-white {% if request.path == '/fine-tuning/' %}active bg-primary{% endif %}" href="/fine-tuning">
                         <i class="bi bi-sliders me-2"></i>Fine Tuning
                     </a>
                 </li>
@@ -48,15 +53,14 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
+                    {% if not is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link" href="/analysis">Analyze your Documentation</a>
                     </li>
+                    {% endif %}
                 </ul>
                 <ul class="navbar-nav ms-auto d-flex align-items-center">
                     {% if is_authenticated %}
-                        <li class="nav-item">
-                            <span class="nav-link">Welcome, {{ user.username }}</span>
-                        </li>
                         <li class="nav-item">
                             <form method="POST" action="{% url 'logout' %}" class="d-inline">
                                 {% csrf_token %}
