@@ -16,7 +16,7 @@ class AnalysisView(View):
         return render(
             request,
             self.template_name,
-            {"is_authenticated": is_authenticated, "username": user.username},
+            {"is_authenticated": is_authenticated, "user": user},
         )
 
     async def post(self, request):
@@ -30,7 +30,7 @@ class AnalysisView(View):
                 {
                     "error": "GitHub repository name is required",
                     "is_authenticated": is_authenticated,
-                    "username": user.username,
+                    "user": user,
                 },
             )
 
@@ -47,7 +47,7 @@ class AnalysisView(View):
                 {
                     "error": str(e),
                     "is_authenticated": is_authenticated,
-                    "username": user.username,
+                    "user": user,
                 },
             )
 
@@ -82,6 +82,6 @@ class AnalysisResultView(View):
                 "repo_name": name,
                 "created_at": analysis.created_at,
                 "is_authenticated": is_authenticated,
-                "username": user.username,
+                "user": user,
             },
         )

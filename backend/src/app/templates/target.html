@@ -15,19 +15,4 @@
         <button type="submit" class="btn btn-primary">Create Target</button>
     </form>
 </div>
-
-<script>
-function addSection() {
-    const container = document.getElementById('sections-container');
-    const newSection = document.createElement('div');
-    newSection.className = 'section-entry mb-2';
-    newSection.innerHTML = `
-        <div class="d-flex">
-            <input type="text" name="sections[]" class="form-control" placeholder="Section name">
-            <button type="button" class="btn btn-danger ms-2" onclick="this.parentElement.parentElement.remove()">Remove</button>
-        </div>
-    `;
-    container.appendChild(newSection);
-}
-</script>
 {% endblock %}

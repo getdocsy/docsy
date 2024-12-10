@@ -37,7 +37,7 @@ class TargetView(View):
             {
                 "form": form,
                 "is_authenticated": is_authenticated,
-                "username": user.username,
+                "user": user,
             },
         )
 
@@ -56,6 +56,6 @@ class TargetView(View):
             {
                 "form": form,
                 "is_authenticated": is_authenticated,
-                "username": user.username,
+                "user": user,
             },
         )

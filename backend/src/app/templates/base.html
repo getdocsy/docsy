@@ -45,7 +45,7 @@
                 <ul class="navbar-nav ms-auto d-flex align-items-center">
                     {% if is_authenticated %}
                         <li class="nav-item">
-                            <span class="nav-link">Welcome, {{ username }}</span>
+                            <span class="nav-link">Welcome, {{ user.username }}</span>
                         </li>
                         <li class="nav-item">
                             <form method="POST" action="{% url 'logout' %}" class="d-inline">
