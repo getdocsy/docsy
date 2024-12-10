@@ -59,6 +59,11 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link text-white {% if request.path == '/integrate/' %}active bg-secondary{% endif %}" href="/integrate">
+                        <i class="bi bi-plug me-2"></i>Integrate
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link text-white {% if request.path == '/analysis/' %}active bg-secondary{% endif %}" href="/analysis">
                         <i class="bi bi-search me-2"></i>Analyze
                     </a>

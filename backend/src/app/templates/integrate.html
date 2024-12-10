@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid p-4">
+    <h1 class="mb-5">Integrate</h1>
+    
+    <div class="d-flex flex-column gap-4">
+        <!-- GitHub Integration -->
+        <div class="card bg-dark text-white border-0">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h2 class="h4 mb-2">GitHub</h2>
+                        <p class="text-secondary mb-0">Connect your GitHub repositories for seamless documentation analysis and updates.</p>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <button class="btn btn-outline-primary">Connect</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GitLab Integration -->
+        <div class="card bg-dark text-white border-0">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h2 class="h4 mb-2">GitLab</h2>
+                        <p class="text-secondary mb-0">Integrate with GitLab to manage documentation across your projects.</p>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <button class="btn btn-outline-primary">Connect</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bitbucket Integration -->
+        <div class="card bg-dark text-white border-0">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h2 class="h4 mb-2">Bitbucket</h2>
+                        <p class="text-secondary mb-0">Link your Bitbucket repositories for documentation management.</p>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <button class="btn btn-outline-primary">Connect</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        background-color: #1e1e1e !important;
+        transition: transform 0.2s;
+    }
+    .card:hover {
+        transform: translateY(-2px);
+    }
+    .btn-outline-primary {
+        border-color: #0d6efd;
+        color: #0d6efd;
+    }
+    .btn-outline-primary:hover {
+        background-color: #0d6efd;
+        color: white;
+    }
+</style>
+
+{% endblock %} 
