@@ -2,6 +2,7 @@ from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_not_required
 from django.shortcuts import redirect
+from django.views.generic import TemplateView
 
 from app.api import github_api
 from app.views import (
@@ -32,5 +33,6 @@ urlpatterns = [
     path("fine-tuning/", FineTuningView.as_view(), name="fine-tuning"),
     path("integrations/", IntegrationsView.as_view(), name="integrations"),
     path("accounts/", include("django.contrib.auth.urls")),
+    path("plausible/", TemplateView.as_view(template_name="plausible.html"), name="plausible"),
     path("", root_redirect, name="root"),
 ]
