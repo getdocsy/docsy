@@ -23,7 +23,6 @@ class TargetForm(forms.Form):
     )
 
 
-@method_decorator(csrf_protect, name="dispatch")
 @method_decorator(login_required, name="dispatch")
 class TargetView(View):
     template_name = "target.html"
