@@ -7,6 +7,7 @@ from app.views import (
     AnalysisResultView,
     DashboardView,
     TargetView,
+    FineTuningView,
 )
 
 urlpatterns = [
@@ -15,6 +16,7 @@ urlpatterns = [
     path("analysis/", AnalysisView.as_view(), name="analysis"),
     path("target/", TargetView.as_view(), name="target"),
     path("dashboard/", DashboardView.as_view(), name="dashboard"),
+    path("fine-tuning/", FineTuningView.as_view(), name="fine-tuning"),
     path("accounts/", include("django.contrib.auth.urls")),
     path("", AnalysisView.as_view()),
 ]

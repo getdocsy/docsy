@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid p-4">
+    <h1 class="mb-5">Fine Tuning</h1>
+    
+    <div class="d-flex flex-column gap-4">
+        <!-- Grammar Checker -->
+        <div class="card bg-dark text-white border-0">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h2 class="h4 mb-2">Grammar Checker</h2>
+                        <p class="text-secondary mb-0">Prevents grammar, spelling, and punctuation errors in your documentation.</p>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <span class="me-3 text-secondary">Always on</span>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="grammarChecker" checked>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Context Awareness -->
+        <div class="card bg-dark text-white border-0">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h2 class="h4 mb-2">Context Awareness</h2>
+                        <p class="text-secondary mb-0">Extract and utilize surrounding information to produce authentic and contextually appropriate translations.</p>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <span class="me-3 text-secondary">Always on</span>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="contextAwareness" checked>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Length Preference -->
+        <div class="card bg-dark text-white border-0">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h2 class="h4 mb-2">Content Length Preference</h2>
+                        <p class="text-secondary mb-0">Choose a length preference to maintain consistency across different language versions.</p>
+                    </div>
+                    <div>
+                        <select class="form-select bg-dark text-white border-secondary" style="width: 200px;">
+                            <option selected>Flexible</option>
+                            <option>Match original length</option>
+                            <option>Allow for expansion</option>
+                            <option>Prioritize conciseness</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        background-color: #1e1e1e !important;
+        transition: transform 0.2s;
+    }
+    .card:hover {
+        transform: translateY(-2px);
+    }
+    .form-check-input {
+        background-color: #333;
+        border-color: #666;
+        width: 3rem;
+        height: 1.5rem;
+    }
+    .form-check-input:checked {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+    }
+    .form-select {
+        background-color: #1e1e1e !important;
+        border: 1px solid #333;
+    }
+    .form-select:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+    .form-select option {
+        background-color: #1e1e1e;
+    }
+</style>
+
+{% endblock %} 
