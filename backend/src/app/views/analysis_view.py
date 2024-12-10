@@ -56,6 +56,9 @@ class AnalysisResultView(View):
     template_name = "analysis/result.html"
 
     def get(self, request):
+        user = request.user
+        is_authenticated = user.is_authenticated
+
         owner = request.GET.get("owner")
         name = request.GET.get("name")
 
@@ -78,5 +81,8 @@ class AnalysisResultView(View):
                 "repo_owner": owner,
                 "repo_name": name,
                 "created_at": analysis.created_at,
+                "is_authenticated": is_authenticated,
+                "username": user.username,
             },
         )
+
