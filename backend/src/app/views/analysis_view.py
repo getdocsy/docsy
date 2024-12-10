@@ -11,15 +11,27 @@ class AnalysisFormView(View):
     template_name = "analysis/create.html"
 
     async def get(self, request):
-        return render(request, self.template_name)
+        user = await request.auser()
+        is_authenticated = user.is_authenticated
+        return render(
+            request,
+            self.template_name,
+            {"is_authenticated": is_authenticated, "username": user.username},
+        )
 
     async def post(self, request):
+        user = await request.auser()
+        is_authenticated = user.is_authenticated
         github_full_name = request.POST.get("github_full_name")
         if not github_full_name:
             return render(
                 request,
                 self.template_name,
-                {"error": "GitHub repository name is required"},
+                {
+                    "error": "GitHub repository name is required",
+                    "is_authenticated": is_authenticated,
+                    "username": user.username,
+                },
             )
 
         try:
@@ -29,7 +41,15 @@ class AnalysisFormView(View):
             owner, name = github_full_name.split("/")
             return redirect(f"{reverse('analysis-result')}?owner={owner}&name={name}")
         except custom_errors.PublicGithubRepoNotFoundError as e:
-            return render(request, self.template_name, {"error": str(e)})
+            return render(
+                request,
+                self.template_name,
+                {
+                    "error": str(e),
+                    "is_authenticated": is_authenticated,
+                    "username": user.username,
+                },
+            )
 
 
 class AnalysisResultView(View):

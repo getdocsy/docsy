@@ -140,6 +140,9 @@ STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = "servestatic.storage.CompressedManifestStaticFilesStorage"
 
+LOGIN_REDIRECT_URL = "/"  # Redirect to home page after login
+LOGOUT_REDIRECT_URL = "/"  # Redirect to home page after logout
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 

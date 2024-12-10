@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from django.contrib.auth import views as auth_views
 
 from app.api import github_api
@@ -13,5 +13,6 @@ urlpatterns = [
     path("analysis/result/", AnalysisResultView.as_view(), name="analysis-result"),
     path("analysis/", AnalysisFormView.as_view(), name="analysis_form"),
     path("target/", TargetView.as_view(), name="target"),
+    path("accounts/", include("django.contrib.auth.urls")),
     path("", AnalysisFormView.as_view(), name="analysis_form"),
 ]
