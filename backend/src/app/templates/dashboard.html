@@ -2,13 +2,7 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h2>Welcome to your Dashboard</h2>
-    <div class="mb-4">
-        <div class="user-info">
-            <h3>Hello, {{ user.username }}!</h3>
-            <p>Account created: {{ user.date_joined|date }}</p>
-        </div>
-    </div>
+    <h1 class="mb-5">Welcome {{ user.first_name }}!</h1>
 
     <!-- Analysis Trends Section -->
     <div class="card mb-4">

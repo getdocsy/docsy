@@ -24,8 +24,8 @@ class TargetForm(forms.Form):
 
 
 @method_decorator(login_required, name="dispatch")
-class TargetView(View):
-    template_name = "target.html"
+class TargetsView(View):
+    template_name = "targets.html"
 
     def get(self, request):
         user = request.user

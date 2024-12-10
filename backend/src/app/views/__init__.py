@@ -1,15 +1,15 @@
 from .analysis_view import AnalysisView
-from .analysis_results_view import AnalysisResultView
+from .analysis_result_view import AnalysisResultView
 from .dashboard_view import DashboardView
-from .target_view import TargetView
+from .targets_view import TargetsView
 from .fine_tuning_view import FineTuningView
-from .integrate_view import IntegrateView
+from .integrations_view import IntegrationsView
 
 __all__ = [
     "AnalysisView",
     "AnalysisResultView",
     "DashboardView",
-    "TargetView",
+    "TargetsView",
     "FineTuningView",
-    "IntegrateView",
+    "IntegrationsView",
 ]

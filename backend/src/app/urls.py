@@ -8,9 +8,9 @@ from app.views import (
     AnalysisView,
     AnalysisResultView,
     DashboardView,
-    TargetView,
+    TargetsView,
     FineTuningView,
-    IntegrateView,
+    IntegrationsView,
 )
 
 
@@ -24,10 +24,10 @@ urlpatterns = [
     path("github/", github_api.urls),
     path("analysis/result/", AnalysisResultView.as_view(), name="analysis-result"),
     path("analysis/", AnalysisView.as_view(), name="analysis"),
-    path("target/", TargetView.as_view(), name="target"),
+    path("targets/", TargetsView.as_view(), name="targets"),
     path("dashboard/", DashboardView.as_view(), name="dashboard"),
     path("fine-tuning/", FineTuningView.as_view(), name="fine-tuning"),
-    path("integrate/", IntegrateView.as_view(), name="integrate"),
+    path("integrations/", IntegrationsView.as_view(), name="integrations"),
     path("accounts/", include("django.contrib.auth.urls")),
     path("", root_redirect, name="root"),
 ]

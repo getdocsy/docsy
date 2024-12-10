@@ -2,8 +2,8 @@ from django.views.generic import View
 from django.shortcuts import render
 
 
-class IntegrateView(View):
-    template_name = "integrate.html"
+class IntegrationsView(View):
+    template_name = "integrations.html"
 
     def get(self, request):
         user = request.user
@@ -12,4 +12,4 @@ class IntegrateView(View):
             request,
             self.template_name,
             {"user": user, "is_authenticated": is_authenticated},
-        ) 
+        )
