@@ -1,5 +1,7 @@
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
 
 from app.api import github_api
 from app.views import (
@@ -11,6 +13,13 @@ from app.views import (
     IntegrateView,
 )
 
+
+def root_redirect(request):
+    if request.user.is_authenticated:
+        return redirect("dashboard")
+    return redirect("analysis")
+
+
 urlpatterns = [
     path("github/", github_api.urls),
     path("analysis/result/", AnalysisResultView.as_view(), name="analysis-result"),
@@ -20,5 +29,5 @@ urlpatterns = [
     path("fine-tuning/", FineTuningView.as_view(), name="fine-tuning"),
     path("integrate/", IntegrateView.as_view(), name="integrate"),
     path("accounts/", include("django.contrib.auth.urls")),
-    path("", AnalysisView.as_view()),
+    path("", root_redirect, name="root"),
 ]
