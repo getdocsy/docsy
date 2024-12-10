@@ -1,6 +1,6 @@
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_not_required
 from django.shortcuts import redirect
 
 from app.api import github_api
@@ -15,6 +15,7 @@ from app.views import (
 )
 
 
+@login_not_required
 def root_redirect(request):
     if request.user.is_authenticated:
         return redirect("dashboard")

@@ -2,11 +2,14 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.generic import View
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_not_required
 
 from app import custom_errors
 from app.services import analysis_service
 
 
+@method_decorator(login_not_required, name="dispatch")
 class AnalysisView(View):
     template_name = "analysis.html"
 

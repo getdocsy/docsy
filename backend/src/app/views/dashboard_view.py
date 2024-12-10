@@ -5,7 +5,6 @@ from django.utils.decorators import method_decorator
 import json
 from datetime import datetime, timedelta
 
-@method_decorator(login_required, name='dispatch')
 class DashboardView(View):
     template_name = "dashboard.html"
 

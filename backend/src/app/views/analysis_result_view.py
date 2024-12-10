@@ -5,8 +5,11 @@ from django.views.generic import View
 
 from app import custom_errors
 from app.services import analysis_service
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_not_required
 
 
+@method_decorator(login_not_required, name="dispatch")
 class AnalysisResultView(View):
     template_name = "analysis_result.html"
 
