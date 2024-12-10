@@ -2,18 +2,93 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h2>Welcome to your Dashboard</h1>
-    <div class="mb-3">
+    <h2>Welcome to your Dashboard</h2>
+    <div class="mb-4">
         <div class="user-info">
-            <h3>Hello, {{ user.username }}!</h2>
+            <h3>Hello, {{ user.username }}!</h3>
             <p>Account created: {{ user.date_joined|date }}</p>
         </div>
-        
-        <!-- Add more dashboard widgets/sections as needed -->
-        <div class="dashboard-stats">
+    </div>
 
+    <!-- Analysis Trends Section -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h4>Analysis Trends for getdocsy/docs</h4>
+        </div>
+        <div class="card-body">
+            <canvas id="trendsChart" style="height: 300px;"></canvas>
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('trendsChart').getContext('2d');
+    
+    // Sample data - replace with actual data from your backend
+    const data = {
+        labels: {{ dates|safe }},
+        datasets: [
+            {
+                label: 'Page Structure',
+                data: {{ structure_scores|safe }},
+                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                tension: 0.4
+            },
+            {
+                label: 'Sitemap',
+                data: {{ sitemap_scores|safe }},
+                borderColor: 'rgba(255, 99, 132, 1)',
+                backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                tension: 0.4
+            },
+            {
+                label: 'Writing Style',
+                data: {{ writing_scores|safe }},
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.1)',
+                tension: 0.4
+            }
+        ]
+    };
+
+    new Chart(ctx, {
+        type: 'line',
+        data: data,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Documentation Quality Trends'
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100,
+                    title: {
+                        display: true,
+                        text: 'Score (%)'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Date'
+                    }
+                }
+            }
+        }
+    });
+});
+</script>
 {% endblock %}
 
