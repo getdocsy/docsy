@@ -14,37 +14,7 @@
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-    <!-- Sidebar -->
-    {% if is_authenticated %}
-    <div class="d-flex">
-        <nav class="bg-dark text-white p-3" style="width: 200px; height: 100vh; position: fixed;">
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link text-white {% if request.path == '/dashboard/' %}active bg-primary{% endif %}" href="/dashboard/">
-                        <i class="bi bi-speedometer2 me-2"></i>Dashboard
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white {% if request.path == '/analysis/' %}active bg-primary{% endif %}" href="/analysis">
-                        <i class="bi bi-search me-2"></i>Analyze
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white {% if request.path == '/target/' %}active bg-primary{% endif %}" href="/target">
-                        <i class="bi bi-bullseye me-2"></i>Target
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white {% if request.path == '/fine-tuning/' %}active bg-primary{% endif %}" href="/fine-tuning">
-                        <i class="bi bi-sliders me-2"></i>Fine Tuning
-                    </a>
-                </li>
-            </ul>
-        </nav>
-        <div class="flex-grow-1" style="margin-left: 200px;">
-    {% endif %}
-
-    <!-- Navbar -->
+    <!-- Navbar first -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="/">Docsy</a>
@@ -76,6 +46,38 @@
             </div>
         </div>
     </nav>
+
+    <!-- Main content area with sidebar -->
+    {% if is_authenticated %}
+    <div class="d-flex flex-grow-1">
+        <!-- Sidebar -->
+        <nav class="bg-dark text-white p-3" style="width: 200px; position: fixed; top: 56px; height: calc(100vh - 56px);">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link text-white {% if request.path == '/dashboard/' %}active bg-secondary{% endif %}" href="/dashboard/">
+                        <i class="bi bi-speedometer2 me-2"></i>Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white {% if request.path == '/analysis/' %}active bg-secondary{% endif %}" href="/analysis">
+                        <i class="bi bi-search me-2"></i>Analyze
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white {% if request.path == '/target/' %}active bg-secondary{% endif %}" href="/target">
+                        <i class="bi bi-bullseye me-2"></i>Target
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white {% if request.path == '/fine-tuning/' %}active bg-secondary{% endif %}" href="/fine-tuning">
+                        <i class="bi bi-sliders me-2"></i>Fine Tuning
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- Main content -->
+        <div class="flex-grow-1" style="margin-left: 200px;">
+    {% endif %}
 
     <!-- Main Content -->
     {% block content %}
