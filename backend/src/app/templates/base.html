@@ -13,6 +13,22 @@
 </head>
 
 <body class="d-flex flex-column min-vh-100">
+    <!-- Sidebar -->
+    {% if is_authenticated %}
+    <div class="d-flex">
+        <nav class="bg-dark text-white p-3" style="width: 200px; height: 100vh; position: fixed;">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/dashboard">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/target">Target</a>
+                </li>
+            </ul>
+        </nav>
+        <div class="flex-grow-1" style="margin-left: 200px;">
+    {% endif %}
+
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
@@ -50,6 +66,11 @@
     <!-- Main Content -->
     {% block content %}
     {% endblock %}
+
+    {% if is_authenticated %}
+        </div> <!-- Close flex-grow-1 div -->
+    </div> <!-- Close d-flex div -->
+    {% endif %}
 
     <!-- Footer -->
     <footer class="footer mt-auto py-3 bg-dark text-white">

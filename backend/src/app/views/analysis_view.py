@@ -7,7 +7,7 @@ from app import custom_errors
 from app.services import analysis_service
 
 
-class AnalysisFormView(View):
+class AnalysisView(View):
     template_name = "analysis/create.html"
 
     async def get(self, request):
@@ -85,4 +85,3 @@ class AnalysisResultView(View):
                 "username": user.username,
             },
         )
-
