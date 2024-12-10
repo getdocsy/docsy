@@ -11,18 +11,6 @@ from django.contrib.auth.decorators import login_required
 from app.services import target_service
 
 
-class TargetForm(forms.Form):
-    description = forms.CharField(
-        widget=forms.Textarea(
-            attrs={
-                "class": "form-control",
-                "rows": "3",
-                "placeholder": "Enter target description",
-            }
-        )
-    )
-
-
 @method_decorator(login_required, name="dispatch")
 class TargetsView(View):
     template_name = "targets.html"
@@ -30,32 +18,13 @@ class TargetsView(View):
     def get(self, request):
         user = request.user
         is_authenticated = user.is_authenticated
-        form = TargetForm()
+        targets = target_service.get_all_targets()
         return render(
             request,
             self.template_name,
             {
-                "form": form,
                 "is_authenticated": is_authenticated,
                 "user": user,
-            },
-        )
-
-    def post(self, request):
-        user = request.user
-        is_authenticated = user.is_authenticated
-        form = TargetForm(request.POST)
-        if form.is_valid():
-            target = target_service.create_target(
-                description=form.cleaned_data["description"],
-            )
-            form = TargetForm()
-        return render(
-            request,
-            self.template_name,
-            {
-                "form": form,
-                "is_authenticated": is_authenticated,
-                "user": user,
+                "targets": targets,
             },
         )

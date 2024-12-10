@@ -9,6 +9,7 @@ from app.views import (
     AnalysisResultView,
     DashboardView,
     TargetsView,
+    TargetView,
     FineTuningView,
     IntegrationsView,
 )
@@ -25,6 +26,7 @@ urlpatterns = [
     path("analysis/result/", AnalysisResultView.as_view(), name="analysis-result"),
     path("analysis/", AnalysisView.as_view(), name="analysis"),
     path("targets/", TargetsView.as_view(), name="targets"),
+    path("target/", TargetView.as_view(), name="target"),
     path("dashboard/", DashboardView.as_view(), name="dashboard"),
     path("fine-tuning/", FineTuningView.as_view(), name="fine-tuning"),
     path("integrations/", IntegrationsView.as_view(), name="integrations"),

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container-fluid p-4">
+<div class="container mt-4">
     <h1 class="mb-5">Integrations</h1>
     
     <div class="d-flex flex-column gap-4">
@@ -12,9 +12,6 @@
                     <div>
                         <h2 class="h4 mb-2 d-flex align-items-center gap-2">
                             GitHub
-                            <span class="text-success">
-                                <i class="bi bi-check-circle-fill"></i>
-                            </span>
                         </h2>
                         <p class="text-secondary mb-0">Connect your GitHub organization. You can choose which repositories will be available within Docsy.</p>
                     </div>
@@ -32,9 +29,6 @@
                     <div>
                         <h2 class="h4 mb-2 d-flex align-items-center gap-2">
                             Slack
-                            <span class="text-success">
-                                <i class="bi bi-check-circle-fill"></i>
-                            </span>
                         </h2>
                         <p class="text-secondary mb-0">Install Docsy into your Slack workspace to trigger documentation updates.</p>
                     </div>
@@ -44,6 +38,24 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Linear Integration -->
+        <div class="card bg-dark text-white border-0">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h2 class="h4 mb-2 d-flex align-items-center gap-2">
+                            Linear
+                        </h2>
+                        <p class="text-secondary mb-0">Install Docsy into your Linear workspace.</p>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <button class="btn btn-outline-primary">Configure</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
     </div>
 </div>

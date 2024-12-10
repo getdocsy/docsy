@@ -2,17 +2,27 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h2>Documentation Target Structure</h2>
+    <h1>Targets</h1>
     
-    <form method="POST" action="{% url 'targets' %}">
-        {% csrf_token %}
-
-        <div class="mb-3">
-            <label for="description" class="form-label">Description</label>
-            {{ form.description }}
+    <div class="row mt-4">
+        <div class="col-12">
+            {% if targets %}
+                <div class="list-group">
+                    {% for target in targets %}
+                        <div class="list-group-item">
+                            <p class="mb-1">{{ target.description }}</p>
+                            <small class="text-muted">Created: {{ target.created_at|date:"Y-m-d H:i" }}</small>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No targets found.</p>
+            {% endif %}
+            
+            <div class="mt-3">
+                <a href="{% url 'target' %}" class="btn btn-primary">Add Target</a>
+            </div>
         </div>
-
-        <button type="submit" class="btn btn-primary">Create Target</button>
-    </form>
+    </div>
 </div>
 {% endblock %}
