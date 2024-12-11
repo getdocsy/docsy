@@ -56,3 +56,7 @@ deploy_on_blausieb:
 
     # Then deploy
     ssh blausieb "cd /etc/nixos && sudo -E git pull --quiet && just switch"
+
+watch_blausieb:
+    #!/usr/bin/env sh
+    ssh blausieb "journalctl -u docker-docsy_web.service --follow"
