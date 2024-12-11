@@ -64,7 +64,12 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white {% if request.path == '/analysis/' %}active bg-secondary{% endif %}" href="/analysis">
+                    <a class="nav-link text-white {% if request.path == '/repositories/' %}active bg-secondary{% endif %}" href="/repositories">
+                        <i class="bi bi-git me-2"></i>Repositories
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white {% if request.path == '/analysis/results/' %}active bg-secondary{% endif %}" href="/analysis/results">
                         <i class="bi bi-search me-2"></i>Analysis
                     </a>
                 </li>

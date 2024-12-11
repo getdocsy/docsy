@@ -10,14 +10,14 @@ class DashboardView(View):
 
     def get(self, request):
         user = request.user
-        
+
         # TODO: Replace with actual database queries
         # This is sample data - implement actual data retrieval
         sample_dates = [
-            (datetime.now() - timedelta(days=x)).strftime('%Y-%m-%d')
+            (datetime.now() - timedelta(days=x)).strftime("%Y-%m-%d")
             for x in range(10, -1, -1)
         ]
-        
+
         # Sample scores - replace with actual data
         structure_scores = [75, 78, 80, 79, 82, 85, 84, 86, 88, 87, 90]
         sitemap_scores = [65, 68, 70, 72, 75, 74, 76, 78, 80, 82, 85]
@@ -31,5 +31,5 @@ class DashboardView(View):
             "sitemap_scores": json.dumps(sitemap_scores),
             "writing_scores": json.dumps(writing_scores),
         }
-        
+
         return render(request, self.template_name, context)

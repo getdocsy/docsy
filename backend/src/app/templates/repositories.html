@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Repositories</h1>
+    
+    <div class="row mt-4">
+        <div class="col-12">
+            {% if repositories %}
+                <div class="list-group">
+                    {% for repo in repositories %}
+                        <div class="list-group-item">
+                            <h5 class="mb-1">{{ repo.nfkc_github_full_name }}</h5>
+                            <small class="text-muted">Is Public: {{ repo.is_public }}</small>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No repositories configured.</p>
+            {% endif %}
+            
+            <div class="mt-3">
+                <a href="{% url 'integrations' %}" class="btn btn-primary">Configure Repository</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

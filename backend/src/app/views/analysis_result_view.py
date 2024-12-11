@@ -24,9 +24,15 @@ class AnalysisResultView(View):
             return HttpResponse("Missing repository owner or name", status=400)
 
         github_full_name = f"{owner}/{name}"
-        analysis = analysis_service.get_latest_analysis_by_github_full_name(
-            sanitized_github_full_name=github_full_name
-        )
+        id = request.GET.get("id")
+        if id:
+            analysis = analysis_service.get_analysis_by_github_full_name(
+                sanitized_github_full_name=github_full_name, id=id
+            )
+        else:
+            analysis = analysis_service.get_latest_analysis_by_github_full_name(
+                sanitized_github_full_name=github_full_name
+            )
 
         if not analysis:
             return HttpResponse("Analysis not found", status=404)

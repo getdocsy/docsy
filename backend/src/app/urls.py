@@ -14,6 +14,8 @@ from app.views import (
     FineTuningView,
     IntegrationsView,
 )
+from app.views.repositories_view import RepositoriesView
+from app.views.analysis_results_view import AnalysisResultsView
 
 
 @login_not_required
@@ -34,5 +36,7 @@ urlpatterns = [
     path("integrations/", IntegrationsView.as_view(), name="integrations"),
     path("accounts/", include("django.contrib.auth.urls")),
     path("plausible/", TemplateView.as_view(template_name="plausible.html"), name="plausible"),
+    path("repositories/", RepositoriesView.as_view(), name="repositories"),
+    path("analysis/results/", AnalysisResultsView.as_view(), name="analysis-results"),
     path("", root_redirect, name="root"),
 ]

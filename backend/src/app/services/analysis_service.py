@@ -1,4 +1,5 @@
 import asyncio
+import datetime
 from typing import List
 from app import custom_errors
 from app.models import Analysis, Repo
@@ -23,6 +24,15 @@ def get_latest_analysis_by_github_full_name(
         Analysis.objects.filter(repo__nfkc_github_full_name=sanitized_github_full_name)
         .order_by("-created_at")
         .first()
+    )
+
+
+def get_analysis_by_github_full_name(
+    *, sanitized_github_full_name: str, id: int
+) -> Analysis:
+    return Analysis.objects.get(
+        repo__nfkc_github_full_name=sanitized_github_full_name,
+        id=id,
     )
 
 
@@ -88,3 +98,11 @@ async def analyze_patch(*, filename: str, patch: str) -> List[ReviewComment]:
         )
         return result.comments
     return []
+
+
+def get_all_analysis() -> list[Analysis]:
+    return list(
+        Analysis.objects.filter(repo__nfkc_github_full_name="getdocsy/docs")
+        .order_by("-created_at")
+        .select_related("repo")
+    )

@@ -14,6 +14,14 @@ class Repo(models.Model):
     is_public = models.BooleanField(default=True)
     enable_pull_request_analysis = models.BooleanField(default=False)
 
+    @property
+    def owner(self):
+        return self.nfkc_github_full_name.split("/")[0]
+
+    @property
+    def name(self):
+        return self.nfkc_github_full_name.split("/")[1]
+
     def __str__(self):
         return self.nfkc_github_full_name
 
