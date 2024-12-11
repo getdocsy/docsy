@@ -54,5 +54,5 @@ deploy_on_blausieb:
     fi
 
     # Then deploy
-    ssh blausieb "cd /etc/nixos && sudo -E git pull && just switch"
+    ssh blausieb "cd /etc/nixos && sudo -E git pull --quiet && just switch"
 
