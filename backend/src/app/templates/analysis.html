@@ -67,6 +67,18 @@
 
 <script>
 document.getElementById('analysisForm').addEventListener('submit', function() {
+    // Extract repository name from GitHub URL if needed
+    var input = document.getElementById('github_full_name');
+    var value = input.value.trim();
+    
+    if (value.includes('github.com/')) {
+        // Extract the part after github.com/
+        var match = value.match(/github\.com\/([^\/]+\/[^\/\s]+)/);
+        if (match) {
+            input.value = match[1];
+        }
+    }
+    
     var modal = new bootstrap.Modal(document.getElementById('loadingModal'));
     modal.show();
 });
