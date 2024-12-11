@@ -9,4 +9,6 @@ def get_all_targets() -> list[Target]:
     return list(Target.objects.all().order_by('-created_at'))
 
 
+def get_target_by_id(target_id: int) -> Target:
+    return Target.objects.get(id=target_id)
 

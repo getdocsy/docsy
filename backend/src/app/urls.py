@@ -16,6 +16,7 @@ from app.views import (
 )
 from app.views.repositories_view import RepositoriesView
 from app.views.analysis_results_view import AnalysisResultsView
+from app.views.target_details_view import TargetDetailsView
 
 
 @login_not_required
@@ -31,6 +32,7 @@ urlpatterns = [
     path("analysis/", AnalysisView.as_view(), name="analysis"),
     path("targets/", TargetsView.as_view(), name="targets"),
     path("target/", TargetView.as_view(), name="target"),
+    path("target/<int:target_id>/", TargetDetailsView.as_view(), name="target_detail"),
     path("dashboard/", DashboardView.as_view(), name="dashboard"),
     path("fine-tuning/", FineTuningView.as_view(), name="fine-tuning"),
     path("integrations/", IntegrationsView.as_view(), name="integrations"),

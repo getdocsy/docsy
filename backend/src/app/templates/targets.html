@@ -10,7 +10,8 @@
                 <div class="list-group">
                     {% for target in targets %}
                         <div class="list-group-item">
-                            <p class="mb-1">{{ target.description }}</p>
+                            <a href="{% url 'target_detail' target.id %}" class="btn btn-outline-primary btn-sm float-end">View Details</a>
+                            <p class="mb-1">{{ target.description|truncatechars:100 }}</p>
                             <small class="text-muted">Created: {{ target.created_at|date:"Y-m-d H:i" }}</small>
                         </div>
                     {% endfor %}

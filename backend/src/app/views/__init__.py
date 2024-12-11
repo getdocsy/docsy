@@ -5,6 +5,7 @@ from .targets_view import TargetsView
 from .target_view import TargetView
 from .fine_tuning_view import FineTuningView
 from .integrations_view import IntegrationsView
+from .target_details_view import TargetDetailsView
 
 __all__ = [
     "AnalysisView",
@@ -12,6 +13,7 @@ __all__ = [
     "DashboardView",
     "TargetsView",
     "TargetView",
+    "TargetDetailsView",
     "FineTuningView",
     "IntegrationsView",
 ]
