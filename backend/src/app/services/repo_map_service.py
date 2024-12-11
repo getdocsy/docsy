@@ -90,7 +90,7 @@ async def create_repo_map(*, repo: Repo, local_repo_path: str) -> RepoMap:
     if (
         Path(local_repo_path).joinpath("docs").exists()
         and len(
-            local_repo_service.get_relative_markdown_file_path_list(
+            local_repo_service.get_relative_documentation_file_path_list(
                 local_repo_path=local_repo_path, filter_on_subdir="docs"
             )
         )
@@ -100,7 +100,7 @@ async def create_repo_map(*, repo: Repo, local_repo_path: str) -> RepoMap:
     elif (
         Path(local_repo_path).joinpath("documentation/docs").exists()
         and len(
-            local_repo_service.get_relative_markdown_file_path_list(
+            local_repo_service.get_relative_documentation_file_path_list(
                 local_repo_path=local_repo_path, filter_on_subdir="documentation/docs"
             )
         )
@@ -110,7 +110,7 @@ async def create_repo_map(*, repo: Repo, local_repo_path: str) -> RepoMap:
     elif (
         Path(local_repo_path).joinpath("documentation").exists()
         and len(
-            local_repo_service.get_relative_markdown_file_path_list(
+            local_repo_service.get_relative_documentation_file_path_list(
                 local_repo_path=local_repo_path, filter_on_subdir="documentation"
             )
         )
@@ -120,9 +120,11 @@ async def create_repo_map(*, repo: Repo, local_repo_path: str) -> RepoMap:
     else:
         filter_on_subdir = None
 
-    relative_file_path_list = local_repo_service.get_relative_markdown_file_path_list(
-        local_repo_path=local_repo_path,
-        filter_on_subdir=filter_on_subdir,
+    relative_file_path_list = (
+        local_repo_service.get_relative_documentation_file_path_list(
+            local_repo_path=local_repo_path,
+            filter_on_subdir=filter_on_subdir,
+        )
     )
 
     documentation_files = []
@@ -131,7 +133,7 @@ async def create_repo_map(*, repo: Repo, local_repo_path: str) -> RepoMap:
         frontmatter_dict = local_repo_service.get_markdown_frontmatter(
             absolute_file_path=absolute_file_path
         )
-        headings = local_repo_service.get_markdown_file_headings(
+        headings = local_repo_service.get_documentation_file_headings(
             absolute_file_path=absolute_file_path
         )
         documentation_files.append(

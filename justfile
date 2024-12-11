@@ -15,6 +15,13 @@ migrate:
     uv run python src/manage.py makemigrations
     uv run python src/manage.py migrate
 
+# Run tests
+test *args:
+    #!/usr/bin/env sh
+    PYTHONPATH=src DJANGO_SETTINGS_MODULE=docsy.settings \
+    DJANGO_ALLOW_ASYNC_UNSAFE=true \
+    uv run python -m pytest {{args}}
+
 ngrok:
     ngrok http --domain reasonably-firm-cricket.ngrok-free.app 8000
 
@@ -49,4 +56,3 @@ deploy_on_blausieb:
 
     # Then deploy
     ssh blausieb "cd /etc/nixos && sudo -E git pull --quiet && just switch"
-

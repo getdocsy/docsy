@@ -2,22 +2,8 @@ import os
 import pytest
 import tempfile
 from textwrap import dedent
-import django
-from django.conf import settings
 
 from .vale_analysis_service import ValeFileAnalysis, analyze_file_vale, setup_vale_ini_file
-
-
-def pytest_configure():
-    settings.configure(
-        DATABASES={
-            "default": {"ENGINE": "django.db.backends.sqlite3", "NAME": ":memory:"}
-        },
-        INSTALLED_APPS=[
-            "app",  # Add your app name here
-        ],
-    )
-    django.setup()
 
 
 @pytest.fixture
