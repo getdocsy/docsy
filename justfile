@@ -45,13 +45,7 @@ deploy_on_blausieb:
 
     # Wait until the docker image is built
     RUN_ID=$(gh run list --commit $(git rev-parse HEAD) --json databaseId | jq -r '.[0].databaseId')
-    gh run watch $RUN_ID
-    
-    # Check if the run was successful
-    if ! gh run view $RUN_ID --json conclusion | jq -e '.conclusion == "success"' >/dev/null; then
-        echo "GitHub Actions run failed. Aborting deployment."
-        exit 1
-    fi
+    gh run watch $RUN_ID --exit-status
 
     # Then deploy
     ssh blausieb "cd /etc/nixos && sudo -E git pull --quiet && just switch"
