@@ -98,15 +98,34 @@ def get_absolute_documentation_file_path_list(*, local_repo_path: str) -> list[s
 def get_documentation_file_headings(*, absolute_file_path: str) -> list[str]:
     headings = []
     in_code_block = False
+
     settings = frontend.get_default_settings(Parser)
+    settings.report_level = 4  # Only report severe errors
+    settings.halt_level = 5  # Don't halt on errors
 
     with open(absolute_file_path, "r", encoding="utf-8") as file:
         if absolute_file_path.endswith(".rst"):
-            document = utils.new_document(file.name, settings)
-            Parser().parse(file.read(), document)
-            for node in document.traverse(nodes.title):
-                print(node)
-                headings.append(node.astext())
+            try:
+                document = utils.new_document(file.name, settings)
+                Parser().parse(file.read(), document)
+                for node in document.traverse(nodes.title):
+                    headings.append(node.astext())
+            except Exception as e:
+                logging.warning(
+                    f"Error parsing RST file {absolute_file_path}: {str(e)}"
+                )
+                # Fallback to simple heading detection for RST
+                file.seek(0)
+                prev_line = ""
+                for line in file:
+                    line = line.strip()
+                    # RST headings are often underlined with = or -
+                    if line and (
+                        all(c == "=" for c in line) or all(c == "-" for c in line)
+                    ):
+                        if prev_line and not prev_line.startswith(".."):
+                            headings.append(prev_line)
+                    prev_line = line
 
         elif absolute_file_path.endswith(".md"):
             for line in file:
