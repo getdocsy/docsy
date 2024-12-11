@@ -12,9 +12,9 @@
                         <div class="list-group-item">
                             <h5 class="mb-1">{{ analysis.repo.nfkc_github_full_name }}</h5>
                             <p class="mb-1">
-                                <span class="badge bg-primary">Single Function: {{ analysis.result.single_function.total_score|floatformat:2 }}</span>
-                                <span class="badge bg-success">Coherent Sitemap: {{ analysis.result.coherent_sitemap.total_score|floatformat:2 }}</span>
-                                <span class="badge bg-info">Vale: {{ analysis.result.vale.total_score|floatformat:2 }}</span>
+                                <span class="badge bg-primary">Page Structure: {{ analysis.result.single_function.total_score|floatformat:2 }}</span>
+                                <span class="badge bg-success">Sitemap: {{ analysis.result.coherent_sitemap.total_score|floatformat:2 }}</span>
+                                <span class="badge bg-info">Writing Style: {{ analysis.result.vale.total_score|floatformat:2 }}</span>
                                 <a href="{% url 'analysis-result' %}?owner={{ analysis.repo.owner }}&name={{ analysis.repo.name }}&id={{ analysis.id }}" class="btn btn-sm btn-outline-primary float-end">View Details</a>
                             </p>
                             <small class="text-muted">Created: {{ analysis.created_at|date:"Y-m-d H:i" }}</small>
