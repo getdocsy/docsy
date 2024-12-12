@@ -6,6 +6,7 @@ RUN git config --global user.name "getdocsy[Bot]" # TODO remove hardcoded bot na
 RUN git config --global user.email "171265091+getdocsy[bot]@users.noreply.github.com"
 
 # Install Vale separately
+# Also hardcoded in .github/workflows/test.yaml
 # TODO: remove hardcoded version and CPU architecture
 RUN wget -q https://github.com/errata-ai/vale/releases/download/v3.9.1/vale_3.9.1_Linux_arm64.tar.gz && \
     tar -xzf vale_3.9.1_Linux_arm64.tar.gz && \
