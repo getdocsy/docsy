@@ -17,9 +17,6 @@ exclude = ["**/migrations"]
 dev-dependencies = [
     "ruff<1.0.0,>=0.7.3",
     "pyright<2.0.0,>=1.1.389",
-    "pytest-asyncio<1.0.0,>=0.24.0",
-    "pytest>=8.3.4",
-    "django-pytest>=0.2.0",
 ]
 
 [tool.pdm.build]
@@ -49,8 +46,3 @@ dependencies = [
 name = "docsy"
 version = "0.1.0"
 description = "Docsy suggests changes to your user documentation."
-
-[tool.pytest]
-pythonpath = ["src"]
-DJANGO_SETTINGS_MODULE = "tests.test_settings"
-asyncio_mode = "auto"
