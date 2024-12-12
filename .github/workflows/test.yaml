@@ -16,9 +16,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Doesn't allow to only install Vale
-      # - uses: errata-ai/vale-action@v2.1.1
-
+      # Also hardcoded in Dockerfile
       - uses: sigoden/install-binary@v1
         with:
           repo: errata-ai/vale
