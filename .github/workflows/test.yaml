@@ -19,13 +19,12 @@ jobs:
       # Doesn't allow to only install Vale
       # - uses: errata-ai/vale-action@v2.1.1
 
-      # Also hardcoded in Dockerfile
-      - name: Install Vale
-        run: |
-          wget -q https://github.com/errata-ai/vale/releases/download/v3.9.1/vale_3.9.1_Linux_x86_64.tar.gz && \
-          tar -xzf vale_3.9.1_Linux_x86_64.tar.gz && \
-          mv vale /usr/local/bin && \
-          rm vale_3.9.1_Linux_x86_64.tar.gz
+      - uses: sigoden/install-binary@v1
+        with:
+          repo: errata-ai/vale
+          version: v3.9.1
+          platform: linux
+          architecture: x86_64
 
       - name: Install uv
         uses: astral-sh/setup-uv@v4
