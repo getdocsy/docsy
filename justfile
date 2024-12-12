@@ -17,10 +17,7 @@ migrate:
 
 # Run tests
 test *args:
-    #!/usr/bin/env sh
-    PYTHONPATH=src DJANGO_SETTINGS_MODULE=docsy.settings \
-    DJANGO_ALLOW_ASYNC_UNSAFE=true \
-    uv run python -m pytest {{args}}
+    uv run python src/manage.py test {{args}}
 
 ngrok:
     ngrok http --domain reasonably-firm-cricket.ngrok-free.app 8000
