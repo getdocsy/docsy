@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Create Template</h1>
+    <p class="text-secondary">Define a new documentation template structure.</p>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="mb-3">
+                    <label for="{{ form.name.id_for_label }}" class="form-label">Name</label>
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                        <div class="alert alert-danger">
+                            {{ form.name.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <label for="{{ form.description.id_for_label }}" class="form-label">Description</label>
+                    {{ form.description }}
+                    {% if form.description.errors %}
+                        <div class="alert alert-danger">
+                            {{ form.description.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <label for="{{ form.structure.id_for_label }}" class="form-label">Structure</label>
+                    {{ form.structure }}
+                    {% if form.structure.errors %}
+                        <div class="alert alert-danger">
+                            {{ form.structure.errors }}
+                        </div>
+                    {% endif %}
+                    <div class="form-text">
+                        Define the template structure using markdown-style headings. Example:<br>
+                        <pre class="text-muted">
+# Overview
+This section provides a high-level summary.
+
+# Installation
+Steps to install the software.
+
+# Usage
+How to use the main features.</pre>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">Create Template</button>
+                    <a href="{% url 'templates' %}" class="btn btn-outline-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %} 

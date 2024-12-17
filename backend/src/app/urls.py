@@ -17,6 +17,9 @@ from app.views import (
 from app.views.repositories_view import RepositoriesView
 from app.views.analysis_results_view import AnalysisResultsView
 from app.views.target_details_view import TargetDetailsView
+from app.views.templates_view import TemplatesView
+from app.views.template_view import TemplateView
+from app.views.template_details_view import TemplateDetailsView
 
 
 @login_not_required
@@ -40,5 +43,8 @@ urlpatterns = [
     path("plausible/", TemplateView.as_view(template_name="plausible.html"), name="plausible"),
     path("repositories/", RepositoriesView.as_view(), name="repositories"),
     path("analysis/results/", AnalysisResultsView.as_view(), name="analysis-results"),
+    path("templates/", TemplatesView.as_view(), name="templates"),
+    path("template/", TemplateView.as_view(), name="template"),
+    path("template/<int:template_id>/", TemplateDetailsView.as_view(), name="template_detail"),
     path("", root_redirect, name="root"),
 ]

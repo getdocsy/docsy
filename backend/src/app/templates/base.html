@@ -74,6 +74,11 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link text-white {% if request.path == '/templates/' %}active bg-secondary{% endif %}" href="/templates">
+                        <i class="bi bi-file-earmark-text me-2"></i>Templates
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link text-white {% if request.path == '/targets/' %}active bg-secondary{% endif %}" href="/targets">
                         <i class="bi bi-bullseye me-2"></i>Targets
                     </a>
