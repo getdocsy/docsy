@@ -54,37 +54,37 @@
         <nav class="bg-dark text-white p-3" style="width: 200px; position: fixed; top: 56px; height: calc(100vh - 56px);">
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link text-white {% if request.path == '/dashboard/' %}active bg-secondary{% endif %}" href="/dashboard/">
+                    <a class="nav-link text-white {% if request.path.startswith('/dashboard') %}active bg-secondary{% endif %}" href="/dashboard/">
                         <i class="bi bi-speedometer2 me-2"></i>Dashboard
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white {% if request.path == '/integrations/' %}active bg-secondary{% endif %}" href="/integrations">
+                    <a class="nav-link text-white {% if request.path.startswith('/integration') %}active bg-secondary{% endif %}" href="/integrations">
                         <i class="bi bi-plug me-2"></i>Integrations
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white {% if request.path == '/repositories/' %}active bg-secondary{% endif %}" href="/repositories">
+                    <a class="nav-link text-white {% if request.path.startswith('/repo') %}active bg-secondary{% endif %}" href="/repository">
                         <i class="bi bi-git me-2"></i>Repositories
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white {% if request.path == '/analysis/results/' %}active bg-secondary{% endif %}" href="/analysis/results">
+                    <a class="nav-link text-white {% if request.path.startswith('/analysis') %}active bg-secondary{% endif %}" href="/analysis">
                         <i class="bi bi-search me-2"></i>Analysis
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white {% if request.path == '/templates/' %}active bg-secondary{% endif %}" href="/templates">
+                    <a class="nav-link text-white {% if request.path.startswith('/template') %}active bg-secondary{% endif %}" href="/template">
                         <i class="bi bi-file-earmark-text me-2"></i>Templates
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white {% if request.path == '/targets/' %}active bg-secondary{% endif %}" href="/targets">
+                    <a class="nav-link text-white {% if request.path.startswith('/target') %}active bg-secondary{% endif %}" href="/target">
                         <i class="bi bi-bullseye me-2"></i>Targets
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white {% if request.path == '/fine-tuning/' %}active bg-secondary{% endif %}" href="/fine-tuning">
+                    <a class="nav-link text-white {% if request.path.startswith('/fine-tuning') %}active bg-secondary{% endif %}" href="/fine-tuning">
                         <i class="bi bi-sliders me-2"></i>Fine Tuning
                     </a>
                 </li>
